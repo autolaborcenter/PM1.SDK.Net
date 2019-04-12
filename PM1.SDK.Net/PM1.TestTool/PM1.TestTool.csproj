@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A8BE054E-36D9-47F3-B405-B0AF7EEEA8CE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>PM1.TestTool</RootNamespace>
+    <RootNamespace>Autolabor.PM1.TestTool</RootNamespace>
     <AssemblyName>PM1.TestTool</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -95,6 +95,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PM1.SDK.Net\PM1.SDK.Net.csproj">
+      <Project>{42d5607d-6d09-40b3-bea4-14adbc23a28f}</Project>
+      <Name>PM1.SDK.Net</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

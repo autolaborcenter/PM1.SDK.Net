@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace PM1.TestTool
+namespace Autolabor.PM1.TestTool
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
@@ -17,6 +18,8 @@ namespace PM1.TestTool
         {
             InitializeComponent();
             _context = (MainWindowContext) DataContext;
+            SerialPortCombo.Items.Add("自动选择");
+            SerialPortCombo.SelectedIndex = 0;
         }
 
         private void ComboBox_DropDownOpened(object sender, System.EventArgs e)
@@ -28,25 +31,81 @@ namespace PM1.TestTool
                 combo.Items.Add(port);
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void ComboBox_DropDownClosed(object sender, EventArgs e)
         {
-            _context.Connected = true;
-            Task.Run(async () =>
-            {
-                var stopwatch = new Stopwatch();
-                stopwatch.Start();
-                while (_context.Connected)
-                {
-                    _context.TimeString = (stopwatch.ElapsedMilliseconds / 1000).ToString();
-                    await Task.Delay(499);
-                }
-            });
+            if (!(sender is ComboBox combo)) return;
+            if (combo.SelectedIndex == -1)
+                combo.SelectedIndex = 0;
         }
 
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
-            _context.Connected = false;
-            _context.Progress = 0;
+            if (!(sender is CheckBox box)) return;
+            box.IsEnabled = false;
+            if (_context.Connected)
+            {
+                box.IsChecked = false;
+                _context.Connected = false;
+                _context.Progress = 0;
+                try
+                {
+                    Methods.Shutdown();
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.Message);
+                }
+                box.IsEnabled = true;
+            }
+            else
+            {
+                var port = SerialPortCombo.SelectedItem.ToString();
+                var progress = .0;
+                _ = Task.Run(async () =>
+                {
+                    while (progress >= 0)
+                    {
+                        _context.Progress = progress;
+                        await Task.Delay(20);
+                    }
+                });
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        var name = Methods.Initialize(
+                            port == "自动选择" ? "" : port,
+                            new ChassisConfig
+                            {
+                                Width = double.NaN,
+                                Length = double.NaN,
+                                WheelRadius = double.NaN,
+                                OptimizeWidth = double.NaN,
+                                Acceleration = double.NaN
+                            },
+                            out progress);
+                    }
+                    catch (Exception exception)
+                    {
+                        progress = -1;
+                        box.Dispatcher.Invoke(() => {
+                            box.IsChecked = false;
+                            box.IsEnabled = true;
+                        });
+                        MessageBox.Show(exception.Message);
+                        return;
+                    }
+
+                    _context.Connected = true;
+                    var stopwatch = new Stopwatch();
+                    stopwatch.Start();
+                    while (_context.Connected)
+                    {
+                        _context.TimeString = (stopwatch.ElapsedMilliseconds / 1000).ToString();
+                        await Task.Delay(499);
+                    }
+                });
+            }
         }
     }
 }

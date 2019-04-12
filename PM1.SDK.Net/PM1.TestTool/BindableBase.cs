@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace PM1.TestTool
+namespace Autolabor.PM1.TestTool
 {
     /// <inheritdoc />
     /// <summary>

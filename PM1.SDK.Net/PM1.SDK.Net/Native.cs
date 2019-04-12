@@ -32,7 +32,7 @@ namespace Autolabor.PM1
             out double optimizeWidth,
             out double acceleration);
 
-        [DllImport(LIBRARY, EntryPoint = "initialize", CharSet = CharSet.Unicode)]
+        [DllImport(LIBRARY, EntryPoint = "initialize", CharSet = CharSet.Ansi)]
         public static extern Handler Initialize(
             string port, 
             double width,
