@@ -2,10 +2,8 @@
 using System.Runtime.InteropServices;
 using Handler = System.UInt32;
 
-namespace Autolabor.PM1
-{
-    internal static class SafeNativeMethods
-    {
+namespace Autolabor.PM1 {
+    internal static class SafeNativeMethods {
 #if DEBUG
         const string LIBRARY = "pm1_sdk_native_debug.dll";
 #else
@@ -34,7 +32,7 @@ namespace Autolabor.PM1
 
         [DllImport(LIBRARY, EntryPoint = "initialize", CharSet = CharSet.Ansi)]
         public static extern Handler Initialize(
-            string port, 
+            string port,
             double width,
             double length,
             double wheelRadius,

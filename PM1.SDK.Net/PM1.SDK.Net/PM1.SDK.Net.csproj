@@ -6,4 +6,13 @@
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG</DefineConstants>
+    <DocumentationFile>C:\Users\ydrml\RiderProjects\Autolabor.PM1.SDK.Net\PM1.SDK.Net\PM1.SDK.Net\PM1.SDK.Net.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.1" />
+  </ItemGroup>
+
 </Project>

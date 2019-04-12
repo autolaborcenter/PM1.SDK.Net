@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PM1.SDK.Net\PM1.SDK.Net.csproj" />
   </ItemGroup>
 

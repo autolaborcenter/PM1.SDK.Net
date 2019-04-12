@@ -2,13 +2,11 @@
 using System.Runtime.InteropServices;
 using static Autolabor.PM1.SafeNativeMethods;
 
-namespace Autolabor.PM1
-{
+namespace Autolabor.PM1 {
     /// <summary>
     ///     底盘参数结构体
     /// </summary>
-    public struct ChassisConfig
-    {
+    public struct ChassisConfig {
         /// <summary>
         ///     轮间距
         /// </summary>
@@ -38,8 +36,7 @@ namespace Autolabor.PM1
     /// <summary>
     ///     底盘工作状态
     /// </summary>
-    public enum State
-    {
+    public enum State {
         /// <summary>
         ///     所有节点离线
         /// </summary>
@@ -64,17 +61,14 @@ namespace Autolabor.PM1
     /// <summary>
     ///     底盘控制类
     /// </summary>
-    public static class Methods
-    {
+    public static class Methods {
         /// <summary>
         ///     代理底层 API，错误信息转化为日常
         /// </summary>
         /// <param name="handler">任务 id</param>
-        private static void OnNative(uint handler)
-        {
+        private static void OnNative(uint handler) {
             var error = Marshal.PtrToStringAnsi(GetErrorInfo(handler));
-            if (!string.IsNullOrWhiteSpace(error))
-            {
+            if (!string.IsNullOrWhiteSpace(error)) {
                 RemoveErrorInfo(handler);
                 throw new Exception(error);
             }
@@ -107,8 +101,7 @@ namespace Autolabor.PM1
         public static string Initialize(
             string port,
             ChassisConfig config,
-            out double progress)
-        {
+            out double progress) {
             OnNative(SafeNativeMethods.Initialize(
                 port,
                 config.Width,
@@ -152,8 +145,7 @@ namespace Autolabor.PM1
             get => (State)CheckState();
 
             set {
-                switch (value)
-                {
+                switch (value) {
                     case State.Offline:
                         OnNative(SafeNativeMethods.Shutdown());
                         break;
@@ -188,12 +180,9 @@ namespace Autolabor.PM1
         /// <param name="speed">速度</param>
         /// <param name="meters">路程（米）</param>
         /// <param name="progress">进度</param>
-        public static void GoStraight(double speed, double meters, out double progress)
-        {
-            if (speed == 0)
-            {
-                if (meters == 0)
-                {
+        public static void GoStraight(double speed, double meters, out double progress) {
+            if (speed == 0) {
+                if (meters == 0) {
                     progress = 1;
                     return;
                 }
@@ -220,12 +209,9 @@ namespace Autolabor.PM1
         /// <param name="speed">角速度</param>
         /// <param name="rad">弧度</param>
         /// <param name="progress">进度</param>
-        public static void TurnAround(double speed, double rad, out double progress)
-        {
-            if (speed == 0)
-            {
-                if (rad == 0)
-                {
+        public static void TurnAround(double speed, double rad, out double progress) {
+            if (speed == 0) {
+                if (rad == 0) {
                     progress = 1;
                     return;
                 }
@@ -253,14 +239,11 @@ namespace Autolabor.PM1
         /// <param name="r">半径（米）</param>
         /// <param name="rad">弧度</param>
         /// <param name="progress">进度</param>
-        public static void GoArc(double speed, double r, double rad, out double progress)
-        {
+        public static void GoArc(double speed, double r, double rad, out double progress) {
             if (Math.Abs(r) < 0.05)
                 throw new ArgumentException("radius is too little, use turn_around instead");
-            if (speed == 0)
-            {
-                if (rad == 0)
-                {
+            if (speed == 0) {
+                if (rad == 0) {
                     progress = 1;
                     return;
                 }
@@ -279,8 +262,7 @@ namespace Autolabor.PM1
         /// <param name="r">半径</param>
         /// <param name="seconds">时间（秒）</param>
         /// <param name="progress">进度</param>
-        public static void GoArc(double speed, double r, TimeSpan seconds, out double progress)
-        {
+        public static void GoArc(double speed, double r, TimeSpan seconds, out double progress) {
             if (Math.Abs(r) < 0.05)
                 throw new ArgumentException("radius is too little, use turn_around instead");
 
@@ -292,8 +274,7 @@ namespace Autolabor.PM1
         /// </summary>
         /// <param name="offset">偏置</param>
         /// <param name="progress">进度</param>
-        public static void AdjustRudder(double offset, out double progress)
-        {
+        public static void AdjustRudder(double offset, out double progress) {
             if (Math.Abs(offset) >= Math.PI / 2)
                 throw new ArgumentException("more than +-90 degree is not supported yet");
 

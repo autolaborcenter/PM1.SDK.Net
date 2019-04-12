@@ -1,14 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Autolabor.PM1.TestTool
-{
+namespace Autolabor.PM1.TestTool {
     /// <inheritdoc />
     /// <summary>
     ///     可绑定对象
     /// </summary>
-    public abstract class BindableBase : INotifyPropertyChanged
-    {
+    public abstract class BindableBase : INotifyPropertyChanged {
         public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
         ///     发布属性变化通知
@@ -27,8 +25,7 @@ namespace Autolabor.PM1.TestTool
         /// <returns>是否发生更新</returns>
         protected bool SetProperty<T>(ref T field,
                                       T value,
-                                      [CallerMemberName] string propertyName = null)
-        {
+                                      [CallerMemberName] string propertyName = null) {
             if (Equals(field, value)) return false;
             field = value;
             Notify(propertyName);

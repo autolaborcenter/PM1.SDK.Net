@@ -1,7 +1,5 @@
-﻿namespace Autolabor.PM1.TestTool
-{
-    public class MainWindowContext : BindableBase
-    {
+﻿namespace Autolabor.PM1.TestTool {
+    public class MainWindowContext : BindableBase {
         private bool _connected = false;
 
         private string _timeString = "0";
@@ -12,7 +10,7 @@
         public bool Connected {
             get => _connected;
             set {
-                if(SetProperty(ref _connected, value))
+                if (SetProperty(ref _connected, value))
                     Notify(nameof(Disconnected));
             }
         }
