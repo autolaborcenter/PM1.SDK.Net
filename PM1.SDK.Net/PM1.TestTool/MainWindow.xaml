@@ -1,0 +1,83 @@
+﻿<Window x:Class="PM1.TestTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PM1.TestTool"
+        mc:Ignorable="d"
+        Title="Autolabor PM1 检测工具集" Height="450" Width="800">
+    <Window.DataContext>
+        <local:MainWindowContext Connected="False"/>
+    </Window.DataContext>
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal"
+                    Margin="8">
+            <CheckBox Content="连接到串行口："
+                      Checked="CheckBox_Checked"
+                      Unchecked="CheckBox_Unchecked"
+                      VerticalAlignment="Center"/>
+            <ComboBox DropDownOpened="ComboBox_DropDownOpened"
+                      IsEnabled="{Binding FunctionEnabled}"
+                      Width="80">
+                <ComboBoxItem IsSelected="True">自动选择</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
+        <TabControl Grid.Row="1"
+                    IsEnabled="{Binding Connected}"
+                    HorizontalAlignment="Stretch" 
+                    VerticalAlignment="Stretch">
+            <TabItem Header="动作控制" IsSelected="true">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="240"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="动作列表"
+                               Margin="4" />
+                    <TextBlock Text="动作设定"
+                               Grid.Row="0" Grid.Column="1"
+                               Margin="4" />
+                    <TextBlock Text="流程控制"
+                               Grid.Row="0" Grid.Column="2"
+                               Margin="4" />
+                    <ListView x:Name="ActionList"
+                              Grid.Row="1" Grid.Column="0">
+                    </ListView>
+                </Grid>
+            </TabItem>
+            <TabItem Header="连续控制">
+            </TabItem>
+            <TabItem Header="舵轮校准">
+            </TabItem>
+            <TabItem Header="参数标定">
+            </TabItem>
+            <TabItem Header="控制精度测试">
+            </TabItem>
+        </TabControl>
+        <StatusBar Grid.Row="2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="8,0,0,0">连接时间：</TextBlock>
+                    <TextBlock Text="{Binding TimeString, Mode=OneWay}"/>
+                    <TextBlock Margin="8,0,0,0">秒</TextBlock>
+                </StackPanel>
+                <ProgressBar Grid.Column="1" 
+                             Value="{Binding Progress, Mode=OneWay}"/>
+            </Grid>
+        </StatusBar>
+    </Grid>
+</Window>
