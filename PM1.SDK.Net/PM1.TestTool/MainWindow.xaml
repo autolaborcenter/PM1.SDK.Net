@@ -19,11 +19,12 @@
                     Margin="8">
             <CheckBox Content="连接到串行口："
                       Click="CheckBox_Click"
+                      IsChecked="{Binding Connected, Mode=OneWay}"
                       VerticalAlignment="Center"/>
             <ComboBox Name="SerialPortCombo"
                       DropDownOpened="ComboBox_DropDownOpened"
                       DropDownClosed="ComboBox_DropDownClosed"
-                      IsEnabled="{Binding Disconnected}"
+                      IsEnabled="{Binding Disconnected, Mode=OneWay}"
                       Width="80"/>
             <TextBlock Text="{Binding ErrorInfo, Mode=OneWay}" VerticalAlignment="Center" />
         </StackPanel>
@@ -65,19 +66,19 @@
             </TabItem>
         </TabControl>
         <StatusBar Grid.Row="2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="8,0,0,0">连接时间：</TextBlock>
-                    <TextBlock Text="{Binding TimeString, Mode=OneWay}"/>
-                    <TextBlock Margin="8,0,0,0">秒</TextBlock>
-                </StackPanel>
-                <ProgressBar Grid.Column="1" 
-                             Value="{Binding Progress, Mode=OneWay}"/>
-            </Grid>
+            <StatusBarItem MinWidth="120" Margin ="8,0">
+                <TextBlock Text="{Binding ConnectedTime, StringFormat=连接时间 {0} 秒, Mode=OneWay}"/>
+            </StatusBarItem>
+            <StatusBarItem Width="120" Margin ="8,0">
+                <TextBlock Text="{Binding Odometry, StringFormat=位姿 ({0}), Mode=OneWay}"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Button Content="归零" Click="Odometry_Reset_Button_Click"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <ProgressBar Value="{Binding Progress, Mode=OneWay}" 
+                             Grid.Column="2"/>
+            </StatusBarItem>
         </StatusBar>
     </Grid>
 </Window>

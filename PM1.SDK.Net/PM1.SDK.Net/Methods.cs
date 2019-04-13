@@ -100,15 +100,22 @@ namespace Autolabor.PM1 {
         /// <returns>已连接的端口</returns>
         public static string Initialize(
             string port,
-            ChassisConfig config,
+            ChassisConfig? config,
             out double progress) {
+            var configNotNull = config ?? new ChassisConfig {
+                Width = double.NaN,
+                Length = double.NaN,
+                WheelRadius = double.NaN,
+                OptimizeWidth = double.NaN,
+                Acceleration = double.NaN
+            };
             OnNative(SafeNativeMethods.Initialize(
                 port,
-                config.Width,
-                config.Length,
-                config.WheelRadius,
-                config.OptimizeWidth,
-                config.Acceleration,
+                configNotNull.Width,
+                configNotNull.Length,
+                configNotNull.WheelRadius,
+                configNotNull.OptimizeWidth,
+                configNotNull.Acceleration,
                 out progress));
             return Marshal.PtrToStringAnsi(GetConnectedPort());
         }
@@ -127,8 +134,8 @@ namespace Autolabor.PM1 {
             Odometry {
             get {
                 OnNative(GetOdometry(out var s, out var sa,
-                                                out var x, out var y, out var theta,
-                                                out var vx, out var vy, out var w));
+                                      out var x, out var y, out var theta,
+                                      out var vx, out var vy, out var w));
                 return (s, sa, x, y, theta, vx, vy, w);
             }
         }

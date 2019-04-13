@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PM1.SDK.Net</name>
+    </assembly>
+    <members>
+        <member name="T:Autolabor.PM1.ChassisConfig">
+            <summary>
+                底盘参数结构体
+            </summary>
+        </member>
+        <member name="F:Autolabor.PM1.ChassisConfig.Width">
+            <summary>
+                轮间距
+            </summary>
+        </member>
+        <member name="F:Autolabor.PM1.ChassisConfig.Length">
+            <summary>
+                轴间距
+            </summary>
+        </member>
+        <member name="F:Autolabor.PM1.ChassisConfig.WheelRadius">
+            <summary>
+                轮半径
+            </summary>
+        </member>
+        <member name="F:Autolabor.PM1.ChassisConfig.OptimizeWidth">
+            <summary>
+                优化宽度
+            </summary>
+        </member>
+        <member name="F:Autolabor.PM1.ChassisConfig.Acceleration">
+            <summary>
+                最大加速度
+            </summary>
+        </member>
+        <member name="T:Autolabor.PM1.State">
+            <summary>
+                底盘工作状态
+            </summary>
+        </member>
+        <member name="F:Autolabor.PM1.State.Offline">
+            <summary>
+                所有节点离线
+            </summary>
+        </member>
+        <member name="F:Autolabor.PM1.State.Unlocked">
+            <summary>
+                底盘已解锁
+            </summary>
+        </member>
+        <member name="F:Autolabor.PM1.State.Error">
+            <summary>
+                异常状态，尝试锁定底盘以恢复
+            </summary>
+        </member>
+        <member name="F:Autolabor.PM1.State.Locked">
+            <summary>
+                底盘已锁定
+            </summary>
+        </member>
+        <member name="T:Autolabor.PM1.Methods">
+            <summary>
+                底盘控制类
+            </summary>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.OnNative(System.UInt32)">
+            <summary>
+                代理底层 API，错误信息转化为日常
+            </summary>
+            <param name="handler">任务 id</param>
+        </member>
+        <member name="P:Autolabor.PM1.Methods.DefaultConfig">
+            <summary>
+                获取默认底盘参数
+            </summary>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.Initialize(System.String,System.Nullable{Autolabor.PM1.ChassisConfig},System.Double@)">
+            <summary>
+                初始化
+            </summary>
+            <param name="port">端口名</param>
+            <param name="config">配置</param>
+            <param name="progress">进度</param>
+            <returns>已连接的端口</returns>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.Shutdown">
+            <summary>
+                关闭连接
+            </summary>
+        </member>
+        <member name="P:Autolabor.PM1.Methods.Odometry">
+            <summary>
+                读取里程计
+            </summary>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.ResetOdometry">
+            <summary>
+                重置里程计
+            </summary>
+        </member>
+        <member name="P:Autolabor.PM1.Methods.Locked">
+            <summary>
+                锁定或解锁底盘
+            </summary>
+        </member>
+        <member name="P:Autolabor.PM1.Methods.Velocity">
+            <summary>
+                发布速度指令
+            </summary>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.GoStraight(System.Double,System.Double,System.Double@)">
+            <summary>
+                前进
+            </summary>
+            <param name="speed">速度</param>
+            <param name="meters">路程（米）</param>
+            <param name="progress">进度</param>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.GoStraight(System.Double,System.TimeSpan,System.Double@)">
+            <summary>
+                前进
+            </summary>
+            <param name="speed">速度</param>
+            <param name="seconds">时间（秒）</param>
+            <param name="progress">进度</param>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.TurnAround(System.Double,System.Double,System.Double@)">
+            <summary>
+                原地转
+            </summary>
+            <param name="speed">角速度</param>
+            <param name="rad">弧度</param>
+            <param name="progress">进度</param>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.TurnAround(System.Double,System.TimeSpan,System.Double@)">
+            <summary>
+                原地转
+            </summary>
+            <param name="speed">角速度</param>
+            <param name="seconds">时间（秒）</param>
+            <param name="progress">进度</param>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.GoArc(System.Double,System.Double,System.Double,System.Double@)">
+            <summary>
+                走圆弧
+            </summary>
+            <param name="speed">速度</param>
+            <param name="r">半径（米）</param>
+            <param name="rad">弧度</param>
+            <param name="progress">进度</param>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.GoArc(System.Double,System.Double,System.TimeSpan,System.Double@)">
+            <summary>
+                走圆弧
+            </summary>
+            <param name="speed">速度</param>
+            <param name="r">半径</param>
+            <param name="seconds">时间（秒）</param>
+            <param name="progress">进度</param>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.AdjustRudder(System.Double,System.Double@)">
+            <summary>
+                调整后轮零位
+            </summary>
+            <param name="offset">偏置</param>
+            <param name="progress">进度</param>
+        </member>
+        <member name="P:Autolabor.PM1.Methods.Paused">
+            <summary>
+                暂停或恢复
+            </summary>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.CancelTask">
+            <summary>
+                取消任务
+            </summary>
+        </member>
+    </members>
+</doc>
