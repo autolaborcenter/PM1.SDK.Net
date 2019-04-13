@@ -51,6 +51,7 @@ namespace Autolabor.PM1.TestTool {
 
         private async Task Connect(CheckBox box) {
             box.IsEnabled = false;
+            _context.ErrorInfo = "";
 
             var progress = .0;
             _ = Task.Run(async () => {
