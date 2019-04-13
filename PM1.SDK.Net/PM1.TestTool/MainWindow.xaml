@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Autolabor.PM1.TestTool"
         mc:Ignorable="d"
-        Title="Autolabor PM1 检测工具集" Height="450" Width="800">
+        Title="Autolabor PM1 检测工具集" 
+        MinHeight="250" 
+        MinWidth="400">
     <Window.DataContext>
         <local:MainWindowContext Connected="False"/>
     </Window.DataContext>
@@ -13,6 +15,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal"
@@ -26,34 +30,56 @@
                       DropDownClosed="ComboBox_DropDownClosed"
                       IsEnabled="{Binding Disconnected, Mode=OneWay}"
                       Width="80"/>
-            <TextBlock Text="{Binding ErrorInfo, Mode=OneWay}" VerticalAlignment="Center" />
         </StackPanel>
         <TabControl Grid.Row="1"
-                    IsEnabled="{Binding Connected}"
+                    IsEnabled="{Binding Connected, Mode=OneWay}"
                     HorizontalAlignment="Stretch" 
                     VerticalAlignment="Stretch">
+            <TabControl.Resources>
+                <Style x:Key="ActionControlHeader" TargetType="TextBlock">
+                    <Setter Property="Margin" Value="4"/>
+                    <Setter Property="Grid.Row" Value="0"/>
+                </Style>
+                <Style x:Key="ProcessControlButtonStyle" TargetType="Control">
+                    <Setter Property="Margin" Value="8"/>
+                    <Setter Property="MaxHeight" Value="120"/>
+                    <Setter Property="MaxWidth" Value="360"/>
+                    <Setter Property="Grid.Column" Value="2"/>
+                </Style>
+            </TabControl.Resources>
             <TabItem Header="动作控制" IsSelected="true">
                 <Grid Margin="12">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="240"/>
+                        <ColumnDefinition MinWidth="120" MaxWidth="240"/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Text="动作列表"
-                               Margin="4" />
-                    <TextBlock Text="动作设定"
-                               Grid.Row="0" Grid.Column="1"
-                               Margin="4" />
-                    <TextBlock Text="流程控制"
-                               Grid.Row="0" Grid.Column="2"
-                               Margin="4" />
+                               Style="{StaticResource ActionControlHeader}"/>
+                    <TextBlock Text="动作设定" Grid.Column="1"
+                               Style="{StaticResource ActionControlHeader}" />
+                    <TextBlock Text="流程控制" Grid.Column="2"
+                               Style="{StaticResource ActionControlHeader}" />
+
                     <ListView x:Name="ActionList"
-                              Grid.Row="1" Grid.Column="0">
+                              Grid.Row="1" 
+                              Grid.Column="0" 
+                              Grid.RowSpan="2">
                     </ListView>
+
+                    <ToggleButton Content="暂停"
+                                  Checked="ToggleButton_Checked"
+                                  Unchecked="ToggleButton_Unchecked"
+                                  Style="{StaticResource ProcessControlButtonStyle}"
+                                  Grid.Row="1"/>
+                    <Button Content="终止" 
+                            Style="{StaticResource ProcessControlButtonStyle}"
+                            Grid.Row="2"/>
                 </Grid>
             </TabItem>
             <TabItem Header="连续控制">
@@ -65,19 +91,45 @@
             <TabItem Header="控制精度测试">
             </TabItem>
         </TabControl>
-        <StatusBar Grid.Row="2">
+        <TextBlock Text="错误信息"
+                   Margin="8,0,0,0" Grid.Row="2"
+                   VerticalAlignment="Center"/>
+        <Button Content="清除" Click="Clear_Error_Info"
+                HorizontalAlignment="Right"
+                Margin="0,0,4,0" Grid.Row="2"/>
+        <TextBox Text="{Binding ErrorInfo, Mode=OneWay}"
+                 Foreground="Red"
+                 IsReadOnly="True" MaxLines="8"
+                 Margin="8,0,4,0" Grid.Row="3"/>
+        <StatusBar Grid.Row="4">
+            <StatusBar.Resources>
+                <Style x:Key="Splitter" TargetType="Rectangle">
+                    <Setter Property="Fill" Value="Gray"/>
+                    <Setter Property="Width" Value="2"/>
+                    <Setter Property="Height" Value="15"/>
+                </Style>
+            </StatusBar.Resources>
+
             <StatusBarItem MinWidth="120" Margin ="8,0">
                 <TextBlock Text="{Binding ConnectedTime, StringFormat=连接时间 {0} 秒, Mode=OneWay}"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Rectangle Style="{StaticResource Splitter}"/>
             </StatusBarItem>
             <StatusBarItem Width="120" Margin ="8,0">
                 <TextBlock Text="{Binding Odometry, StringFormat=位姿 ({0}), Mode=OneWay}"/>
             </StatusBarItem>
             <StatusBarItem>
-                <Button Content="归零" Click="Odometry_Reset_Button_Click"/>
+                <Button Content="重置" Click="Odometry_Reset_Button_Click"/>
             </StatusBarItem>
             <StatusBarItem>
+                <Rectangle Style="{StaticResource Splitter}"/>
+            </StatusBarItem>
+            <StatusBarItem Margin="8,0,0,0" 
+                           HorizontalContentAlignment="Stretch"
+                           VerticalContentAlignment="Stretch">
                 <ProgressBar Value="{Binding Progress, Mode=OneWay}" 
-                             Grid.Column="2"/>
+                             Maximum="1"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>
