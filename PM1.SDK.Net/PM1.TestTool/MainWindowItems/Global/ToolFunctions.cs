@@ -19,14 +19,14 @@ namespace Autolabor.PM1.TestTool {
                 while (!connecting.IsCancellationRequested) {
                     context.ConnectedTime = (stopwatch.ElapsedMilliseconds / 1000.0).ToString("0.0");
                     try {
-                        //var (_, _, x, y, theta, _, _, _) = Methods.Odometry;
-                        //_context.Odometry = string.Format("{0}, {1}, {2}°",
-                        //                            x.ToString("0.0"),
-                        //                            y.ToString("0.0"),
-                        //                            theta.ToString("0.0"));
+                        context.State = Methods.State;
+                        var (_, _, x, y, theta, _, _, _) = Methods.Odometry;
+                        context.Odometry = string.Format("{0}, {1}, {2}°",
+                                                    x.ToString("0.0"),
+                                                    y.ToString("0.0"),
+                                                    theta.ToString("0.0"));
                     } catch (Exception exception) {
                         context.ErrorInfo = exception.Message;
-                        return;
                     }
                     await Task.Delay(99, connecting.Token).ConfigureAwait(false);
                 }

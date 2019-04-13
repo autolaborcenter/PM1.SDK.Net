@@ -6,7 +6,7 @@ namespace Autolabor.PM1 {
     /// <summary>
     ///     底盘参数结构体
     /// </summary>
-    public struct ChassisConfig {
+    public struct Config {
         /// <summary>
         ///     轮间距
         /// </summary>
@@ -36,7 +36,7 @@ namespace Autolabor.PM1 {
     /// <summary>
     ///     底盘工作状态
     /// </summary>
-    public enum State {
+    public enum StateEnum {
         /// <summary>
         ///     所有节点离线
         /// </summary>
@@ -77,10 +77,10 @@ namespace Autolabor.PM1 {
         /// <summary>
         ///     获取默认底盘参数
         /// </summary>
-        public static ChassisConfig
+        public static Config
             DefaultConfig {
             get {
-                var result = new ChassisConfig();
+                var result = new Config();
                 GetDefaultChassisConfig(
                        out result.Width,
                        out result.Length,
@@ -100,9 +100,9 @@ namespace Autolabor.PM1 {
         /// <returns>已连接的端口</returns>
         public static string Initialize(
             string port,
-            ChassisConfig? config,
+            Config? config,
             out double progress) {
-            var configNotNull = config ?? new ChassisConfig {
+            var configNotNull = config ?? new Config {
                 Width = double.NaN,
                 Length = double.NaN,
                 WheelRadius = double.NaN,
@@ -148,18 +148,18 @@ namespace Autolabor.PM1 {
         /// <summary>
         ///     锁定或解锁底盘
         /// </summary>
-        public static State Locked {
-            get => (State)CheckState();
+        public static StateEnum State {
+            get => (StateEnum)CheckState();
 
             set {
                 switch (value) {
-                    case State.Offline:
+                    case StateEnum.Offline:
                         OnNative(SafeNativeMethods.Shutdown());
                         break;
-                    case State.Unlocked:
+                    case StateEnum.Unlocked:
                         OnNative(Unlock());
                         break;
-                    case State.Locked:
+                    case StateEnum.Locked:
                         OnNative(Lock());
                         break;
                     default:

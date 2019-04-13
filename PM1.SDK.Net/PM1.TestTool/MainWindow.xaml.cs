@@ -53,13 +53,15 @@ namespace Autolabor.PM1.TestTool {
             box.IsEnabled = false;
             _context.ErrorInfo = "";
 
+            var flag = true;
             var progress = .0;
             _ = Task.Run(async () => {
-                while (progress >= 0) {
+                while (flag) {
                     _context.Progress = progress;
-                    if (progress >= 1) return;
                     await Task.Delay(20).ConfigureAwait(false);
                 }
+                await Task.Delay(100).ConfigureAwait(false);
+                _context.Progress = progress;
             });
 
             var port = SerialPortCombo.SelectedItem.ToString();
@@ -77,6 +79,7 @@ namespace Autolabor.PM1.TestTool {
                     _context.ErrorInfo = exception.Message;
                     return;
                 } finally {
+                    flag = false;
                     box.Dispatch((it) => it.IsEnabled = true);
                 }
 
@@ -101,5 +104,22 @@ namespace Autolabor.PM1.TestTool {
 
         private void Clear_Error_Info(object sender, RoutedEventArgs e)
             => _context.ErrorInfo = "";
+
+        private StateEnum ChassisState {
+            set {
+                try {
+                    _context.State = null;
+                    Methods.State = value;
+                } catch (Exception exception) {
+                    _context.ErrorInfo = exception.Message;
+                }
+            }
+        }
+
+        private void Unlock_Click(object sender, RoutedEventArgs e)
+            => ChassisState = StateEnum.Unlocked;
+
+        private void Lock_Click(object sender, RoutedEventArgs e)
+            => ChassisState = StateEnum.Locked;
     }
 }

@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Autolabor PM1 检测工具集" 
         MinHeight="400" MinWidth="500"
-        Height="400" Width="500"
+        Height="400" Width="800"
         FontSize="16">
     <Window.DataContext>
         <local:MainWindowContext Connected="False"/>
@@ -21,7 +21,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal"
-                    Margin="8">
+                    Margin="8,4">
             <CheckBox Content="连接到串行口："
                       Click="CheckBox_Click"
                       IsChecked="{Binding Connected, Mode=OneWay}"
@@ -32,8 +32,27 @@
                       IsEnabled="{Binding Disconnected, Mode=OneWay}"
                       Width="120"/>
         </StackPanel>
-        <TabControl Grid.Row="1"
+        <StackPanel Orientation="Horizontal" 
                     IsEnabled="{Binding Connected, Mode=OneWay}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Background="{Binding StateAreaBrush, Mode=OneWay}"
+                    Margin="4,0">
+            <RadioButton Content="正常" GroupName="State" 
+                             IsChecked="{Binding IsUnlocked, Mode=OneWay}"
+                             Click="Unlock_Click"
+                             Margin="4"/>
+            <RadioButton Content="锁定" GroupName="State" 
+                             IsChecked="{Binding IsLocked, Mode=OneWay}"
+                             Click="Lock_Click"
+                             Margin="4"/>
+            <RadioButton Content="异常" GroupName="State" 
+                             IsChecked="{Binding IsError, Mode=OneWay}"
+                             Margin="4"
+                             IsEnabled="False"/>
+        </StackPanel>
+        <TabControl IsEnabled="{Binding Connected, Mode=OneWay}"
+                    Grid.Row="1"
                     HorizontalAlignment="Stretch" 
                     VerticalAlignment="Stretch">
             <TabControl.Resources>
@@ -103,29 +122,17 @@
                  IsReadOnly="True" MaxLines="8"
                  Margin="8,0,4,0" Grid.Row="3"/>
         <StatusBar Grid.Row="4" FontSize="16">
-            <StatusBar.Resources>
-                <Style x:Key="Splitter" TargetType="Rectangle">
-                    <Setter Property="Fill" Value="Gray"/>
-                    <Setter Property="Width" Value="2"/>
-                    <Setter Property="Height" Value="15"/>
-                </Style>
-            </StatusBar.Resources>
-
             <StatusBarItem MinWidth="120" Margin ="8,0">
                 <TextBlock Text="{Binding ConnectedTime, StringFormat=连接时间 {0} 秒, Mode=OneWay}"/>
             </StatusBarItem>
-            <StatusBarItem>
-                <Rectangle Style="{StaticResource Splitter}"/>
-            </StatusBarItem>
+            <Separator/>
             <StatusBarItem Width="120" Margin ="8,0">
                 <TextBlock Text="{Binding Odometry, StringFormat=位姿 ({0}), Mode=OneWay}"/>
             </StatusBarItem>
             <StatusBarItem>
                 <Button Content="重置" Click="Odometry_Reset_Button_Click"/>
             </StatusBarItem>
-            <StatusBarItem>
-                <Rectangle Style="{StaticResource Splitter}"/>
-            </StatusBarItem>
+            <Separator/>
             <StatusBarItem Margin="8,0,0,0" 
                            HorizontalContentAlignment="Stretch"
                            VerticalContentAlignment="Stretch">

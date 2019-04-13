@@ -4,57 +4,57 @@
         <name>PM1.SDK.Net</name>
     </assembly>
     <members>
-        <member name="T:Autolabor.PM1.ChassisConfig">
+        <member name="T:Autolabor.PM1.Config">
             <summary>
                 底盘参数结构体
             </summary>
         </member>
-        <member name="F:Autolabor.PM1.ChassisConfig.Width">
+        <member name="F:Autolabor.PM1.Config.Width">
             <summary>
                 轮间距
             </summary>
         </member>
-        <member name="F:Autolabor.PM1.ChassisConfig.Length">
+        <member name="F:Autolabor.PM1.Config.Length">
             <summary>
                 轴间距
             </summary>
         </member>
-        <member name="F:Autolabor.PM1.ChassisConfig.WheelRadius">
+        <member name="F:Autolabor.PM1.Config.WheelRadius">
             <summary>
                 轮半径
             </summary>
         </member>
-        <member name="F:Autolabor.PM1.ChassisConfig.OptimizeWidth">
+        <member name="F:Autolabor.PM1.Config.OptimizeWidth">
             <summary>
                 优化宽度
             </summary>
         </member>
-        <member name="F:Autolabor.PM1.ChassisConfig.Acceleration">
+        <member name="F:Autolabor.PM1.Config.Acceleration">
             <summary>
                 最大加速度
             </summary>
         </member>
-        <member name="T:Autolabor.PM1.State">
+        <member name="T:Autolabor.PM1.StateEnum">
             <summary>
                 底盘工作状态
             </summary>
         </member>
-        <member name="F:Autolabor.PM1.State.Offline">
+        <member name="F:Autolabor.PM1.StateEnum.Offline">
             <summary>
                 所有节点离线
             </summary>
         </member>
-        <member name="F:Autolabor.PM1.State.Unlocked">
+        <member name="F:Autolabor.PM1.StateEnum.Unlocked">
             <summary>
                 底盘已解锁
             </summary>
         </member>
-        <member name="F:Autolabor.PM1.State.Error">
+        <member name="F:Autolabor.PM1.StateEnum.Error">
             <summary>
                 异常状态，尝试锁定底盘以恢复
             </summary>
         </member>
-        <member name="F:Autolabor.PM1.State.Locked">
+        <member name="F:Autolabor.PM1.StateEnum.Locked">
             <summary>
                 底盘已锁定
             </summary>
@@ -75,7 +75,7 @@
                 获取默认底盘参数
             </summary>
         </member>
-        <member name="M:Autolabor.PM1.Methods.Initialize(System.String,System.Nullable{Autolabor.PM1.ChassisConfig},System.Double@)">
+        <member name="M:Autolabor.PM1.Methods.Initialize(System.String,System.Nullable{Autolabor.PM1.Config},System.Double@)">
             <summary>
                 初始化
             </summary>
@@ -99,7 +99,7 @@
                 重置里程计
             </summary>
         </member>
-        <member name="P:Autolabor.PM1.Methods.Locked">
+        <member name="P:Autolabor.PM1.Methods.State">
             <summary>
                 锁定或解锁底盘
             </summary>
