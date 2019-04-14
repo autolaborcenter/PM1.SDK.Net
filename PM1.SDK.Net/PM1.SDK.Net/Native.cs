@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Handler = System.UInt32;
 
 namespace Autolabor.PM1 {
-    internal static class SafeNativeMethods {
+    public static class SafeNativeMethods {
 #if DEBUG
         const string LIBRARY = "pm1_sdk_native_debug.dll";
 #else

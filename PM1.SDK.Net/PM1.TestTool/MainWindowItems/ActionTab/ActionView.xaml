@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="Autolabor.PM1.TestTool.MainWindowItems.ActionTab.ActionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.ActionTab"
+             mc:Ignorable="d" 
+             d:DesignHeight = "300"
+             d:DesignWidth = "240">
+    <UserControl.Resources>
+        <Style x:Key="Checking" TargetType="CheckBox">
+            <Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="Margin" Value="4,0"/>
+            <Setter Property="Grid.Column" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+    <StackPanel Margin="8">
+        <TextBlock Text="速度设定"/>
+        <Separator/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <CheckBox x:Name="VCheck" Content="线速度"
+                      Unchecked="VCheck_Unchecked"
+                      Grid.Row="0" Style="{StaticResource Checking}"/>
+            <TextBox x:Name="VBox"
+                     TextChanged="VBox_TextChanged"
+                     Grid.Row="0" Grid.Column="1" 
+                     Margin="0,1" TextAlignment="Right"/>
+            <TextBlock Text="m/s" Margin="4,0"
+                       Grid.Row="0" Grid.Column="2"/>
+
+            <CheckBox x:Name="WCheck" Content="角速度"
+                      Unchecked="WCheck_Unchecked"
+                      Grid.Row="1" Style="{StaticResource Checking}"/>
+            <TextBox x:Name="WBox"
+                     TextChanged="WBox_TextChanged"
+                     Grid.Row="1" Grid.Column="1"
+                     Margin="0,1" TextAlignment="Right"/>
+            <TextBlock Text="°/s" Margin="4,0"
+                       Grid.Row="1" Grid.Column="2"/>
+        </Grid>
+        <TextBlock Text="路径设定" Margin="0,8,0,0"/>
+        <Separator/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <CheckBox x:Name="RCheck" Content="转弯半径"
+                      Unchecked="RCheck_Unchecked"
+                      Grid.Row="0" Style="{StaticResource Checking}"/>
+            <TextBox x:Name="RBox"
+                     TextChanged="RBox_TextChanged"
+                     Grid.Row="0" Grid.Column="1"
+                     Margin="0,1" TextAlignment="Right"/>
+            <TextBlock Text="m" Margin="4,0"
+                       Grid.Row="0" Grid.Column="2"/>
+        </Grid>
+
+        <TextBlock Text="过程设定" Margin="0,8,0,0"/>
+        <Separator/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <CheckBox x:Name="SCheck" Content="路程"
+                      Unchecked="SCheck_Unchecked"
+                      Grid.Row="0" Style="{StaticResource Checking}"/>
+            <TextBox x:Name="SBox"
+                     TextChanged="SBox_TextChanged"
+                     Grid.Row="0" Grid.Column="1"
+                     Margin="0,1" TextAlignment="Right"/>
+            <TextBlock Text="m" Margin="4,0"
+                       Grid.Row="0" Grid.Column="2"/>
+
+            <CheckBox x:Name="ACheck" Content="角度"
+                      Unchecked="ACheck_Unchecked"
+                      Grid.Row="1" Style="{StaticResource Checking}"/>
+            <TextBox x:Name="ABox"
+                     TextChanged="ABox_TextChanged"
+                     Grid.Row="1" Grid.Column="1"
+                     Margin="0,1" TextAlignment="Right"/>
+            <TextBlock Text="°" Margin="4,0"
+                       Grid.Row="1" Grid.Column="2"/>
+
+            <CheckBox x:Name="TCheck" Content="时间"
+                      Unchecked="TCheck_Unchecked"
+                      Grid.Row="2" Style="{StaticResource Checking}"/>
+            <TextBox x:Name="TBox"
+                     TextChanged="TBox_TextChanged"
+                     Grid.Row="2" Grid.Column="1"
+                     Margin="0,1" TextAlignment="Right"/>
+            <TextBlock Text="s" Margin="4,0"
+                       Grid.Row="2" Grid.Column="2"/>
+        </Grid>
+        <Button x:Name="CheckButton" Content="确定" 
+                Click="Button_Click"
+                Margin="0,12,0,0"
+                VerticalAlignment="Bottom"
+                Grid.Row="2" Grid.Column="1"/>
+    </StackPanel>
+</UserControl>

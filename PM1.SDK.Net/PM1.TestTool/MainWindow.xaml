@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Autolabor.PM1.TestTool"
+        xmlns:actiontab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.ActionTab"
         mc:Ignorable="d"
         Title="Autolabor PM1 检测工具集" 
         MinHeight="540" MinWidth="640"
@@ -65,7 +66,7 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MinWidth="120" MaxWidth="240"/>
-                        <ColumnDefinition MaxWidth="360"/>
+                        <ColumnDefinition MinWidth="180" MaxWidth="360"/>
                         <ColumnDefinition MaxWidth="320"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -79,99 +80,10 @@
                               Margin="8"
                               Grid.Row="1" Grid.Column="0" 
                               Grid.RowSpan="3"/>
-                    <StackPanel Margin="8"
-                                Grid.Row="1" Grid.Column="1" 
-                                Grid.RowSpan="3">
-                        <TextBlock Text="速度设定"/>
-                        <Separator/>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <CheckBox Content="线速度" Margin="4,0"
-                                      Grid.Row="0" Grid.Column="0"
-                                      VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="0" Grid.Column="1" 
-                                     Margin="0,1" TextAlignment="Right"/>
-                            <TextBlock Text="m/s" Margin="4,0"
-                                       Grid.Row="0" Grid.Column="2"/>
-
-                            <CheckBox Content="角速度" Margin="4,0"
-                                      Grid.Row="1" Grid.Column="0"
-                                      VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="1" Grid.Column="1"
-                                     Margin="0,1" TextAlignment="Right"/>
-                            <TextBlock Text="°/s" Margin="4,0"
-                                       Grid.Row="1" Grid.Column="2"/>
-                        </Grid>
-                        <TextBlock Text="路径设定" Margin="0,8,0,0"/>
-                        <Separator/>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <CheckBox Content="转弯半径" Margin="4,0"
-                                      Grid.Row="0" Grid.Column="0"
-                                      VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="0" Grid.Column="1"
-                                     Margin="0,1" TextAlignment="Right"/>
-                            <TextBlock Text="m" Margin="4,0"
-                                       Grid.Row="0" Grid.Column="2"/>
-                        </Grid>
-
-                        <TextBlock Text="过程设定" Margin="0,8,0,0"/>
-                        <Separator/>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <CheckBox Content="路程" Margin="4,0"
-                                      Grid.Row="0" Grid.Column="0"
-                                      VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="0" Grid.Column="1"
-                                     Margin="0,1" TextAlignment="Right"/>
-                            <TextBlock Text="m" Margin="4,0"
-                                       Grid.Row="0" Grid.Column="2"/>
-
-                            <CheckBox Content="角度" Margin="4,0"
-                                      Grid.Row="1" Grid.Column="0"
-                                      VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="1" Grid.Column="1"
-                                     Margin="0,1" TextAlignment="Right"/>
-                            <TextBlock Text="°" Margin="4,0"
-                                       Grid.Row="1" Grid.Column="2"/>
-
-                            <CheckBox Content="时间" Margin="4,0"
-                                      Grid.Row="2" Grid.Column="0"
-                                      VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="2" Grid.Column="1"
-                                     Margin="0,1" TextAlignment="Right"/>
-                            <TextBlock Text="s" Margin="4,0"
-                                       Grid.Row="2" Grid.Column="2"/>
-                        </Grid>
-                        <Button Content="添加" Margin="0,12,0,0"
-                                VerticalAlignment="Bottom"
-                                Grid.Row="2" Grid.Column="1"/>
-                    </StackPanel>
+                    <actiontab:ActionView Grid.Row="1" Grid.Column="1"
+                                          Grid.RowSpan="3"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Top"/>
 
                     <ToggleButton Content="暂停"
                                   Checked="ToggleButton_Checked"
