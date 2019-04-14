@@ -121,6 +121,7 @@
                        Grid.Row="2" Grid.Column="2"/>
         </Grid>
         <Button x:Name="CheckButton" Content="确定" 
+                IsEnabled="False"
                 Margin="0,12,0,0"
                 VerticalAlignment="Bottom"
                 Grid.Row="2" Grid.Column="1"/>

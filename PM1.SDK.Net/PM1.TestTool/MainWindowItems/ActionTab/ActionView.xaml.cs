@@ -94,6 +94,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
             public bool IsMaster => State == StateEnum.Master;
 
+            public bool IsError => State == StateEnum.Error;
+
             private static readonly SolidColorBrush
                 Normal = new SolidColorBrush(Colors.Black),
                 Error = new SolidColorBrush(Colors.Red);
@@ -111,123 +113,6 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             _t = new Input(TCheck, TBox);
         }
 
-        private bool CheckNotZero(Input theOne) {
-            if (theOne != _t && theOne.IsMaster) {
-                bool ZeroCheck(Input it)
-                    => it.IsMaster && it.Value == 0;
-
-                bool Recover(bool others) {
-                    if (theOne.Value == 0) {
-                        if (others)
-                            theOne.State = Input.StateEnum.Slave;
-                    } else {
-                        if (others) {
-                            theOne.State = Input.StateEnum.Error;
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-
-                if (theOne == _v)
-                    return Recover(ZeroCheck(_s) || ZeroCheck(_r));
-                else if (theOne == _w)
-                    return Recover(ZeroCheck(_a));
-                else if (theOne == _r)
-                    return Recover(ZeroCheck(_v) || ZeroCheck(_s));
-                else if (theOne == _s)
-                    return Recover(ZeroCheck(_v) || ZeroCheck(_r));
-                else if (theOne == _a)
-                    return Recover(ZeroCheck(_w));
-            }
-            return true;
-        }
-
-        private bool CalculateItem(Input input,List<Input> complete) {
-            double RadOf(double degree) => degree * Math.PI / 180;
-            double DegreeOf(double rad) => rad * 180 / Math.PI;
-
-            if (input == _v) {
-                if (complete.Contains(_s) && _s.Value == 0) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = 0;
-                    complete.Add(input);
-                } else if (complete.Contains(_w) 
-                        && complete.Contains(_r)
-                        && _w.Value != 0) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = RadOf(_w.Value) * _r.Value; ;
-                    complete.Add(input);
-                }
-            } else if (input == _w) {
-                if (complete.Contains(_a) && _a.Value == 0) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = 0;
-                    complete.Add(input);
-                } else if (complete.Contains(_v) 
-                        && complete.Contains(_r)
-                        && _v.Value != 0) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = DegreeOf(_v.Value / _r.Value);
-                    complete.Add(input);
-                }
-            } else if (input == _r) {
-                if (complete.Contains(_v) && _v.Value == 0) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = 0;
-                    complete.Add(input);
-                } else if (complete.Contains(_w) && _w.Value == 0) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = double.PositiveInfinity;
-                    complete.Add(input);
-                } else if (complete.Contains(_v) && complete.Contains(_w)) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = _v.Value / RadOf(_w.Value);
-                    complete.Add(input);
-                } else if (complete.Contains(_s) && complete.Contains(_a)) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = _s.Value / RadOf(_a.Value);
-                    complete.Add(input);
-                }
-            } else if (input == _s) {
-                if (complete.Contains(_t)) {
-                    input.State = Input.StateEnum.Invalid;
-                    return false;
-                } else if (complete.Contains(_v) && _v.Value == 0) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = 0;
-                    complete.Add(input);
-                } else if (complete.Contains(_a) 
-                        && complete.Contains(_r)
-                        && _a.Value != 0) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = RadOf(_a.Value) * _r.Value; ;
-                    complete.Add(input);
-                }
-            } else if (input == _a) {
-                if (complete.Contains(_t)) {
-                    input.State = Input.StateEnum.Invalid;
-                    return false;
-                } else if (complete.Contains(_w) && _w.Value == 0) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = 0;
-                    complete.Add(input);
-                } else if (complete.Contains(_s) 
-                        && complete.Contains(_r)
-                        && _s.Value != 0) {
-                    input.State = Input.StateEnum.Slave;
-                    input.Value = DegreeOf(_s.Value / _r.Value);
-                    complete.Add(input);
-                }
-            } else if (input == _t) {
-                if (_s.IsMaster || _a.IsMaster) {
-                    input.State = Input.StateEnum.Invalid;
-                    return false;
-                }
-            }
-            return true;
-        }
-
         private void Calculate(Input theOne) {
             theOne.UpdateStateByValue();
 
@@ -235,18 +120,12 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
             var waitings = new List<Input> { _v, _w, _r, _s, _a, _t };
             var complete = waitings.Where(it => it.IsMaster).ToList();
-            waitings.RemoveAll(it => complete.Contains(it) || it.State == Input.StateEnum.Error);
 
-            while (waitings.Any()) {
-                var droping = new List<Input>();
-                foreach (var input in waitings) {
-                    if (!CalculateItem(input, complete))
-                        droping.Add(input);
-                }
-                var x = waitings.RemoveAll(it => droping.Contains(it));
-                var y = waitings.RemoveAll(it => complete.Contains(it));
-                if (x + y == 0) break;
-            }
+            if (!complete.Any()) return;
+            waitings.RemoveAll(it => it.IsMaster || it.IsError);
+
+            while (waitings.Any() 
+                && waitings.RemoveAll(it => CalculateItem(it, complete)) > 0);
             foreach(var input in waitings) 
                 input.State = Input.StateEnum.Void;
         }
@@ -325,6 +204,135 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                     TBox.Text = "";
                     break;
             }
+        }
+
+        private bool CheckNotZero(Input theOne) {
+            if (theOne != _t && theOne.IsMaster) {
+                bool ZeroCheck(Input it)
+                    => it.IsMaster && it.Value == 0;
+
+                bool Recover(bool others) {
+                    if (theOne.Value == 0) {
+                        if (others)
+                            theOne.State = Input.StateEnum.Slave;
+                    } else {
+                        if (others) {
+                            theOne.State = Input.StateEnum.Error;
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                if (theOne == _v)
+                    return Recover(ZeroCheck(_s) || ZeroCheck(_r));
+                else if (theOne == _w)
+                    return Recover(ZeroCheck(_a));
+                else if (theOne == _r)
+                    return Recover(ZeroCheck(_v) || ZeroCheck(_s));
+                else if (theOne == _s)
+                    return Recover(ZeroCheck(_v) || ZeroCheck(_r));
+                else if (theOne == _a)
+                    return Recover(ZeroCheck(_w));
+            }
+            return true;
+        }
+
+        private bool CalculateItem(Input input, List<Input> complete) {
+            double RadOf(double degree) => degree * Math.PI / 180;
+            double DegreeOf(double rad) => rad * 180 / Math.PI;
+
+            if (input == _v) {
+                if (complete.Contains(_s) && _s.Value == 0) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = 0;
+                    complete.Add(input);
+                    return true;
+                } else if (complete.Contains(_w)
+                        && complete.Contains(_r)
+                        && _w.Value != 0) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = RadOf(_w.Value) * _r.Value; ;
+                    complete.Add(input);
+                    return true;
+                }
+            } else if (input == _w) {
+                if (complete.Contains(_a) && _a.Value == 0) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = 0;
+                    complete.Add(input);
+                    return true;
+                } else if (complete.Contains(_v)
+                        && complete.Contains(_r)
+                        && _v.Value != 0) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = DegreeOf(_v.Value / _r.Value);
+                    complete.Add(input);
+                    return true;
+                }
+            } else if (input == _r) {
+                if (complete.Contains(_v) && _v.Value == 0) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = 0;
+                    complete.Add(input);
+                    return true;
+                } else if (complete.Contains(_w) && _w.Value == 0) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = double.PositiveInfinity;
+                    complete.Add(input);
+                    return true;
+                } else if (complete.Contains(_v) && complete.Contains(_w)) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = _v.Value / RadOf(_w.Value);
+                    complete.Add(input);
+                    return true;
+                } else if (complete.Contains(_s) && complete.Contains(_a)) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = _s.Value / RadOf(_a.Value);
+                    complete.Add(input);
+                    return true;
+                }
+            } else if (input == _s) {
+                if (complete.Contains(_t)) {
+                    input.State = Input.StateEnum.Invalid;
+                    return true;
+                } else if (complete.Contains(_v) && _v.Value == 0) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = 0;
+                    complete.Add(input);
+                    return true;
+                } else if (complete.Contains(_a)
+                        && complete.Contains(_r)
+                        && _a.Value != 0) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = RadOf(_a.Value) * _r.Value; ;
+                    complete.Add(input);
+                    return true;
+                }
+            } else if (input == _a) {
+                if (complete.Contains(_t)) {
+                    input.State = Input.StateEnum.Invalid;
+                    return true;
+                } else if (complete.Contains(_w) && _w.Value == 0) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = 0;
+                    complete.Add(input);
+                    return true;
+                } else if (complete.Contains(_s)
+                        && complete.Contains(_r)
+                        && _s.Value != 0) {
+                    input.State = Input.StateEnum.Slave;
+                    input.Value = DegreeOf(_s.Value / _r.Value);
+                    complete.Add(input);
+                    return true;
+                }
+            } else if (input == _t) {
+                if (_s.IsMaster || _a.IsMaster) {
+                    input.State = Input.StateEnum.Invalid;
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
