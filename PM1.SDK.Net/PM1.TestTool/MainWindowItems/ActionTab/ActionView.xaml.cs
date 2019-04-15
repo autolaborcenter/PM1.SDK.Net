@@ -10,7 +10,6 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
     /// ActionView.xaml 的交互逻辑
     /// </summary>
     public partial class ActionView : UserControl {
-
         private class Input {
             public readonly CheckBox check;
             public readonly TextBox text;
@@ -102,6 +101,10 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         }
 
         private readonly Input _v, _w, _r, _s, _a, _t;
+        private readonly IReadOnlyList<Input> Inputs;
+
+        public delegate void OnCompletedHandler(double v, double w, bool timeBased, double range);
+        public event OnCompletedHandler OnCompleted;
 
         public ActionView() {
             InitializeComponent();
@@ -111,6 +114,14 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             _s = new Input(SCheck, SBox);
             _a = new Input(ACheck, ABox);
             _t = new Input(TCheck, TBox);
+            Inputs = new List<Input> { _v, _w, _r, _s, _a, _t };
+        }
+
+        public void Reset() {
+            foreach (var input in Inputs) {
+                input.Value = double.NaN;
+                input.State = Input.StateEnum.Void;
+            }
         }
 
         private void Calculate(Input theOne) {
@@ -118,42 +129,19 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
             if (!CheckNotZero(theOne)) return;
 
-            var waitings = new List<Input> { _v, _w, _r, _s, _a, _t };
-            var complete = waitings.Where(it => it.IsMaster).ToList();
+            var waitings = Inputs.Where(it => !it.IsMaster && !it.IsError).ToList();
+            var complete = Inputs.Where(it => it.IsMaster).ToList();
 
-            if (!complete.Any()) return;
-            waitings.RemoveAll(it => it.IsMaster || it.IsError);
-
-            while (waitings.Any() 
-                && waitings.RemoveAll(it => CalculateItem(it, complete)) > 0);
-            foreach(var input in waitings) 
+            while (waitings.Any()
+                && waitings.RemoveAll(it => CalculateItem(it, complete)) > 0) ;
+            foreach (var input in waitings)
                 input.State = Input.StateEnum.Void;
         }
 
-        private bool Check(
-            out double v,
-            out double w,
-            out bool timeBased,
-            out double range) {
-            v = _v.Value;
-            w = _w.Value;
-            timeBased = default;
-            range = default;
-
-            if (!_v.IsMaster && !_w.IsMaster)
-                return false;
-
-            if (_t.IsMaster) {
-                timeBased = true;
-                range = _t.Value;
-                return true;
-            } else if (_s.IsMaster || _a.IsMaster) {
-                timeBased = false;
-                range = SafeNativeMethods.SpatiumCalculate(_s.Value, _a.Value);
-                return true;
-            } else
-                return false;
-        }
+        private bool Check()
+            => !Inputs.Select(it => it.State)
+                      .Intersect(new[] { Input.StateEnum.Error, Input.StateEnum.Void })
+                      .Any();
 
         private void TextChanged(object sender, TextChangedEventArgs e) {
             var input = (Control)sender;
@@ -178,7 +166,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                     Calculate(_t);
                     break;
             }
-            CheckButton.IsEnabled = Check(out _, out _, out _, out _);
+            CheckButton.IsEnabled = Check();
         }
 
         private void Unchecked(object sender, System.Windows.RoutedEventArgs e) {
@@ -243,7 +231,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             double DegreeOf(double rad) => rad * 180 / Math.PI;
 
             if (input == _v) {
-                if (complete.Contains(_s) && _s.Value == 0) {
+                if ((complete.Contains(_s) && _s.Value == 0)
+                 || (complete.Contains(_r) && _r.Value == 0)) {
                     input.State = Input.StateEnum.Slave;
                     input.Value = 0;
                     complete.Add(input);
@@ -271,7 +260,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                     return true;
                 }
             } else if (input == _r) {
-                if (complete.Contains(_v) && _v.Value == 0) {
+                if ((complete.Contains(_v) && _v.Value == 0)
+                 || (complete.Contains(_s) && _s.Value == 0)) {
                     input.State = Input.StateEnum.Slave;
                     input.Value = 0;
                     complete.Add(input);
@@ -296,7 +286,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 if (complete.Contains(_t)) {
                     input.State = Input.StateEnum.Invalid;
                     return true;
-                } else if (complete.Contains(_v) && _v.Value == 0) {
+                } else if ((complete.Contains(_v) && _v.Value == 0)
+                        || (complete.Contains(_r) && _r.Value == 0)) {
                     input.State = Input.StateEnum.Slave;
                     input.Value = 0;
                     complete.Add(input);
@@ -333,6 +324,18 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 }
             }
             return false;
+        }
+
+        private void CheckButton_Click(object sender, System.Windows.RoutedEventArgs e) {
+            double RadOf(double degree) => degree * Math.PI / 180;
+
+            var timeBased = _t.IsMaster;
+            OnCompleted?.Invoke(_v.Value,
+                                RadOf(_w.Value),
+                                timeBased,
+                                timeBased ? _t.Value
+                                          : SafeNativeMethods.SpatiumCalculate(_s.Value, RadOf(_a.Value)));
+            Reset();
         }
     }
 }

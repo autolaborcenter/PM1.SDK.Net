@@ -7,7 +7,7 @@
         xmlns:actiontab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.ActionTab"
         mc:Ignorable="d"
         Title="Autolabor PM1 检测工具集" 
-        MinHeight="540" MinWidth="640"
+        MinHeight="540" MinWidth="540"
         Height="540" Width="800"
         FontSize="16">
     <Window.DataContext>
@@ -57,42 +57,44 @@
                     HorizontalAlignment="Stretch" 
                     VerticalAlignment="Stretch">
             <TabItem Header="动作控制" IsSelected="true">
-                <Grid Margin="12">
+                <Grid Margin="12"
+                      SizeChanged="Grid_SizeChanged"
+                      IsEnabledChanged="Grid_IsEnabledChanged">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition MaxHeight="120"/>
-                        <RowDefinition MaxHeight="120"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition MinWidth="120" MaxWidth="240"/>
-                        <ColumnDefinition MinWidth="180" MaxWidth="360"/>
-                        <ColumnDefinition MaxWidth="320"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition MinWidth="240"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="动作列表" Margin="4"/>
-                    <TextBlock Text="动作设定" Margin="4"
+                    <TextBlock Text="动作列表" Margin="4"
                                Grid.Row="0" Grid.Column="1"/>
-                    <TextBlock Text="流程控制" Margin="4"
+                    <TextBlock x:Name="ActionTitle"
+                               Text="动作设定" Margin="4"
                                Grid.Row="0" Grid.Column="2"/>
-
-                    <ListView x:Name="ActionList"
-                              Margin="8"
-                              Grid.Row="1" Grid.Column="0" 
-                              Grid.RowSpan="3"/>
-                    <actiontab:ActionView Grid.Row="1" Grid.Column="1"
-                                          Grid.RowSpan="3"
-                                          HorizontalAlignment="Stretch"
-                                          VerticalAlignment="Top"/>
-
-                    <ToggleButton Content="暂停"
-                                  Checked="ToggleButton_Checked"
-                                  Unchecked="ToggleButton_Unchecked"
-                                  Margin="8"
-                                  Grid.Row="1" Grid.Column="2"/>
-                    <Button Content="终止" 
-                            Margin="8"
-                            Grid.Row="2" Grid.Column="2"/>
+                    <Border x:Name="CanvasBorder" Grid.RowSpan="4">
+                        <Canvas/>
+                    </Border>
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <ListView x:Name="ActionList" Margin="8" />
+                        <ToggleButton Content="暂停"
+                                  Click="ToggleButton_Click"
+                                  Margin="8" Grid.Row="1"/>
+                        <Button Content="终止" 
+                                Margin="8" Grid.Row="2"/>
+                    </Grid>
+                    <actiontab:ActionView x:Name="ActionEdtor" 
+                                          OnCompleted="ActionEdtor_OnCompleted"
+                                          Grid.Row="1" Grid.Column="2"/>
                 </Grid>
             </TabItem>
             <TabItem Header="连续控制">
