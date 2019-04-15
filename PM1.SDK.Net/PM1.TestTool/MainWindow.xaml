@@ -9,7 +9,8 @@
         Title="Autolabor PM1 检测工具集" 
         MinHeight="540" MinWidth="540"
         Height="540" Width="800"
-        FontSize="16">
+        FontSize="16"
+        Closing="Window_Closing">
     <Window.DataContext>
         <local:MainWindowContext Connected="False"/>
     </Window.DataContext>
@@ -33,12 +34,11 @@
                       IsEnabled="{Binding Disconnected, Mode=OneWay}"
                       Width="120"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" 
-                    IsEnabled="{Binding Connected, Mode=OneWay}"
+        <StackPanel Orientation="Horizontal" Margin="4,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    Background="{Binding StateAreaBrush, Mode=OneWay}"
-                    Margin="4,0">
+                    IsEnabled="{Binding Connected, Mode=OneWay}"
+                    Background="{Binding StateAreaBrush, Mode=OneWay}">
             <RadioButton Content="正常" GroupName="State" 
                          IsChecked="{Binding IsUnlocked, Mode=OneWay}"
                          Click="Unlock_Click"
@@ -57,48 +57,7 @@
                     HorizontalAlignment="Stretch" 
                     VerticalAlignment="Stretch">
             <TabItem Header="动作控制" IsSelected="true">
-                <Grid Margin="12"
-                      SizeChanged="Grid_SizeChanged"
-                      IsEnabledChanged="Grid_IsEnabledChanged">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition MinWidth="240"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="动作列表" Margin="4"
-                               Grid.Row="0" Grid.Column="1"/>
-                    <TextBlock x:Name="ActionTitle"
-                               Text="动作设定" Margin="4"
-                               Grid.Row="0" Grid.Column="2"/>
-                    <Border x:Name="CanvasBorder" 
-                            BorderBrush="Black"
-                            Grid.RowSpan="4">
-                        <Canvas/>
-                    </Border>
-                    <Grid Grid.Row="1" Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <ListView x:Name="ActionList" Margin="8"
-                                  IsEnabled="False"/>
-                        <ToggleButton Content="暂停"
-                                  Click="ToggleButton_Click"
-                                  Margin="8" Grid.Row="1"/>
-                        <Button Content="终止" 
-                                Margin="8" Grid.Row="2"/>
-                    </Grid>
-                    <actiontab:ActionView x:Name="ActionEditor"
-                                          OnCompleted="ActionEditor_OnCompleted"
-                                          Grid.Row="1" Grid.Column="2"/>
-                </Grid>
+                <actiontab:ActionTab Margin="8"/>
             </TabItem>
             <TabItem Header="连续控制">
             </TabItem>

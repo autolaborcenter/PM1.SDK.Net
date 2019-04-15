@@ -94,6 +94,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
             public bool IsMaster => State == StateEnum.Master;
 
+            public bool IsVoid => State == StateEnum.Void;
+
             public bool IsError => State == StateEnum.Error;
 
             private static readonly SolidColorBrush
@@ -102,7 +104,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         }
 
         private readonly Input _v, _w, _r, _s, _a, _t;
-        private readonly IReadOnlyList<Input> Inputs;
+        private readonly IReadOnlyList<Input> _inputs;
+        private readonly IReadOnlyDictionary<Input, Input> _signPairs;
 
         public delegate void OnCompletedHandler(double v, double w, bool timeBased, double range);
         public event OnCompletedHandler OnCompleted;
@@ -115,11 +118,16 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             _s = new Input(SCheck, SBox);
             _a = new Input(ACheck, ABox);
             _t = new Input(TCheck, TBox);
-            Inputs = new List<Input> { _v, _w, _r, _s, _a, _t };
+            _inputs = new List<Input> { _v, _w, _r, _s, _a, _t };
+            _signPairs = new Dictionary<Input, Input> {
+                { _v, _s },
+                { _s, _v },
+                { _w, _a },
+                { _a, _w } };
         }
 
         public void Reset() {
-            foreach (var input in Inputs) {
+            foreach (var input in _inputs) {
                 input.Value = double.NaN;
                 input.State = Input.StateEnum.Void;
             }
@@ -128,21 +136,20 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         private void Calculate(Input theOne) {
             theOne.UpdateStateByValue();
 
-            if (!CheckNotZero(theOne)) return;
+            CoverError();
+            if (theOne.IsMaster && !CheckMaster(theOne)) {
+                theOne.State = Input.StateEnum.Error;
+                return;
+            }
 
-            var waitings = Inputs.Where(it => !it.IsMaster && !it.IsError).ToList();
-            var complete = Inputs.Where(it => it.IsMaster).ToList();
+            var waitings = _inputs.Where(it => !it.IsMaster && !it.IsError).ToList();
+            var complete = _inputs.Where(it => it.IsMaster).ToList();
 
             while (waitings.Any()
                 && waitings.RemoveAll(it => CalculateItem(it, complete)) > 0) ;
             foreach (var input in waitings)
                 input.State = Input.StateEnum.Void;
         }
-
-        private bool Check()
-            => !Inputs.Select(it => it.State)
-                      .Intersect(new[] { Input.StateEnum.Error, Input.StateEnum.Void })
-                      .Any();
 
         private void TextChanged(object sender, TextChangedEventArgs e) {
             var input = (Control)sender;
@@ -167,7 +174,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                     Calculate(_t);
                     break;
             }
-            CheckButton.IsEnabled = Check();
+            CheckButton.IsEnabled = _inputs.Where(it => it.IsMaster).Count() == 3;
         }
 
         private void Checked(object sender, RoutedEventArgs e) {
@@ -175,22 +182,22 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             if (!input.IsEnabled) return;
             switch ((string)input.Tag) {
                 case nameof(_v):
-                    if (!_v.IsMaster) VBox.Text = "0.2";
+                    if (_v.IsVoid) VBox.Text = "0.2";
                     break;
                 case nameof(_w):
-                    if (!_w.IsMaster) WBox.Text = "20";
+                    if (_w.IsVoid) WBox.Text = "20";
                     break;
                 case nameof(_r):
-                    if (!_r.IsMaster) RBox.Text = "0.5";
+                    if (_r.IsVoid) RBox.Text = "0.5";
                     break;
                 case nameof(_s):
-                    if (!_s.IsMaster) SBox.Text = "1";
+                    if (_s.IsVoid) SBox.Text = "1";
                     break;
                 case nameof(_a):
-                    if (!_a.IsMaster) ABox.Text = "90";
+                    if (_a.IsVoid) ABox.Text = "90";
                     break;
                 case nameof(_t):
-                    if (!_t.IsMaster) TBox.Text = "5";
+                    if (_t.IsVoid) TBox.Text = "5";
                     break;
             }
         }
@@ -220,36 +227,56 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             }
         }
 
-        private bool CheckNotZero(Input theOne) {
-            if (theOne != _t && theOne.IsMaster) {
-                bool ZeroCheck(Input it)
-                    => it.IsMaster && it.Value == 0;
-
-                bool Recover(bool others) {
-                    if (theOne.Value == 0) {
-                        if (others)
-                            theOne.State = Input.StateEnum.Slave;
-                    } else {
-                        if (others) {
-                            theOne.State = Input.StateEnum.Error;
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-
-                if (theOne == _v)
-                    return Recover(ZeroCheck(_s) || ZeroCheck(_r));
-                else if (theOne == _w)
-                    return Recover(ZeroCheck(_a));
-                else if (theOne == _r)
-                    return Recover(ZeroCheck(_v) || ZeroCheck(_s));
-                else if (theOne == _s)
-                    return Recover(ZeroCheck(_v) || ZeroCheck(_r));
-                else if (theOne == _a)
-                    return Recover(ZeroCheck(_w));
+        private void CoverError() {
+            var count = 0;
+            while (true) {
+                var errors = _inputs.Where(it => it.IsError && !double.IsNaN(it.Value)).ToList();
+                if (errors.Count == count) return;
+                count = errors.Count;
+                foreach (var repaired in errors.Where(CheckMaster))
+                    repaired.State = Input.StateEnum.Master;
             }
-            return true;
+        }
+
+        private bool CheckMaster(Input theOne) 
+            => CheckSign(theOne) && CheckNotZero(theOne);
+
+        /// <summary>
+        ///     检查“线速度-路程”和“角速度-角度”两对参数符号一致
+        /// </summary>
+        /// <param name="theOne">新设置的参数</param>
+        /// <returns>检查是否通过</returns>
+        private bool CheckSign(Input theOne) 
+            => !_signPairs.TryGetValue(theOne, out var others)
+            || !others.IsMaster
+            || Math.Sign(others.Value) == Math.Sign(theOne.Value);
+
+        private bool CheckNotZero(Input theOne) {
+            bool ZeroCheck(Input it)
+                => it.IsMaster && it.Value == 0;
+
+            bool Recover(bool others) {
+                if (theOne.Value == 0) {
+                    if (others) {
+                        theOne.State = Input.StateEnum.Slave;
+                        return true;
+                    } else
+                        return false;
+                } else return !others;
+            }
+
+            if (theOne == _v)
+                return Recover(ZeroCheck(_s) || ZeroCheck(_r));
+            else if (theOne == _w)
+                return Recover(ZeroCheck(_a));
+            else if (theOne == _r)
+                return Recover(ZeroCheck(_v) || ZeroCheck(_s));
+            else if (theOne == _s)
+                return Recover(ZeroCheck(_v) || ZeroCheck(_r));
+            else if (theOne == _a)
+                return Recover(ZeroCheck(_w));
+            else
+                return true;
         }
 
         private bool CalculateItem(Input input, List<Input> complete) {
@@ -354,13 +381,12 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
         private void CheckButton_Click(object sender, RoutedEventArgs e) {
             double RadOf(double degree) => degree * Math.PI / 180;
-
             var timeBased = _t.IsMaster;
             OnCompleted?.Invoke(_v.Value,
                                 RadOf(_w.Value),
                                 timeBased,
                                 timeBased ? _t.Value
-                                          : SafeNativeMethods.SpatiumCalculate(_s.Value, RadOf(_a.Value)));
+                                          : SafeNativeMethods.SpatiumCalculate(Math.Abs(_s.Value), Math.Abs(RadOf(_a.Value))));
             Reset();
         }
     }
