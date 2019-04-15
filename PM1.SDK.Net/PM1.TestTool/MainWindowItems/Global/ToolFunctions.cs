@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -9,6 +10,9 @@ namespace Autolabor.PM1.TestTool {
         public static void Dispatch<T>(this T control, Action<T> action)
           where T : Control => control.Dispatcher.Invoke(action, control);
 
+        public static string Format(string format,double value )
+               => value.ToString(format, CultureInfo.InvariantCulture);
+
         public static async Task Handle(
             MainWindowContext context,
             CancellationTokenSource connecting
@@ -17,14 +21,16 @@ namespace Autolabor.PM1.TestTool {
             stopwatch.Start();
             try {
                 while (!connecting.IsCancellationRequested) {
-                    context.ConnectedTime = (stopwatch.ElapsedMilliseconds / 1000.0).ToString("0.0");
+                    context.ConnectedTime = Format("0.0",stopwatch.ElapsedMilliseconds / 1000.0 );
                     try {
                         context.State = Methods.State;
                         var (_, _, x, y, theta, _, _, _) = Methods.Odometry;
-                        context.Odometry = string.Format("{0}, {1}, {2}°",
-                                                    x.ToString("0.0"),
-                                                    y.ToString("0.0"),
-                                                    theta.ToString("0.0"));
+                        context.Odometry = string.Format(
+                            CultureInfo.InvariantCulture,
+                            "{0}, {1}, {2}°",
+                            Format("0.##", x),
+                            Format("0.##", y),
+                            Format("0.#", theta / Math.PI * 180));
                     } catch (Exception exception) {
                         context.ErrorInfo = exception.Message;
                     }

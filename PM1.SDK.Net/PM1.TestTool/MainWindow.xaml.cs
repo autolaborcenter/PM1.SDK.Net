@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Globalization;
 using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,7 +38,7 @@ namespace Autolabor.PM1.TestTool {
 #endif
         }
 
-        private void ComboBox_DropDownOpened(object sender, System.EventArgs e) 
+        private void ComboBox_DropDownOpened(object sender, System.EventArgs e)
             => RefreshCombo();
 
         private void ComboBox_DropDownClosed(object sender, EventArgs e) {
@@ -131,7 +131,7 @@ namespace Autolabor.PM1.TestTool {
             }
         }
 
-        private void Unlock_Click(object sender, RoutedEventArgs e) 
+        private void Unlock_Click(object sender, RoutedEventArgs e)
             => ChassisState = StateEnum.Unlocked;
 
         private void Lock_Click(object sender, RoutedEventArgs e)
@@ -171,7 +171,7 @@ namespace Autolabor.PM1.TestTool {
                 Grid.SetRow(ActionEditor, 1);
                 Grid.SetColumn(ActionEditor, 2);
 
-                if (e.NewSize.Width > 800) {
+                if (e.NewSize.Width > 600) {
                     CanvasBorder.BorderThickness = new Thickness(1);
                     grid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
                     grid.ColumnDefinitions[1].Width = GridLength.Auto;
@@ -185,28 +185,60 @@ namespace Autolabor.PM1.TestTool {
             }
         }
 
-        private void Grid_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e) {
-            ActionList.Items.Clear();
+        private void Grid_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+            => ActionList.Items.Clear();
+
+        private struct ActionConfig {
+            public double v, w, range;
+            public bool timeBased;
+
+            public override string ToString()
+                => string.Format(
+                    CultureInfo.InvariantCulture,
+                    "v = {0}m/s | ω = {1}°/s | {2}{3}",
+                    ToolFunctions.Format("0.##",v ),
+                    ToolFunctions.Format("0.#",w / Math.PI * 180),
+                    ToolFunctions.Format("0.#",range),
+                    timeBased ? "s" : "m");
         }
 
+        private Task task = null;
+
         private void ActionEditor_OnCompleted(double v, double w, bool timeBased, double range) {
-            var flag = true;
-            var progress = .0;
-            _ = Task.Run(async () => {
-                while (flag) {
+
+            ActionList.Items.Add(new ActionConfig { v = v, w = w, range = range, timeBased = timeBased });
+
+            if (task == null) {
+                var flag = true;
+                var progress = .0;
+                _ = Task.Run(async () => {
+                    while (flag) {
+                        _context.Progress = progress;
+                        await Task.Delay(20).ConfigureAwait(false);
+                    }
+                    await Task.Delay(100).ConfigureAwait(false);
                     _context.Progress = progress;
-                    await Task.Delay(20).ConfigureAwait(false);
-                }
-                await Task.Delay(100).ConfigureAwait(false);
-                _context.Progress = progress;
-            });
-            _ = Task.Run(() => {
-                if (timeBased)
-                    Methods.DriveTiming(v, w, range, out progress);
-                else
-                    Methods.DriveSpatial(v, w, range, out progress);
-                flag = false;
-            });
+                });
+                task = Task.Run(() => {
+                    try {
+                        while (ActionList.Items.Count > 0) {
+                            ActionList.Dispatch(it => it.SelectedIndex = 0);
+                            if (ActionList.Items[0] is ActionConfig action) {
+                                ActionList.Dispatch(it => it.SelectedIndex = 0);
+                                if (action.timeBased)
+                                    Methods.DriveTiming(action.v, action.w, action.range, out progress);
+                                else
+                                    Methods.DriveSpatial(action.v, action.w, action.range, out progress);
+                            }
+                            ActionList.Dispatch(it => it.Items.RemoveAt(0));
+                        }
+                    } catch (Exception exception) {
+                        _context.ErrorInfo = exception.Message;
+                    }
+                    task = null;
+                    flag = false;
+                });
+            }
         }
     }
 }

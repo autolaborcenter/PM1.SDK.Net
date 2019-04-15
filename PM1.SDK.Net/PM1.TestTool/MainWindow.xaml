@@ -76,7 +76,9 @@
                     <TextBlock x:Name="ActionTitle"
                                Text="动作设定" Margin="4"
                                Grid.Row="0" Grid.Column="2"/>
-                    <Border x:Name="CanvasBorder" Grid.RowSpan="4">
+                    <Border x:Name="CanvasBorder" 
+                            BorderBrush="Black"
+                            Grid.RowSpan="4">
                         <Canvas/>
                     </Border>
                     <Grid Grid.Row="1" Grid.Column="1">
@@ -85,7 +87,8 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <ListView x:Name="ActionList" Margin="8" />
+                        <ListView x:Name="ActionList" Margin="8"
+                                  IsEnabled="False"/>
                         <ToggleButton Content="暂停"
                                   Click="ToggleButton_Click"
                                   Margin="8" Grid.Row="1"/>

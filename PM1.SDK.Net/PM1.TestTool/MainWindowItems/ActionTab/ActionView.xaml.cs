@@ -47,7 +47,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                             Value = double.NaN;
                             text.Foreground = Normal;
                             text.IsEnabled = true;
-                            check.IsEnabled = false;
+                            check.IsEnabled = true;
                             check.IsChecked = false;
                             break;
                         case StateEnum.Invalid:
@@ -168,6 +168,31 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                     break;
             }
             CheckButton.IsEnabled = Check();
+        }
+
+        private void Checked(object sender, RoutedEventArgs e) {
+            var input = (Control)sender;
+            if (!input.IsEnabled) return;
+            switch ((string)input.Tag) {
+                case nameof(_v):
+                    if (!_v.IsMaster) VBox.Text = "0.2";
+                    break;
+                case nameof(_w):
+                    if (!_w.IsMaster) WBox.Text = "20";
+                    break;
+                case nameof(_r):
+                    if (!_r.IsMaster) RBox.Text = "0.5";
+                    break;
+                case nameof(_s):
+                    if (!_s.IsMaster) SBox.Text = "1";
+                    break;
+                case nameof(_a):
+                    if (!_a.IsMaster) ABox.Text = "90";
+                    break;
+                case nameof(_t):
+                    if (!_t.IsMaster) TBox.Text = "5";
+                    break;
+            }
         }
 
         private void Unchecked(object sender, RoutedEventArgs e) {

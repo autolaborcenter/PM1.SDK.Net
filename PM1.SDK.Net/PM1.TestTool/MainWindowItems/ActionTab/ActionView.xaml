@@ -9,7 +9,6 @@
              d:DesignWidth = "240">
     <UserControl.Resources>
         <Style x:Key="Checking" TargetType="CheckBox">
-            <Setter Property="IsEnabled" Value="False"/>
             <Setter Property="Margin" Value="4,0"/>
             <Setter Property="Grid.Column" Value="0"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -30,6 +29,7 @@
             </Grid.ColumnDefinitions>
             <CheckBox x:Name="VCheck" Tag="_v"
                       Content="线速度"
+                      Checked="Checked"
                       Unchecked="Unchecked"
                       Grid.Row="0" Style="{StaticResource Checking}"/>
             <TextBox x:Name="VBox" Tag="_v"
@@ -41,6 +41,7 @@
 
             <CheckBox x:Name="WCheck" Tag="_w" 
                       Content="角速度"
+                      Checked="Checked"
                       Unchecked="Unchecked"
                       Grid.Row="1" Style="{StaticResource Checking}"/>
             <TextBox x:Name="WBox" Tag="_w"
@@ -63,6 +64,7 @@
             </Grid.ColumnDefinitions>
             <CheckBox x:Name="RCheck" Tag="_r"
                       Content="转弯半径"
+                      Checked="Checked"
                       Unchecked="Unchecked"
                       Grid.Row="0" Style="{StaticResource Checking}"/>
             <TextBox x:Name="RBox" Tag="_r"
@@ -89,6 +91,7 @@
             </Grid.ColumnDefinitions>
             <CheckBox x:Name="SCheck" Tag="_s" 
                       Content="路程"
+                      Checked="Checked"
                       Unchecked="Unchecked"
                       Grid.Row="0" Style="{StaticResource Checking}"/>
             <TextBox x:Name="SBox" Tag="_s"
@@ -100,6 +103,7 @@
 
             <CheckBox x:Name="ACheck" Tag="_a"
                       Content="角度"
+                      Checked="Checked"
                       Unchecked="Unchecked"
                       Grid.Row="1" Style="{StaticResource Checking}"/>
             <TextBox x:Name="ABox" Tag="_a"
@@ -111,6 +115,7 @@
 
             <CheckBox x:Name="TCheck" Tag="_t"
                       Content="时间"
+                      Checked="Checked"
                       Unchecked="Unchecked"
                       Grid.Row="2" Style="{StaticResource Checking}"/>
             <TextBox x:Name="TBox" Tag="_t"
