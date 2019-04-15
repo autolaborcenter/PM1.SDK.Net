@@ -40,17 +40,17 @@
                     Background="{Binding StateAreaBrush, Mode=OneWay}"
                     Margin="4,0">
             <RadioButton Content="正常" GroupName="State" 
-                             IsChecked="{Binding IsUnlocked, Mode=OneWay}"
-                             Click="Unlock_Click"
-                             Margin="4"/>
+                         IsChecked="{Binding IsUnlocked, Mode=OneWay}"
+                         Click="Unlock_Click"
+                         Margin="4"/>
             <RadioButton Content="锁定" GroupName="State" 
-                             IsChecked="{Binding IsLocked, Mode=OneWay}"
-                             Click="Lock_Click"
-                             Margin="4"/>
+                         IsChecked="{Binding IsLocked, Mode=OneWay}"
+                         Click="Lock_Click"
+                         Margin="4"/>
             <RadioButton Content="异常" GroupName="State" 
-                             IsChecked="{Binding IsError, Mode=OneWay}"
-                             Margin="4"
-                             IsEnabled="False"/>
+                         IsChecked="{Binding IsError, Mode=OneWay}"
+                         Margin="4"
+                         IsEnabled="False"/>
         </StackPanel>
         <TabControl IsEnabled="{Binding Connected, Mode=OneWay}"
                     Grid.Row="1"
@@ -92,8 +92,8 @@
                         <Button Content="终止" 
                                 Margin="8" Grid.Row="2"/>
                     </Grid>
-                    <actiontab:ActionView x:Name="ActionEdtor" 
-                                          OnCompleted="ActionEdtor_OnCompleted"
+                    <actiontab:ActionView x:Name="ActionEditor"
+                                          OnCompleted="ActionEditor_OnCompleted"
                                           Grid.Row="1" Grid.Column="2"/>
                 </Grid>
             </TabItem>
@@ -121,7 +121,7 @@
                 <TextBlock Text="{Binding ConnectedTime, StringFormat=连接时间 {0} 秒, Mode=OneWay}"/>
             </StatusBarItem>
             <Separator/>
-            <StatusBarItem Width="120" Margin ="8,0">
+            <StatusBarItem MinWidth="180" Margin ="8,0">
                 <TextBlock Text="{Binding Odometry, StringFormat=位姿 ({0}), Mode=OneWay}"/>
             </StatusBarItem>
             <StatusBarItem>

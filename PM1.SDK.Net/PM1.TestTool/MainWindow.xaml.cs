@@ -25,19 +25,21 @@ namespace Autolabor.PM1.TestTool {
             SerialPortCombo.SelectedIndex = 0;
         }
 
-        private void ComboBox_DropDownOpened(object sender, System.EventArgs e) {
-            if (!(sender is ComboBox combo)) return;
-            combo.Items.Clear();
-            combo.Items.Add(AutoSelectString);
-            combo.Items.Add(new Separator());
+        public void RefreshCombo() {
+            SerialPortCombo.Items.Clear();
+            SerialPortCombo.Items.Add(AutoSelectString);
+            SerialPortCombo.Items.Add(new Separator());
             foreach (var port in SerialPort.GetPortNames())
-                combo.Items.Add(port);
+                SerialPortCombo.Items.Add(port);
 #if DEBUG
-            if (combo.Items.Count > 2)
-                combo.Items.Add(new Separator());
-            combo.Items.Add(UITestString);
+            if (SerialPortCombo.Items.Count > 2)
+                SerialPortCombo.Items.Add(new Separator());
+            SerialPortCombo.Items.Add(UITestString);
 #endif
         }
+
+        private void ComboBox_DropDownOpened(object sender, System.EventArgs e) 
+            => RefreshCombo();
 
         private void ComboBox_DropDownClosed(object sender, EventArgs e) {
             if (!(sender is ComboBox combo)) return;
@@ -54,6 +56,7 @@ namespace Autolabor.PM1.TestTool {
 
         private async Task Connect(CheckBox box) {
             box.IsEnabled = false;
+            _context.Connected = true;
             _context.ErrorInfo = "";
 
             var flag = true;
@@ -68,6 +71,11 @@ namespace Autolabor.PM1.TestTool {
             });
 
             var port = SerialPortCombo.SelectedItem.ToString();
+            {
+                var temp = SerialPortCombo.SelectedItem;
+                RefreshCombo();
+                SerialPortCombo.SelectedItem = temp;
+            }
             await Task.Run(async () => {
                 try {
 #if DEBUG
@@ -75,10 +83,9 @@ namespace Autolabor.PM1.TestTool {
 #endif
                         port = Methods.Initialize(port == AutoSelectString ? "" : port, null, out progress);
 
-                    _context.Connected = true;
                     SerialPortCombo.Dispatch((it) => it.SelectedItem = port);
                 } catch (Exception exception) {
-                    box.Dispatch((it) => it.IsChecked = false);
+                    _context.Connected = false;
                     _context.ErrorInfo = exception.Message;
                     return;
                 } finally {
@@ -124,7 +131,7 @@ namespace Autolabor.PM1.TestTool {
             }
         }
 
-        private void Unlock_Click(object sender, RoutedEventArgs e)
+        private void Unlock_Click(object sender, RoutedEventArgs e) 
             => ChassisState = StateEnum.Unlocked;
 
         private void Lock_Click(object sender, RoutedEventArgs e)
@@ -142,8 +149,8 @@ namespace Autolabor.PM1.TestTool {
                 Grid.SetRow(ActionTitle, 2);
                 Grid.SetColumn(ActionTitle, 1);
 
-                Grid.SetRow(ActionEdtor, 3);
-                Grid.SetColumn(ActionEdtor, 1);
+                Grid.SetRow(ActionEditor, 3);
+                Grid.SetColumn(ActionEditor, 1);
 
                 if (e.NewSize.Width > 500) {
                     CanvasBorder.BorderThickness = new Thickness(1);
@@ -161,8 +168,8 @@ namespace Autolabor.PM1.TestTool {
                 Grid.SetRow(ActionTitle, 0);
                 Grid.SetColumn(ActionTitle, 2);
 
-                Grid.SetRow(ActionEdtor, 1);
-                Grid.SetColumn(ActionEdtor, 2);
+                Grid.SetRow(ActionEditor, 1);
+                Grid.SetColumn(ActionEditor, 2);
 
                 if (e.NewSize.Width > 800) {
                     CanvasBorder.BorderThickness = new Thickness(1);
@@ -180,11 +187,26 @@ namespace Autolabor.PM1.TestTool {
 
         private void Grid_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e) {
             ActionList.Items.Clear();
-            ActionEdtor.Reset();
         }
 
-        private void ActionEdtor_OnCompleted(double v, double w, bool timeBased, double range) {
-            MessageBox.Show(string.Format("{0}, {1}, {2}, {3}", v, w, timeBased, range));
+        private void ActionEditor_OnCompleted(double v, double w, bool timeBased, double range) {
+            var flag = true;
+            var progress = .0;
+            _ = Task.Run(async () => {
+                while (flag) {
+                    _context.Progress = progress;
+                    await Task.Delay(20).ConfigureAwait(false);
+                }
+                await Task.Delay(100).ConfigureAwait(false);
+                _context.Progress = progress;
+            });
+            _ = Task.Run(() => {
+                if (timeBased)
+                    Methods.DriveTiming(v, w, range, out progress);
+                else
+                    Methods.DriveSpatial(v, w, range, out progress);
+                flag = false;
+            });
         }
     }
 }

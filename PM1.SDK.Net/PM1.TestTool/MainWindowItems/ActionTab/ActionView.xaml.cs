@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -169,7 +170,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             CheckButton.IsEnabled = Check();
         }
 
-        private void Unchecked(object sender, System.Windows.RoutedEventArgs e) {
+        private void Unchecked(object sender, RoutedEventArgs e) {
             var input = (Control)sender;
             if (!input.IsEnabled) return;
             switch ((string)input.Tag) {
@@ -326,7 +327,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             return false;
         }
 
-        private void CheckButton_Click(object sender, System.Windows.RoutedEventArgs e) {
+        private void CheckButton_Click(object sender, RoutedEventArgs e) {
             double RadOf(double degree) => degree * Math.PI / 180;
 
             var timeBased = _t.IsMaster;

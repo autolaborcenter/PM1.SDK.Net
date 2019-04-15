@@ -109,6 +109,24 @@
                 发布速度指令
             </summary>
         </member>
+        <member name="M:Autolabor.PM1.Methods.DriveSpatial(System.Double,System.Double,System.Double,System.Double@)">
+            <summary>
+                按空间驱动
+            </summary>
+            <param name="v"></param>
+            <param name="w"></param>
+            <param name="meters"></param>
+            <param name="progress"></param>
+        </member>
+        <member name="M:Autolabor.PM1.Methods.DriveTiming(System.Double,System.Double,System.Double,System.Double@)">
+            <summary>
+                按时间驱动
+            </summary>
+            <param name="v"></param>
+            <param name="w"></param>
+            <param name="seconds"></param>
+            <param name="progress"></param>
+        </member>
         <member name="M:Autolabor.PM1.Methods.GoStraight(System.Double,System.Double,System.Double@)">
             <summary>
                 前进

@@ -182,6 +182,26 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
+        ///     按空间驱动
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="w"></param>
+        /// <param name="meters"></param>
+        /// <param name="progress"></param>
+        public static void DriveSpatial(double v, double w, double meters, out double progress) 
+            => OnNative(SafeNativeMethods.DriveSpatial(v, w, meters, out progress));
+
+        /// <summary>
+        ///     按时间驱动
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="w"></param>
+        /// <param name="seconds"></param>
+        /// <param name="progress"></param>
+        public static void DriveTiming(double v, double w, double seconds, out double progress)
+            => OnNative(SafeNativeMethods.DriveTiming(v, w, seconds, out progress));
+
+        /// <summary>
         ///     前进
         /// </summary>
         /// <param name="speed">速度</param>
@@ -198,7 +218,7 @@ namespace Autolabor.PM1 {
             if (meters <= 0)
                 throw new ArgumentException("invalid target");
 
-            OnNative(DriveSpatial(speed, 0, meters, out progress));
+            OnNative(SafeNativeMethods.DriveSpatial(speed, 0, meters, out progress));
         }
 
         /// <summary>
@@ -208,7 +228,7 @@ namespace Autolabor.PM1 {
         /// <param name="seconds">时间（秒）</param>
         /// <param name="progress">进度</param>
         public static void GoStraight(double speed, TimeSpan seconds, out double progress)
-            => OnNative(DriveTiming(speed, 0, seconds.TotalSeconds, out progress));
+            => OnNative(SafeNativeMethods.DriveTiming(speed, 0, seconds.TotalSeconds, out progress));
 
         /// <summary>
         ///     原地转
@@ -227,7 +247,7 @@ namespace Autolabor.PM1 {
             if (rad <= 0)
                 throw new ArgumentException("invalid target");
 
-            OnNative(DriveSpatial(0, speed, SpatiumCalculate(0, rad), out progress));
+            OnNative(SafeNativeMethods.DriveSpatial(0, speed, SpatiumCalculate(0, rad), out progress));
         }
 
         /// <summary>
@@ -237,7 +257,7 @@ namespace Autolabor.PM1 {
         /// <param name="seconds">时间（秒）</param>
         /// <param name="progress">进度</param>
         public static void TurnAround(double speed, TimeSpan seconds, out double progress)
-            => OnNative(DriveTiming(0, speed, seconds.TotalSeconds, out progress));
+            => OnNative(SafeNativeMethods.DriveTiming(0, speed, seconds.TotalSeconds, out progress));
 
         /// <summary>
         ///     走圆弧
@@ -259,7 +279,7 @@ namespace Autolabor.PM1 {
             if (rad <= 0)
                 throw new ArgumentException("invalid target");
 
-            OnNative(DriveSpatial(speed, speed / r, SpatiumCalculate(r * rad, rad), out progress));
+            OnNative(SafeNativeMethods.DriveSpatial(speed, speed / r, SpatiumCalculate(r * rad, rad), out progress));
         }
 
         /// <summary>
@@ -273,7 +293,7 @@ namespace Autolabor.PM1 {
             if (Math.Abs(r) < 0.05)
                 throw new ArgumentException("radius is too little, use turn_around instead");
 
-            OnNative(DriveTiming(speed, speed / r, seconds.TotalSeconds, out progress));
+            OnNative(SafeNativeMethods.DriveTiming(speed, speed / r, seconds.TotalSeconds, out progress));
         }
 
         /// <summary>

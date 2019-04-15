@@ -6,15 +6,17 @@ namespace Autolabor.PM1.TestTool {
         private bool _connected = false;
         private double _progress = 0;
         private string _connectedTime = "0.0";
-        private string _odometry = "0, 0, 0°";
+        private string _odometry = "0.0, 0.0, 0.0°";
         private string _errorInfo = "";
         private StateEnum? _state = StateEnum.Offline;
 
         public bool Connected {
             get => _connected;
             set {
-                if (SetProperty(ref _connected, value))
+                if (SetProperty(ref _connected, value)) {
                     Notify(nameof(Disconnected));
+                    if (!value) State = StateEnum.Offline;
+                }
             }
         }
 
