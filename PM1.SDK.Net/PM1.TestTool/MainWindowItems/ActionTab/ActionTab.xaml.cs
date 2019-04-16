@@ -30,7 +30,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e) {
             var grid = (Grid)sender;
 
-            if (e.NewSize.Height > 500) {
+            if (e.NewSize.Height > 640) {
                 grid.RowDefinitions[1].Height = new GridLength(1, GridUnitType.Star);
                 grid.RowDefinitions[3].Height = GridLength.Auto;
 
@@ -85,11 +85,9 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             public override string ToString()
                 => string.Format(
                     CultureInfo.InvariantCulture,
-                    "v = {0}m/s | ω = {1}°/s | {2}{3}",
+                    "v = {0}m/s | ω = {1}°/s",
                     ToolFunctions.Format("0.##", v),
-                    ToolFunctions.Format("0.#", w / Math.PI * 180),
-                    ToolFunctions.Format("0.#", range),
-                    timeBased ? "s" : "m");
+                    ToolFunctions.Format("0.#", w / Math.PI * 180));
         }
 
         private Task task = null;

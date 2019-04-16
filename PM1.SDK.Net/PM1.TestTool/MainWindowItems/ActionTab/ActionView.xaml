@@ -13,6 +13,11 @@
             <Setter Property="Grid.Column" Value="0"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
+        <Style x:Key="ValueText" TargetType="TextBox">
+            <Setter Property="Margin" Value="0,1"/>
+            <Setter Property="Grid.Column" Value="1"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+        </Style>
     </UserControl.Resources>
     <StackPanel Margin="8">
         <TextBlock Text="速度设定"/>
@@ -34,8 +39,8 @@
                       Grid.Row="0" Style="{StaticResource Checking}"/>
             <TextBox x:Name="VBox" Tag="_v"
                      TextChanged="TextChanged"
-                     Grid.Row="0" Grid.Column="1" 
-                     Margin="0,1" TextAlignment="Right"/>
+                     LostFocus="Box_LostFocus"
+                     Grid.Row="0" Style="{StaticResource ValueText}"/>
             <TextBlock Text="m/s" Margin="4,0"
                        Grid.Row="0" Grid.Column="2"/>
 
@@ -46,8 +51,8 @@
                       Grid.Row="1" Style="{StaticResource Checking}"/>
             <TextBox x:Name="WBox" Tag="_w"
                      TextChanged="TextChanged"
-                     Grid.Row="1" Grid.Column="1"
-                     Margin="0,1" TextAlignment="Right"/>
+                     LostFocus="Box_LostFocus"
+                     Grid.Row="1" Style="{StaticResource ValueText}"/>
             <TextBlock Text="°/s" Margin="4,0"
                        Grid.Row="1" Grid.Column="2"/>
         </Grid>
@@ -69,8 +74,8 @@
                       Grid.Row="0" Style="{StaticResource Checking}"/>
             <TextBox x:Name="RBox" Tag="_r"
                      TextChanged="TextChanged"
-                     Grid.Row="0" Grid.Column="1"
-                     Margin="0,1" TextAlignment="Right"/>
+                     LostFocus="Box_LostFocus"
+                     Grid.Row="0" Style="{StaticResource ValueText}"/>
             <TextBlock Text="m" Margin="4,0"
                        Grid.Row="0" Grid.Column="2"/>
         </Grid>
@@ -96,8 +101,8 @@
                       Grid.Row="0" Style="{StaticResource Checking}"/>
             <TextBox x:Name="SBox" Tag="_s"
                      TextChanged="TextChanged"
-                     Grid.Row="0" Grid.Column="1"
-                     Margin="0,1" TextAlignment="Right"/>
+                     LostFocus="Box_LostFocus"
+                     Grid.Row="0" Style="{StaticResource ValueText}"/>
             <TextBlock Text="m" Margin="4,0"
                        Grid.Row="0" Grid.Column="2"/>
 
@@ -108,8 +113,8 @@
                       Grid.Row="1" Style="{StaticResource Checking}"/>
             <TextBox x:Name="ABox" Tag="_a"
                      TextChanged="TextChanged"
-                     Grid.Row="1" Grid.Column="1"
-                     Margin="0,1" TextAlignment="Right"/>
+                     LostFocus="Box_LostFocus"
+                     Grid.Row="1" Style="{StaticResource ValueText}"/>
             <TextBlock Text="°" Margin="4,0"
                        Grid.Row="1" Grid.Column="2"/>
 
@@ -120,16 +125,20 @@
                       Grid.Row="2" Style="{StaticResource Checking}"/>
             <TextBox x:Name="TBox" Tag="_t"
                      TextChanged="TextChanged"
-                     Grid.Row="2" Grid.Column="1"
-                     Margin="0,1" TextAlignment="Right"/>
+                     LostFocus="Box_LostFocus"
+                     Grid.Row="2" Style="{StaticResource ValueText}"/>
             <TextBlock Text="s" Margin="4,0"
                        Grid.Row="2" Grid.Column="2"/>
         </Grid>
         <Button x:Name="CheckButton" Content="确定" 
                 Click="CheckButton_Click"
                 IsEnabled="False"
-                Margin="0,12,0,0"
-                VerticalAlignment="Bottom"
-                Grid.Row="2" Grid.Column="1"/>
+                Margin="0,12,0,12"
+                VerticalAlignment="Bottom"/>
+        <TextBlock Text="动作参数错误信息"/>
+        <Separator/>
+        <TextBox x:Name="ErrorInfo" 
+                 IsEnabled="False"
+                 Foreground="Red"/>
     </StackPanel>
 </UserControl>
