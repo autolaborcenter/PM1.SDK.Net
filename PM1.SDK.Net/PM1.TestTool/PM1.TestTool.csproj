@@ -114,6 +114,7 @@
     <Compile Include="MainWindowItems\ActionTab\ActionView.xaml.cs">
       <DependentUpon>ActionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainWindowItems\ITabControl.cs" />
     <Compile Include="MainWindowItems\MainWindowContext.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

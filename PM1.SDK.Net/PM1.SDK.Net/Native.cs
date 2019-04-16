@@ -5,7 +5,7 @@ using Handler = System.UInt32;
 namespace Autolabor.PM1 {
     public static class SafeNativeMethods {
 #if DEBUG
-        const string LIBRARY = "pm1_sdk_native_debug.dll";
+        const string LIBRARY = "pm1_sdk_native_injection_debug.dll";
 #else
         const string LIBRARY = "pm1_sdk_native.dll";
 #endif

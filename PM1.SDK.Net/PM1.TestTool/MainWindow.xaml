@@ -53,7 +53,9 @@
                          Margin="4"
                          IsEnabled="False"/>
         </StackPanel>
-        <TabControl IsEnabled="{Binding Connected, Mode=OneWay}"
+        <TabControl x:Name="MainTab"
+                    IsEnabled="{Binding Connected, Mode=OneWay}"
+                    SelectionChanged="TabControl_SelectionChanged"
                     Grid.Row="1"
                     HorizontalAlignment="Stretch" 
                     VerticalAlignment="Stretch">

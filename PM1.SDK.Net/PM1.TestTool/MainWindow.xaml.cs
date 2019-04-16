@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Autolabor.PM1.TestTool.MainWindowItems;
+using System;
 using System.Globalization;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,6 +22,10 @@ namespace Autolabor.PM1.TestTool {
         public MainWindow() {
             InitializeComponent();
             _context = (MainWindowContext)DataContext;
+            _context.PropertyChanged += (_, e) => {
+                if (e.PropertyName == nameof(MainWindowContext.State) && !_context.Connected)
+                    MainTab.Dispatch(it => (it.SelectedContent as ITabControl)?.OnLeave());
+            };
             SerialPortCombo.Items.Add(AutoSelectString);
             SerialPortCombo.SelectedIndex = 0;
         }
@@ -82,7 +88,13 @@ namespace Autolabor.PM1.TestTool {
 #endif
                         port = Methods.Initialize(port == AutoSelectString ? "" : port, null, out progress);
 
-                    SerialPortCombo.Dispatch((it) => it.SelectedItem = port);
+                    SerialPortCombo.Dispatch((it) => {
+                        if (!it.Items.Contains(port))
+                            it.Items.Add(port);
+                        it.SelectedItem = port;
+                    });
+
+                    MainTab.Dispatch(it => (it.SelectedContent as ITabControl)?.OnEnter());
                 } catch (Exception exception) {
                     _context.Connected = false;
                     _context.ErrorInfo = exception.Message;
@@ -131,6 +143,14 @@ namespace Autolabor.PM1.TestTool {
             } catch (Exception) {
                 // ignore
             }
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            foreach (var item in e.AddedItems.OfType<TabItem>())
+                (item.Content as ITabControl)?.OnEnter();
+
+            foreach (var item in e.RemovedItems.OfType<TabItem>())
+                (item.Content as ITabControl)?.OnLeave();
         }
     }
 }

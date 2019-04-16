@@ -13,33 +13,24 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
     /// <summary>
     /// ActionTab.xaml 的交互逻辑
     /// </summary>
-    public partial class ActionTab : UserControl {
-        private MainWindowContext _context;
+    public partial class ActionTab : UserControl, ITabControl {
+        private MainWindowContext _windowContext;
 
         public ActionTab() => InitializeComponent();
 
-        private void ConnectedChanged(object sender, PropertyChangedEventArgs e) {
-            if (sender != _context|| e.PropertyName != nameof(MainWindowContext.Connected))
-                return;
-
-            if (_context.Connected) {
-                ActionList.Items.Clear();
-                ActionEditor.Reset();
-                if (PauseToggle.IsChecked == true)
-                    Methods.Paused = true;
-                else
-                    PauseToggle.IsChecked = true;
-            } 
+        public void OnEnter() {
+            ActionList.Items.Clear();
+            ActionEditor.Reset();
+            if (PauseToggle.IsChecked == true)
+                Methods.Paused = false;
+            else
+                PauseToggle.IsChecked = true;
         }
 
-        private void Tab_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
-            if (e.OldValue == null && e.NewValue is MainWindowContext context) {
-                _context = context;
-                _context.PropertyChanged += ConnectedChanged;
-            } else if (e.NewValue == null && _context != null) {
-                _context.PropertyChanged -= ConnectedChanged;
-            }
-        }
+        public void OnLeave() { }
+
+        private void Tab_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+            => _windowContext = e.NewValue as MainWindowContext;
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e) {
             var grid = (Grid)sender;
@@ -123,11 +114,11 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 var progress = .0;
                 _ = Task.Run(async () => {
                     while (flag) {
-                       _context.Progress = progress;
+                        _windowContext.Progress = progress;
                         await Task.Delay(20).ConfigureAwait(false);
                     }
                     await Task.Delay(100).ConfigureAwait(false);
-                    _context.Progress = progress;
+                    _windowContext.Progress = progress;
                 });
                 task = Task.Run(() => {
                     try {
@@ -142,7 +133,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                             ActionList.Dispatch(it => it.Items.RemoveAt(0));
                         }
                     } catch (Exception exception) {
-                        _context.ErrorInfo = exception.Message;
+                        _windowContext.ErrorInfo = exception.Message;
                     } finally {
                         task = null;
                         flag = false;
@@ -156,7 +147,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             try {
                 Methods.CancelTask();
             } catch (Exception exception) {
-                _context.ErrorInfo = exception.Message;
+                _windowContext.ErrorInfo = exception.Message;
             }
         }
     }
