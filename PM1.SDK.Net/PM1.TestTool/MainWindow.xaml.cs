@@ -128,9 +128,161 @@ namespace Autolabor.PM1.TestTool {
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
             try {
                 Methods.Shutdown();
-            } catch (Exception exception) {
+            } catch (Exception) {
                 // ignore
             }
+        }
+
+        private double _delta = 0.1;
+        private bool? _left = null;
+
+        private void StartButton_Click(object sender, RoutedEventArgs e) {
+            HelpText.Text = "已进入后轮零位校准流程，请将机器人移动到合适的位置，确保前方有至少 1.5 米的空旷区域。校准开始后，机器人将按照内部里程计前进 1.5 米，若后轮零位不准，此动作会发生侧偏。待机器人停止后，请将侧偏的情况反馈给机器人，因此建议标记机器人开始时的方向，以便反馈正确的侧偏。";
+            StartButton.Visibility = Visibility.Hidden;
+            GoButton.Visibility = Visibility.Visible;
+            _delta = 0.1;
+            _left = null;
+        }
+
+        private void GoButton_Click(object sender, RoutedEventArgs e) {
+            HelpText.Text = "正在前进。";
+            var flag = true;
+            var progress = .0;
+            _ = Task.Run(async () => {
+                while (flag) {
+                    _context.Progress = progress;
+                    await Task.Delay(20).ConfigureAwait(false);
+                }
+                await Task.Delay(100).ConfigureAwait(false);
+                _context.Progress = progress;
+            });
+            _ = Task.Run(() => {
+                try {
+                    Methods.DriveSpatial(0.15, 0, 2 * 1.5, out progress);
+                    this.Dispatch(_ => {
+                        HelpText.Text = "动作完成。现在点击下面的按钮反馈机器人侧偏情况。点击按钮后，机器人将后退到原位，并尝试调整后轮零位。";
+                        GoButton.Visibility = Visibility.Hidden;
+                    });
+                } catch (Exception exception) {
+                    _context.ErrorInfo = exception.Message;
+                    return;
+                } finally {
+                    flag = false;
+                }
+            });
+        }
+
+        private void DoneButton_Click(object sender, RoutedEventArgs e) {
+            var flag = true;
+            var progress = .0;
+            _ = Task.Run(async () => {
+                while (flag) {
+                    _context.Progress = progress;
+                    await Task.Delay(20).ConfigureAwait(false);
+                }
+                await Task.Delay(100).ConfigureAwait(false);
+                _context.Progress = progress;
+            });
+
+            switch (_left) {
+                case null:
+                    _delta = 0.1;
+                    break;
+                case false:
+                    _delta /= -2;
+                    break;
+            }
+            _left = true;
+
+            _ = Task.Run(() => {
+                try {
+                    Methods.DriveSpatial(-0.15, 0, 2 * 1.5, out progress);
+                    StartButton.Dispatch(it => it.Visibility = Visibility.Visible);
+                } catch (Exception exception) {
+                    _context.ErrorInfo = exception.Message;
+                    return;
+                } finally {
+                    flag = false;
+                }
+            });
+        }
+
+        private void LeftButton_Click(object sender, RoutedEventArgs e) {
+            var flag = true;
+            var progress = .0;
+            _ = Task.Run(async () => {
+                while (flag) {
+                    _context.Progress = progress;
+                    await Task.Delay(20).ConfigureAwait(false);
+                }
+                await Task.Delay(100).ConfigureAwait(false);
+                _context.Progress = progress;
+            });
+
+            switch (_left) {
+                case null:
+                    _delta = 0.1;
+                    break;
+                case false:
+                    _delta /= -2;
+                    break;
+            }
+            _left = true;
+
+            _ = Task.Run(() => {
+                try {
+                    Methods.DriveSpatial(-0.15, 0, 2 * 1.5, out progress);
+                    Methods.AdjustRudder(_delta, out progress);
+                    this.Dispatch(_ => {
+                        HelpText.Text = "调整完成，准备下一次测试。";
+                        GoButton.Visibility = Visibility.Visible;
+                    });
+                } catch (Exception exception) {
+                    _context.ErrorInfo = exception.Message;
+                    return;
+                } finally {
+                    flag = false;
+                }
+            });
+        }
+
+        private void RightButton_Click(object sender, RoutedEventArgs e) {
+            var flag = true;
+            var progress = .0;
+            _ = Task.Run(async () => {
+                while (flag) {
+                    _context.Progress = progress;
+                    await Task.Delay(20).ConfigureAwait(false);
+                }
+                await Task.Delay(100).ConfigureAwait(false);
+                _context.Progress = progress;
+            });
+
+            switch (_left) {
+                case null:
+                    _delta = -0.1;
+                    break;
+                case true:
+                    _delta /= -2;
+                    break;
+            }
+            _left = false;
+
+            _ = Task.Run(() => {
+                try {
+                    Methods.DriveSpatial(-0.15, 0, 2 * 1.5, out progress);
+                    Methods.AdjustRudder(_delta, out progress);
+                    this.Dispatch(_ => {
+                        HelpText.Text = "调整完成，准备下一次测试。";
+                        GoButton.Visibility = Visibility.Visible;
+                    });
+                } catch (Exception exception) {
+                    _context.ErrorInfo = exception.Message;
+                    return;
+                } finally {
+                    flag = false;
+                }
+            });
         }
     }
 }

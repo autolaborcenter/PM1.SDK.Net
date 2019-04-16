@@ -62,6 +62,47 @@
             <TabItem Header="连续控制">
             </TabItem>
             <TabItem Header="舵轮校准">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Border BorderBrush="Black" BorderThickness="1" 
+                            Margin="0,0,0,8" Grid.ColumnSpan="3">
+                        <TextBlock x:Name="HelpText" TextWrapping="Wrap"/>
+                    </Border>
+
+                    <Button x:Name="LeftButton"
+                            Content="偏左" Click="LeftButton_Click"
+                            Grid.Row="1" Grid.Column="0"/>
+                    <Button x:Name="DoneButton" 
+                            Content="已校准" Click="DoneButton_Click"
+                            Margin="4,0" 
+                            Grid.Row="1" Grid.Column="1"/>
+                    <Button x:Name="RightButton"
+                            Content="偏右" Click="RightButton_Click"
+                            Grid.Row="1" Grid.Column="2"/>
+                    <Button x:Name="GoButton" 
+                            Content="开始前进" Click="GoButton_Click"
+                            Grid.Row="1" Grid.ColumnSpan="3"/>
+                    <Button x:Name="StartButton"
+                            Content="开始校准" Click="StartButton_Click"
+                            Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+
+                    <ProgressBar Maximum="1"
+                                 Margin="0,8,0,0" 
+                                 Grid.Row="2" Grid.ColumnSpan="3"/>
+                    <TextBlock Text="校准进度" 
+                               HorizontalAlignment="Center"
+                               Margin="0,8,0,0" 
+                               Grid.Row="2" Grid.ColumnSpan="3"/>
+                </Grid>
             </TabItem>
             <TabItem Header="参数标定">
             </TabItem>
