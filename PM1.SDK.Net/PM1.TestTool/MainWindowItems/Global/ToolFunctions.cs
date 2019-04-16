@@ -27,7 +27,7 @@ namespace Autolabor.PM1.TestTool {
                 while (!connecting.IsCancellationRequested) {
                     context.ConnectedTime = Format("0.0", stopwatch.ElapsedMilliseconds / 1000.0);
                     try {
-                        context.State = Methods.State;
+                        context.ChassisState = Methods.State;
                         var (_, _, x, y, theta, _, _, _) = Methods.Odometry;
                         context.Odometry = string.Format(
                             CultureInfo.InvariantCulture,
@@ -49,7 +49,7 @@ namespace Autolabor.PM1.TestTool {
             } catch (Exception exception) {
                 context.ErrorInfo = exception.Message;
             } finally {
-                context.Connected = false;
+                context.State = MainWindowContext.WindowState.Disconnected;
             }
         }
     }

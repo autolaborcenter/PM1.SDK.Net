@@ -13,7 +13,7 @@
         FontSize="16"
         Closing="Window_Closing">
     <Window.DataContext>
-        <local:MainWindowContext Connected="False"/>
+        <local:MainWindowContext/>
     </Window.DataContext>
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
@@ -27,18 +27,19 @@
                     Margin="8,4">
             <CheckBox Content="连接到串行口："
                       Click="CheckBox_Click"
-                      IsChecked="{Binding Connected, Mode=OneWay}"
+                      IsChecked="{Binding CheckBoxChecked, Mode=OneWay}"
+                      IsEnabled="{Binding CheckBoxEnabled, Mode=OneWay}"
                       VerticalAlignment="Center"/>
             <ComboBox Name="SerialPortCombo"
                       DropDownOpened="ComboBox_DropDownOpened"
                       DropDownClosed="ComboBox_DropDownClosed"
-                      IsEnabled="{Binding Disconnected, Mode=OneWay}"
+                      IsEnabled="{Binding ComboBoxEnabled, Mode=OneWay}"
                       Width="120"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="4,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    IsEnabled="{Binding Connected, Mode=OneWay}"
+                    IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
                     Background="{Binding StateAreaBrush, Mode=OneWay}">
             <RadioButton Content="正常" GroupName="State" 
                          IsChecked="{Binding IsUnlocked, Mode=OneWay}"
@@ -54,7 +55,7 @@
                          IsEnabled="False"/>
         </StackPanel>
         <TabControl x:Name="MainTab"
-                    IsEnabled="{Binding Connected, Mode=OneWay}"
+                    IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
                     SelectionChanged="TabControl_SelectionChanged"
                     Grid.Row="1"
                     HorizontalAlignment="Stretch" 

@@ -3,24 +3,37 @@ using System.Windows.Media;
 
 namespace Autolabor.PM1.TestTool {
     public class MainWindowContext : BindableBase {
-        private bool _connected = false;
+        public enum WindowState {
+            Disconnected,
+            Connecting,
+            Connected,
+        }
+
+        private WindowState _windowState = WindowState.Disconnected;
         private double _progress = 0;
         private string _connectedTime = "0.0";
         private string _odometry = "0.0, 0.0, 0.0°";
         private string _errorInfo = "";
-        private StateEnum? _state = StateEnum.Offline;
+        private StateEnum? _chassisState = StateEnum.Offline;
 
-        public bool Connected {
-            get => _connected;
+        public WindowState State {
+            get => _windowState;
             set {
-                if (SetProperty(ref _connected, value)) {
-                    Notify(nameof(Disconnected));
-                    if (!value) State = StateEnum.Offline;
-                }
+                if (!SetProperty(ref _windowState, value)) return;
+                Notify(nameof(CheckBoxEnabled));
+                Notify(nameof(CheckBoxChecked));
+                Notify(nameof(ComboBoxEnabled));
+                Notify(nameof(ElementsEnabled));
             }
         }
 
-        public bool Disconnected => !_connected;
+        public bool CheckBoxChecked => _windowState != WindowState.Disconnected;
+
+        public bool CheckBoxEnabled => _windowState != WindowState.Connecting;
+
+        public bool ComboBoxEnabled => _windowState == WindowState.Disconnected;
+
+        public bool ElementsEnabled => _windowState == WindowState.Connected;
 
         public double Progress {
             get => _progress;
@@ -42,17 +55,11 @@ namespace Autolabor.PM1.TestTool {
             set => SetProperty(ref _errorInfo, value);
         }
 
-        private static readonly SolidColorBrush
-            ErrorBrush = new SolidColorBrush(Colors.Firebrick),
-            LockBrush = new SolidColorBrush(Colors.DimGray),
-            UnLockedBrush = new SolidColorBrush(Colors.LawnGreen),
-            OfflineBrush = new SolidColorBrush(Colors.LightGray);
-
-        public StateEnum? State {
-            get => _state;
+        public StateEnum? ChassisState {
+            get => _chassisState;
             set {
-                if (Equals(_state, value)) return;
-                _state = value;
+                if (Equals(_chassisState, value)) return;
+                _chassisState = value;
                 if (!value.HasValue) return;
 
                 Notify(nameof(IsLocked));
@@ -62,13 +69,15 @@ namespace Autolabor.PM1.TestTool {
             }
         }
 
-        public bool IsLocked => _state == StateEnum.Locked;
-        public bool IsUnlocked => _state == StateEnum.Unlocked;
-        public bool IsError => _state == StateEnum.Error;
+        public bool IsLocked => _chassisState == StateEnum.Locked;
+
+        public bool IsUnlocked => _chassisState == StateEnum.Unlocked;
+
+        public bool IsError => _chassisState == StateEnum.Error;
 
         public Brush StateAreaBrush {
             get {
-                switch (_state) {
+                switch (_chassisState) {
                     case StateEnum.Offline:
                         return OfflineBrush;
                     case StateEnum.Unlocked:
@@ -78,9 +87,15 @@ namespace Autolabor.PM1.TestTool {
                     case StateEnum.Error:
                         return ErrorBrush;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(_state), _state, "imposible!");
+                        throw new ArgumentOutOfRangeException(nameof(_chassisState), _chassisState, "imposible!");
                 }
             }
         }
+
+        private static readonly SolidColorBrush
+            ErrorBrush = new SolidColorBrush(Colors.Firebrick),
+            LockBrush = new SolidColorBrush(Colors.DimGray),
+            UnLockedBrush = new SolidColorBrush(Colors.LawnGreen),
+            OfflineBrush = new SolidColorBrush(Colors.LightGray);
     }
 }

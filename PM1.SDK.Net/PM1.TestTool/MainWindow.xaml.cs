@@ -23,7 +23,8 @@ namespace Autolabor.PM1.TestTool {
             InitializeComponent();
             _context = (MainWindowContext)DataContext;
             _context.PropertyChanged += (_, e) => {
-                if (e.PropertyName == nameof(MainWindowContext.State) && !_context.Connected)
+                if (e.PropertyName == nameof(MainWindowContext.State) 
+                && _context.State == MainWindowContext.WindowState.Disconnected)
                     MainTab.Dispatch(it => (it.SelectedContent as ITabControl)?.OnLeave());
             };
             SerialPortCombo.Items.Add(AutoSelectString);
@@ -53,7 +54,7 @@ namespace Autolabor.PM1.TestTool {
         }
 
         private async void CheckBox_Click(object sender, RoutedEventArgs e) {
-            if (_context.Connected)
+            if (_context.State == MainWindowContext.WindowState.Connected)
                 _connecting.Cancel();
             else
                 await Connect((CheckBox)sender).ConfigureAwait(false);
@@ -61,7 +62,7 @@ namespace Autolabor.PM1.TestTool {
 
         private async Task Connect(CheckBox box) {
             box.IsEnabled = false;
-            _context.Connected = true;
+            _context.State = MainWindowContext.WindowState.Connecting;
             _context.ErrorInfo = "";
 
             var flag = true;
@@ -98,8 +99,10 @@ namespace Autolabor.PM1.TestTool {
                         if(it.SelectedContent is ITabControl control) 
                             control.OnEnter();
                     });
+
+                    _context.State = MainWindowContext.WindowState.Connected;
                 } catch (Exception exception) {
-                    _context.Connected = false;
+                    _context.State = MainWindowContext.WindowState.Disconnected;
                     _context.ErrorInfo = exception.Message;
                     return;
                 } finally {
@@ -126,7 +129,7 @@ namespace Autolabor.PM1.TestTool {
         private StateEnum ChassisState {
             set {
                 try {
-                    _context.State = null;
+                    _context.ChassisState = null;
                     Methods.State = value;
                 } catch (Exception exception) {
                     _context.ErrorInfo = exception.Message;

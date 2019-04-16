@@ -126,8 +126,6 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
             public bool IsVoid => State == StateEnum.Void;
 
-            public bool IsSlave => State == StateEnum.Slave;
-
             private static readonly SolidColorBrush
                 Normal = new SolidColorBrush(Colors.Black),
                 Error = new SolidColorBrush(Colors.Red);
@@ -194,7 +192,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 input.State = Input.StateEnum.Void;
 
             if (theOne.IsMaster) {
-                foreach(var input in _inputs.Where(it => it.IsSlave))
+                foreach (var input in new[] { _v, _w }.Where(it => it.State == Input.StateEnum.Slave))
                     if (!input.CheckRange()) {
                         theOne.State = Input.StateEnum.Error;
                         ErrorInfo.Text = "速度超出有效范围";
@@ -264,26 +262,31 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             bool IsValid(Input one)
                 => one.IsMaster && one.Value != 0;
 
-            bool Condition(Input related, Input opposite0, Input opposite1)
-                => !related.IsMaster && (IsValid(opposite0) || IsValid(opposite1));
+            void Set(Input one, Input related, Input opposite0, Input opposite1,double target) {
+                if (one.IsVoid) one.Value = related.IsMaster 
+                                            ? Math.Sign(related.Value) * target
+                                            : !IsValid(opposite0) && !IsValid(opposite1)
+                                              ? target
+                                              : 0;
+            }
 
             var input = (Control)sender;
             if (!input.IsEnabled) return;
             switch ((string)input.Tag) {
                 case nameof(_v):
-                    if (_v.IsVoid) _v.Value = Condition(_s, _w, _a) ? 0 : 0.2;
+                    Set(_v, _s, _w, _a, 0.2);
                     break;
                 case nameof(_w):
-                    if (_w.IsVoid) _w.Value = Condition(_a, _v, _s) ? 0 : 20;
+                    Set(_w, _a, _v, _s, 20);
                     break;
                 case nameof(_r):
                     if (_r.IsVoid) _r.Value = 0.5;
                     break;
                 case nameof(_s):
-                    if (_s.IsVoid) _s.Value = Condition(_v, _w, _a) ? 0 : 1;
+                    Set(_s, _v, _w, _a, 1);
                     break;
                 case nameof(_a):
-                    if (_a.IsVoid) _a.Value = Condition(_w, _v, _s) ? 0 : 90;
+                    Set(_a, _w, _v, _s, 90);
                     break;
                 case nameof(_t):
                     if (_t.IsVoid) _t.Value = 5;
@@ -314,7 +317,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         /// <returns>检查是否通过</returns>
         private bool CheckSign(Input theOne)
             => !_signPairs.TryGetValue(theOne, out var others)
-            || !others.IsMaster
+            || double.IsNaN(others.Value)
             || Math.Sign(others.Value) == Math.Sign(theOne.Value);
 
         /// <summary>
