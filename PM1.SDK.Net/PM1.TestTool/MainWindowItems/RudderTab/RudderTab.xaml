@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="Autolabor.PM1.TestTool.MainWindowItems.RudderTab.RudderTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.RudderTab"
+             DataContextChanged="Tab_DataContextChanged"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <Grid DataContextChanged="Grid_DataContextChanged">
+        <Grid.DataContext>
+            <local:TabContext/>
+        </Grid.DataContext>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/> 
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border BorderBrush="Black" BorderThickness="1" 
+                Margin="0,0,0,8" Grid.ColumnSpan="3">
+            <TextBlock Text="{Binding HelpText,Mode=OneWay}" TextWrapping="Wrap"/>
+        </Border>
+
+        <Button IsEnabled="{Binding BackwardButtonEnabled,Mode=OneWay}"
+                Content="偏左" Click="LeftButton_Click"
+                Grid.Row="1" Grid.Column="0"/>
+        <Button IsEnabled="{Binding BackwardButtonEnabled,Mode=OneWay}"
+                Content="已校准" Click="DoneButton_Click"
+                Margin="4,0" 
+                Grid.Row="1" Grid.Column="1"/>
+        <Button IsEnabled="{Binding BackwardButtonEnabled,Mode=OneWay}"
+                Content="偏右" Click="RightButton_Click"
+                Grid.Row="1" Grid.Column="2"/>
+        <Button Visibility="{Binding ForwardButtonVisible,Mode=OneWay}"
+                IsEnabled="{Binding ForwardButtonEnabled,Mode=OneWay}"
+                Content="开始前进" Click="GoButton_Click"
+                Grid.Row="1" Grid.ColumnSpan="3"/>
+        <Button Visibility="{Binding StartButtonVisible,Mode=OneWay}"
+                Content="开始校准" Click="StartButton_Click"
+                Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+
+        <ProgressBar Maximum="1" Value="{Binding Progress,Mode=OneWay}"
+                     Margin="0,8,0,0" 
+                     Grid.Row="2" Grid.ColumnSpan="3"/>
+        <TextBlock Text="校准进度" 
+                   HorizontalAlignment="Center"
+                   Margin="0,8,0,0" 
+                   Grid.Row="2" Grid.ColumnSpan="3"/>
+    </Grid>
+</UserControl>

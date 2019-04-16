@@ -98,7 +98,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                     CultureInfo.InvariantCulture,
                     "v = {0}m/s | ω = {1}°/s",
                     ToolFunctions.Format("0.##", v),
-                    ToolFunctions.Format("0.#", w / Math.PI * 180));
+                    ToolFunctions.Format("0.#", w.ToDegree()));
         }
 
         private Task task = null;

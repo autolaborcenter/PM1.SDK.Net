@@ -324,8 +324,6 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         /// <param name="ranference">参考项</param>
         /// <returns>是否确定</returns>
         private bool CalculateItem(Input input, List<Input> ranference) {
-            double RadOf(double degree) => degree * Math.PI / 180;
-            double DegreeOf(double rad) => rad * 180 / Math.PI;
             void SetSlave(double value) {
                 input.State = Input.StateEnum.Slave;
                 input.Value = value;
@@ -340,7 +338,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 } else if (ranference.Contains(_w)
                         && ranference.Contains(_r)
                         && _w.Value != 0) {
-                    SetSlave(RadOf(_w.Value) * _r.Value);
+                    SetSlave(_w.Value.ToRad() * _r.Value);
                     return true;
                 }
             } else if (input == _w) {
@@ -350,7 +348,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 } else if (ranference.Contains(_v)
                         && ranference.Contains(_r)
                         && _v.Value != 0) {
-                    SetSlave(DegreeOf(_v.Value / _r.Value));
+                    SetSlave((_v.Value / _r.Value).ToDegree());
                     return true;
                 }
             } else if (input == _r) {
@@ -362,10 +360,10 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                     SetSlave(double.PositiveInfinity);
                     return true;
                 } else if (ranference.Contains(_v) && ranference.Contains(_w)) {
-                    SetSlave(_v.Value / RadOf(_w.Value));
+                    SetSlave(_v.Value / _w.Value.ToRad());
                     return true;
                 } else if (ranference.Contains(_s) && ranference.Contains(_a)) {
-                    SetSlave(_s.Value / RadOf(_a.Value));
+                    SetSlave(_s.Value / _a.Value.ToRad());
                     return true;
                 }
             } else if (input == _s) {
@@ -379,7 +377,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 } else if (ranference.Contains(_a)
                         && ranference.Contains(_r)
                         && _a.Value != 0) {
-                    SetSlave(RadOf(_a.Value) * _r.Value);
+                    SetSlave(_a.Value.ToRad() * _r.Value);
                     return true;
                 }
             } else if (input == _a) {
@@ -392,7 +390,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 } else if (ranference.Contains(_s)
                         && ranference.Contains(_r)
                         && _s.Value != 0) {
-                    SetSlave(DegreeOf(_s.Value / _r.Value));
+                    SetSlave((_s.Value / _r.Value).ToDegree());
                     return true;
                 }
             } else if (input == _t) {
@@ -408,14 +406,13 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         ///     确认按钮的点击事件
         /// </summary>
         private void CheckButton_Click(object sender, RoutedEventArgs e) {
-            double RadOf(double degree) => degree * Math.PI / 180;
             var timeBased = _t.IsMaster;
             OnCompleted?.Invoke(_v.Value,
-                                RadOf(_w.Value),
+                                _w.Value.ToRad(),
                                 timeBased,
                                 timeBased ? _t.Value
                                           : SafeNativeMethods.SpatiumCalculate(Math.Abs(_s.Value), 
-                                                                               Math.Abs(RadOf(_a.Value))));
+                                                                               Math.Abs(_a.Value.ToRad())));
             Reset();
         }
     }
