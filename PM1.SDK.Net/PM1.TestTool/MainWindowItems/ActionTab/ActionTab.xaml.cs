@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,8 +22,9 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         public void OnEnter() {
             ActionList.Items.Clear();
             ActionEditor.Reset();
+
             if (PauseToggle.IsChecked == true)
-                Methods.Paused = false;
+                Pause();
             else
                 PauseToggle.IsChecked = true;
         }
@@ -94,10 +96,17 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
         private Task task = null;
 
+        private void Pause() {
+            while (!Methods.Paused) {
+                Methods.Paused = true;
+                Thread.Sleep(10);
+            }
+        }
+
         private void ToggleButton_Click(object sender, RoutedEventArgs e) {
             var toggle = (ToggleButton)sender;
             if (toggle.IsChecked == true) {
-                Methods.Paused = true;
+                Pause();
                 toggle.Content = "已暂停";
             } else {
                 Methods.Paused = false;

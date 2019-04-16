@@ -94,7 +94,10 @@ namespace Autolabor.PM1.TestTool {
                         it.SelectedItem = port;
                     });
 
-                    MainTab.Dispatch(it => (it.SelectedContent as ITabControl)?.OnEnter());
+                    MainTab.Dispatch(it => {
+                        if(it.SelectedContent is ITabControl control) 
+                            control.OnEnter();
+                    });
                 } catch (Exception exception) {
                     _context.Connected = false;
                     _context.ErrorInfo = exception.Message;

@@ -39,6 +39,7 @@
                       IsEnabled="False"/>
             <ToggleButton x:Name="PauseToggle"
                           Content="已暂停"
+                          IsChecked="True"
                           Click="ToggleButton_Click"
                           Margin="8" Grid.Row="1"/>
             <Button Content="终止" 
