@@ -7,8 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500"
              DataContextChanged="Tab_DataContextChanged">
-    <Grid SizeChanged="Grid_SizeChanged"
-          IsEnabledChanged="Grid_IsEnabledChanged">
+    <Grid SizeChanged="Grid_SizeChanged">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -38,7 +37,8 @@
             </Grid.RowDefinitions>
             <ListView x:Name="ActionList" Margin="8"
                       IsEnabled="False"/>
-            <ToggleButton Content="暂停"
+            <ToggleButton x:Name="PauseToggle"
+                          Content="已暂停"
                           Click="ToggleButton_Click"
                           Margin="8" Grid.Row="1"/>
             <Button Content="终止" 

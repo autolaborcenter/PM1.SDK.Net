@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -24,8 +25,28 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
         public ActionTab() => InitializeComponent();
 
-        private void Tab_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) 
-            => _context = e.NewValue as MainWindowContext;
+        private void ConnectedChanged(object sender, PropertyChangedEventArgs e) {
+            if (sender != _context|| e.PropertyName != nameof(MainWindowContext.Connected))
+                return;
+
+            if (_context.Connected) {
+                ActionList.Items.Clear();
+                ActionEditor.Reset();
+                if (PauseToggle.IsChecked == true)
+                    Methods.Paused = true;
+                else
+                    PauseToggle.IsChecked = true;
+            } 
+        }
+
+        private void Tab_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+            if (e.OldValue == null && e.NewValue is MainWindowContext context) {
+                _context = context;
+                _context.PropertyChanged += ConnectedChanged;
+            } else if (e.NewValue == null && _context != null) {
+                _context.PropertyChanged -= ConnectedChanged;
+            }
+        }
 
         private void Grid_SizeChanged(object sender, SizeChangedEventArgs e) {
             var grid = (Grid)sender;
@@ -74,9 +95,6 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 }
             }
         }
-
-        private void Grid_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
-            => ActionList.Items.Clear();
 
         private struct ActionConfig {
             public double v, w, range;

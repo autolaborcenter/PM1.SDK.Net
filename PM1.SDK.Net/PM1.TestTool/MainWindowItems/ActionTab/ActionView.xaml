@@ -20,7 +20,11 @@
         </Style>
     </UserControl.Resources>
     <StackPanel Margin="8">
-        <TextBlock Text="速度设定"/>
+        <TextBox x:Name="ErrorInfo"
+                 IsEnabled="False" Foreground="Red">
+            至少输入一项速度和一项约束
+        </TextBox>
+        <TextBlock Text="速度设定" Margin="0,12,0,0" />
         <Separator/>
         <Grid>
             <Grid.RowDefinitions>
@@ -56,7 +60,7 @@
             <TextBlock Text="°/s" Margin="4,0"
                        Grid.Row="1" Grid.Column="2"/>
         </Grid>
-        <TextBlock Text="路径设定" Margin="0,8,0,0"/>
+        <TextBlock Text="路径设定" Margin="0,12,0,0"/>
         <Separator/>
         <Grid>
             <Grid.RowDefinitions>
@@ -80,7 +84,7 @@
                        Grid.Row="0" Grid.Column="2"/>
         </Grid>
 
-        <TextBlock Text="过程设定" Margin="0,8,0,0"/>
+        <TextBlock Text="约束设定" Margin="0,12,0,0"/>
         <Separator/>
         <Grid>
             <Grid.RowDefinitions>
@@ -133,12 +137,7 @@
         <Button x:Name="CheckButton" Content="确定" 
                 Click="CheckButton_Click"
                 IsEnabled="False"
-                Margin="0,12,0,12"
+                Margin="0,12,0,0"
                 VerticalAlignment="Bottom"/>
-        <TextBlock Text="动作参数错误信息"/>
-        <Separator/>
-        <TextBox x:Name="ErrorInfo" 
-                 IsEnabled="False"
-                 Foreground="Red"/>
     </StackPanel>
 </UserControl>

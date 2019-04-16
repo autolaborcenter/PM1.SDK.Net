@@ -156,6 +156,9 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 { _a, _w } };
         }
 
+        /// <summary>
+        ///     重置控件
+        /// </summary>
         public void Reset() {
             foreach (var input in _inputs) {
                 input.Value = double.NaN;
@@ -163,6 +166,10 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             }
         }
 
+        /// <summary>
+        ///     计算所有从动参数
+        /// </summary>
+        /// <param name="theOne">本次修改的一项</param>
         private void Calculate(Input theOne) {
             var error = theOne.UpdateStateByValue();
             if (!string.IsNullOrWhiteSpace(error)) {
@@ -173,12 +180,10 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             if (theOne.IsMaster) {
                 if (!CheckSign(theOne)) {
                     theOne.State = Input.StateEnum.Error;
-                    ErrorInfo.Text = "与对应项符号不一致";
+                    ErrorInfo.Text = "速度设定与约束设定冲突";
                     return;
                 }
             }
-
-            ErrorInfo.Text = "";
 
             var complete = _inputs.Where(it => it.IsMaster).ToList();
             var waitings = _inputs.Except(complete).ToList();
@@ -189,16 +194,32 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 input.State = Input.StateEnum.Void;
 
             if (theOne.IsMaster) {
-                foreach(var input in _inputs.Where(it => it.IsSlave)) {
+                foreach(var input in _inputs.Where(it => it.IsSlave))
                     if (!input.CheckRange()) {
                         theOne.State = Input.StateEnum.Error;
-                        ErrorInfo.Text = "超出有效范围";
+                        ErrorInfo.Text = "速度超出有效范围";
                         return;
                     }
-                }
             }
+
+            var voids = _inputs.Where(it => it.IsVoid).ToHashSet();
+            if (voids.Count == _inputs.Count)
+                ErrorInfo.Text = "至少输入一项速度和一项约束";
+            else if (voids.Intersect(new[] { _v, _w }).Count() == 2)
+                ErrorInfo.Text = "至少输入一项速度";
+            else if (voids.Intersect(new[] { _s, _a, _t }).Count() == 3)
+                ErrorInfo.Text = "至少输入一项约束";
+            else if (_inputs.Where(it => it.IsMaster).Count() == 2)
+                ErrorInfo.Text = _inputs.Any(it => it.IsVoid)
+                                 ? "再输入一项以确定动作"
+                                 : "无效的动作";
+            else
+                ErrorInfo.Text = "";
         }
 
+        /// <summary>
+        ///     修改参数时重新计算从动参数
+        /// </summary>
         private void TextChanged(object sender, TextChangedEventArgs e) {
             var input = (Control)sender;
             if (!input.IsEnabled) return;
@@ -210,11 +231,15 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 case nameof(_a): Calculate(_a); break;
                 case nameof(_t): Calculate(_t); break;
             }
-            if(CheckButton.IsEnabled = _inputs.Where(it => it.IsMaster).Count() == 3)
-                if (Math.Abs(_v.Value) > 1 || Math.Abs(_w.Value) > 60) 
-                    ErrorInfo.Text = "速度较快，请谨慎操作";
+            if (CheckButton.IsEnabled = _inputs.Where(it => it.IsMaster).Count() == 3)
+                ErrorInfo.Text = Math.Abs(_v.Value) > 1 || Math.Abs(_w.Value) > 60
+                    ? "速度较快，请谨慎操作"
+                    : "点击确定时动作开始";
         }
 
+        /// <summary>
+        ///     失去焦点时清除异常
+        /// </summary>
         private void Box_LostFocus(object sender, RoutedEventArgs e) {
             void Clear(Input one) {
                 if (one.ClearError()) ErrorInfo.Text = "错误已清除";
@@ -232,24 +257,33 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             }
         }
 
+        /// <summary>
+        ///     为一个主要参数提供默认设定值
+        /// </summary>
         private void Checked(object sender, RoutedEventArgs e) {
+            bool IsValid(Input one)
+                => one.IsMaster && one.Value != 0;
+
+            bool Condition(Input related, Input opposite0, Input opposite1)
+                => !related.IsMaster && (IsValid(opposite0) || IsValid(opposite1));
+
             var input = (Control)sender;
             if (!input.IsEnabled) return;
             switch ((string)input.Tag) {
                 case nameof(_v):
-                    if (_v.IsVoid) _v.Value = 0.2;
+                    if (_v.IsVoid) _v.Value = Condition(_s, _w, _a) ? 0 : 0.2;
                     break;
                 case nameof(_w):
-                    if (_w.IsVoid) _w.Value = 20;
+                    if (_w.IsVoid) _w.Value = Condition(_a, _v, _s) ? 0 : 20;
                     break;
                 case nameof(_r):
                     if (_r.IsVoid) _r.Value = 0.5;
                     break;
                 case nameof(_s):
-                    if (_s.IsVoid) _s.Value = 1;
+                    if (_s.IsVoid) _s.Value = Condition(_v, _w, _a) ? 0 : 1;
                     break;
                 case nameof(_a):
-                    if (_a.IsVoid) _a.Value = 90;
+                    if (_a.IsVoid) _a.Value = Condition(_w, _v, _s) ? 0 : 90;
                     break;
                 case nameof(_t):
                     if (_t.IsVoid) _t.Value = 5;
@@ -257,6 +291,9 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             }
         }
 
+        /// <summary>
+        ///     取消一个主要参数设定
+        /// </summary>
         private void Unchecked(object sender, RoutedEventArgs e) {
             var input = (Control)sender;
             if (!input.IsEnabled) return;
@@ -367,6 +404,9 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             return false;
         }
 
+        /// <summary>
+        ///     确认按钮的点击事件
+        /// </summary>
         private void CheckButton_Click(object sender, RoutedEventArgs e) {
             double RadOf(double degree) => degree * Math.PI / 180;
             var timeBased = _t.IsMaster;
