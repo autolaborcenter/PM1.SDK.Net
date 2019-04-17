@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DriveTab">
+             xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DriveTab"
+             DataContextChanged="Tab_DataContextChanged">
     <Grid DataContextChanged="Grid_DataContextChanged">
         <Grid.DataContext>
             <local:TabContext/>
@@ -16,12 +17,15 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="42"/>
         </Grid.ColumnDefinitions>
-        <Canvas Height="{Binding Size}" Width="{Binding Size}"
+        <Canvas x:Name="Origin"
+                MouseMove="Drag_MouseMove"
+                Height="{Binding Size}" Width="{Binding Size}"
                 Grid.RowSpan="2">
             <Ellipse Fill="Gray"
                      Height="{Binding Size}" Width="{Binding Size}"/>
             <Ellipse Fill="Black"
-                     Canvas.Left="165" Canvas.Top="165"
+                     Canvas.Left="{Binding LimitedLeft, Mode=OneWay}" 
+                     Canvas.Top="{Binding LimitedTop, Mode=OneWay}"
                      Height="{Binding TouchSize}" Width="{Binding TouchSize}"/>
         </Canvas>
        
