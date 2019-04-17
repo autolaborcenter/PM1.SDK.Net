@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Autolabor.PM1.TestTool"
         xmlns:actiontab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.ActionTab"
+        xmlns:drivetab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DriveTab"
         xmlns:ruddertab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.RudderTab"
         mc:Ignorable="d"
         Title="Autolabor PM1 检测工具集" 
@@ -64,6 +65,8 @@
                 <actiontab:ActionTab Margin="8"/>
             </TabItem>
             <TabItem Header="连续控制">
+                <drivetab:DriveTab Margin="8"
+                                   HorizontalAlignment="Center"/>
             </TabItem>
             <TabItem Header="舵轮校准">
                 <ruddertab:RudderTab Margin="8"/>

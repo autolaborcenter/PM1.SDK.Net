@@ -20,7 +20,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             ActionEditor.Reset();
 
             if (PauseToggle.IsChecked == true)
-                Pause();
+                Methods.Paused = true;
             else
                 PauseToggle.IsChecked = true;
         }
@@ -92,17 +92,10 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
         private Task task = null;
 
-        private void Pause() {
-            while (!Methods.Paused) {
-                Methods.Paused = true;
-                Thread.Sleep(10);
-            }
-        }
-
         private void ToggleButton_Click(object sender, RoutedEventArgs e) {
             var toggle = (ToggleButton)sender;
             if (toggle.IsChecked == true) {
-                Pause();
+                Methods.Paused = true;
                 toggle.Content = "已暂停";
             } else {
                 Methods.Paused = false;

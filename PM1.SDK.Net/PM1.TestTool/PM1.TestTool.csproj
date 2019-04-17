@@ -114,6 +114,10 @@
     <Compile Include="MainWindowItems\ActionTab\ActionView.xaml.cs">
       <DependentUpon>ActionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainWindowItems\DriveTab\DriveTab.xaml.cs">
+      <DependentUpon>DriveTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindowItems\DriveTab\DriveTabContext.cs" />
     <Compile Include="MainWindowItems\ITabControl.cs" />
     <Compile Include="MainWindowItems\MainWindowContext.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -128,13 +132,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="MainWindowItems\DriveTab\DriveTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindowItems\RudderTab\RudderTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainWindowItems\Global\ToolFunctions.cs" />
+    <Compile Include="MainWindowItems\ToolFunctions.cs" />
     <Compile Include="MainWindowItems\RudderTab\RudderTab.xaml.cs">
       <DependentUpon>RudderTab.xaml</DependentUpon>
     </Compile>
