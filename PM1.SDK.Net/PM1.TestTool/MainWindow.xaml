@@ -66,6 +66,7 @@
             </TabItem>
             <TabItem Header="连续控制">
                 <drivetab:DriveTab Margin="8"
+                                   VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
             </TabItem>
             <TabItem Header="舵轮校准">

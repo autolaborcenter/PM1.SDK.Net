@@ -13,9 +13,13 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
                        _x,
                        _y;
 
+        private double _limitedLeft, 
+                       _limitedTop;
+
         public TabContext() {
             _speed = 0.1 * MaxSpeed;
             _x = _y = Size / 2;
+            _limitedLeft = _limitedTop = Radius;
         }
 
         public double Speed {
@@ -24,10 +28,6 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
                 var pre = _speed;
                 if (!SetProperty(ref _speed, value)) return;
                 Notify(nameof(SpeedRatioText));
-
-                if (pre <= 0) return;
-                _x *= _speed / pre;
-                _y *= _speed / pre;
             }
         }
 
@@ -38,7 +38,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
             get => _x;
             set {
                 if (!SetProperty(ref _x, value)) return;
-                Notify(nameof(LimitedLeft));
+                Update();
             }
         }
 
@@ -46,21 +46,23 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
             get => _y;
             set {
                 if (!SetProperty(ref _y, value)) return;
-                Notify(nameof(LimitedTop));
+                Update();
             }
         }
 
-        public double LimitedLeft => Limit(_x, _y).x;
+        public double LimitedLeft => _limitedLeft;
 
-        public double LimitedTop => Limit(_x, _y).y;
+        public double LimitedTop => _limitedTop;
 
-        private (double x, double y) Limit(double x, double y) {
-            var xo = x - Size / 2;
-            var yo = y - Size / 2;
+        private void Update() {
+            var xo = _x - Size / 2;
+            var yo = _y - Size / 2;
             var tan = Math.Atan2(yo, xo);
             var r = Math.Min(Radius, Math.Sqrt(xo * xo + yo * yo));
-            return (r * Math.Cos(tan) + Radius,
-                    r * Math.Sin(tan) + Radius);
+            _limitedLeft = r * Math.Cos(tan) + Radius;
+            _limitedTop = r * Math.Sin(tan) + Radius;
+            Notify(nameof(LimitedLeft));
+            Notify(nameof(LimitedTop));
         }
     }
 }
