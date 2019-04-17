@@ -17,6 +17,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
 
         Task task;
 
+        MouseDevice mouseDevice;
+
         volatile bool flag;
 
         public void OnEnter() {
@@ -25,10 +27,10 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
                 while (flag) {
                     await Task.Delay(50).ConfigureAwait(false);
                     try {
-                        if (_windowContext?.State != MainWindowContext.WindowState.Connected)
-                            continue;
-                        Methods.SetPhysicalTarget(_tabContext.Speed, _tabContext.Rudder);
-                    } catch (Exception exception) {
+                        if (_windowContext?.State == MainWindowContext.WindowState.Connected)
+                            Methods.SetPhysicalTarget(_tabContext.Speed, _tabContext.Rudder);
+                    }
+                    catch (Exception exception) {
                         _windowContext.ErrorInfo = exception.Message;
                     }
                 }
@@ -36,8 +38,10 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
             });
         }
 
-        public void OnLeave() 
-            => flag = false;
+        public void OnLeave() {
+            flag = false;
+            task?.Wait();
+        }
 
         private void Tab_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
             => _windowContext = e.NewValue as MainWindowContext;
@@ -47,16 +51,27 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
 
         private void Drag_MouseMove(object sender, MouseEventArgs e) {
             if (e.LeftButton == MouseButtonState.Pressed) {
-                if (e.MouseDevice.Captured == null)
+                if (e.MouseDevice.Captured == null) {
+                    mouseDevice = e.MouseDevice;
                     e.MouseDevice.Capture(Origin);
+                }
                 var position = e.GetPosition(Origin);
                 _tabContext.X = position.X - TabContext.TouchSize / 2;
                 _tabContext.Y = position.Y - TabContext.TouchSize / 2;
-            } else {
-                e.MouseDevice.Capture(null);
-                _tabContext.X =
-                _tabContext.Y = TabContext.Radius;
             }
+            else ReleaseMouse();
+        }
+
+        private void Grid_TouchUp(object sender, TouchEventArgs e)
+            => ReleaseMouse();
+
+        private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
+            => ReleaseMouse();
+
+        void ReleaseMouse() {
+            mouseDevice?.Capture(null);
+            _tabContext.X =
+            _tabContext.Y = TabContext.Radius;
         }
     }
 }

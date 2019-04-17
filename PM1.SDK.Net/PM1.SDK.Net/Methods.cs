@@ -190,6 +190,15 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
+        ///     计算空间尺度
+        /// </summary>
+        /// <param name="spatium">轨迹弧长</param>
+        /// <param name="angle">轨迹夹角</param>
+        /// <returns>尺度</returns>
+        public static double SpatiumCalculate(double spatium, double angle)
+            => SafeNativeMethods.SpatiumCalculate(spatium, angle);
+
+        /// <summary>
         ///     按空间驱动
         /// </summary>
         /// <param name="v"></param>
@@ -233,10 +242,10 @@ namespace Autolabor.PM1 {
         ///     前进
         /// </summary>
         /// <param name="speed">速度</param>
-        /// <param name="seconds">时间（秒）</param>
+        /// <param name="time">时间（秒）</param>
         /// <param name="progress">进度</param>
-        public static void GoStraight(double speed, TimeSpan seconds, out double progress)
-            => OnNative(SafeNativeMethods.DriveTiming(speed, 0, seconds.TotalSeconds, out progress));
+        public static void GoStraight(double speed, TimeSpan time, out double progress)
+            => OnNative(SafeNativeMethods.DriveTiming(speed, 0, time.TotalSeconds, out progress));
 
         /// <summary>
         ///     原地转
@@ -262,10 +271,10 @@ namespace Autolabor.PM1 {
         ///     原地转
         /// </summary>
         /// <param name="speed">角速度</param>
-        /// <param name="seconds">时间（秒）</param>
+        /// <param name="time">时间</param>
         /// <param name="progress">进度</param>
-        public static void TurnAround(double speed, TimeSpan seconds, out double progress)
-            => OnNative(SafeNativeMethods.DriveTiming(0, speed, seconds.TotalSeconds, out progress));
+        public static void TurnAround(double speed, TimeSpan time, out double progress)
+            => OnNative(SafeNativeMethods.DriveTiming(0, speed, time.TotalSeconds, out progress));
 
         /// <summary>
         ///     走圆弧
@@ -295,13 +304,13 @@ namespace Autolabor.PM1 {
         /// </summary>
         /// <param name="speed">速度</param>
         /// <param name="r">半径</param>
-        /// <param name="seconds">时间（秒）</param>
+        /// <param name="time">时间</param>
         /// <param name="progress">进度</param>
-        public static void GoArc(double speed, double r, TimeSpan seconds, out double progress) {
+        public static void GoArc(double speed, double r, TimeSpan time, out double progress) {
             if (Math.Abs(r) < 0.05)
                 throw new ArgumentException("radius is too little, use turn_around instead");
 
-            OnNative(SafeNativeMethods.DriveTiming(speed, speed / r, seconds.TotalSeconds, out progress));
+            OnNative(SafeNativeMethods.DriveTiming(speed, speed / r, time.TotalSeconds, out progress));
         }
 
         /// <summary>

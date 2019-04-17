@@ -116,6 +116,14 @@
                 发布速度指令
             </summary>
         </member>
+        <member name="M:Autolabor.PM1.Methods.SpatiumCalculate(System.Double,System.Double)">
+            <summary>
+                计算空间尺度
+            </summary>
+            <param name="spatium">轨迹弧长</param>
+            <param name="angle">轨迹夹角</param>
+            <returns>尺度</returns>
+        </member>
         <member name="M:Autolabor.PM1.Methods.DriveSpatial(System.Double,System.Double,System.Double,System.Double@)">
             <summary>
                 按空间驱动
