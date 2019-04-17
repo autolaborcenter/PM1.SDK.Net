@@ -104,6 +104,13 @@
                 锁定或解锁底盘
             </summary>
         </member>
+        <member name="M:Autolabor.PM1.Methods.SetPhysicalTarget(System.Double,System.Double)">
+            <summary>
+                设定物理模型目标
+            </summary>
+            <param name="speed">轮速</param>
+            <param name="rudder">舵</param>
+        </member>
         <member name="P:Autolabor.PM1.Methods.Velocity">
             <summary>
                 发布速度指令

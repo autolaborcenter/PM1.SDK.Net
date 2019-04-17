@@ -170,13 +170,21 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
+        ///     设定物理模型目标
+        /// </summary>
+        /// <param name="speed">轮速</param>
+        /// <param name="rudder">舵</param>
+        public static void SetPhysicalTarget(double speed, double rudder) 
+            => OnNative(DrivePhysical(speed, rudder));
+
+        /// <summary>
         ///     发布速度指令
         /// </summary>
         public static (double v, double w) Velocity {
             set => OnNative(Drive(value.v, value.w));
             get {
                 OnNative(GetOdometry(out _, out _, out _, out _, out _,
-                                               out var vx, out var vy, out var w));
+                                     out var vx, out var vy, out var w));
                 return (Math.Sqrt(vx * vx + vy * vy), w);
             }
         }

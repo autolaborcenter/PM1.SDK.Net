@@ -18,6 +18,7 @@
             <ColumnDefinition Width="42"/>
         </Grid.ColumnDefinitions>
         <Canvas x:Name="Origin"
+                Margin="0,20"
                 MouseMove="Drag_MouseMove"
                 Height="{Binding Size}" Width="{Binding Size}"
                 Grid.RowSpan="2">
@@ -30,7 +31,7 @@
         </Canvas>
        
         <Slider Orientation="Vertical"
-                Value="{Binding Speed, Mode=TwoWay}"
+                Value="{Binding SpeedRange, Mode=TwoWay}"
                 Minimum="0" Maximum="{Binding MaxSpeed}" 
                 HorizontalAlignment="Center"
                 Grid.Row="0" Grid.Column="1"/>

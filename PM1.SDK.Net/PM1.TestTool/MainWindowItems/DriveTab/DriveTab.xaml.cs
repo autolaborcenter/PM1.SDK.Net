@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
@@ -13,9 +15,29 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
 
         public DriveTab() => InitializeComponent();
 
-        public void OnEnter() { }
+        Task task;
 
-        public void OnLeave() { }
+        volatile bool flag;
+
+        public void OnEnter() {
+            task = Task.Run(async () => {
+                flag = true;
+                while (flag) {
+                    await Task.Delay(50).ConfigureAwait(false);
+                    try {
+                        if (_windowContext?.State != MainWindowContext.WindowState.Connected)
+                            continue;
+                        Methods.SetPhysicalTarget(_tabContext.Speed, _tabContext.Rudder);
+                    } catch (Exception exception) {
+                        _windowContext.ErrorInfo = exception.Message;
+                    }
+                }
+                task = null;
+            });
+        }
+
+        public void OnLeave() 
+            => flag = false;
 
         private void Tab_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
             => _windowContext = e.NewValue as MainWindowContext;
@@ -28,12 +50,12 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
                 if (e.MouseDevice.Captured == null)
                     e.MouseDevice.Capture(Origin);
                 var position = e.GetPosition(Origin);
-                _tabContext.X = position.X;
-                _tabContext.Y = position.Y;
+                _tabContext.X = position.X - TabContext.TouchSize / 2;
+                _tabContext.Y = position.Y - TabContext.TouchSize / 2;
             } else {
                 e.MouseDevice.Capture(null);
                 _tabContext.X =
-                _tabContext.Y = TabContext.Size / 2;
+                _tabContext.Y = TabContext.Radius;
             }
         }
     }

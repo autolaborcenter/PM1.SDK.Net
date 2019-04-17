@@ -61,6 +61,9 @@ namespace Autolabor.PM1 {
         [DllImport(LIBRARY, EntryPoint = "check_state")]
         public static extern byte CheckState();
 
+        [DllImport(LIBRARY, EntryPoint = "drive_physical")]
+        public static extern Handler DrivePhysical(double speed, double rudder);
+
         [DllImport(LIBRARY, EntryPoint = "drive")]
         public static extern Handler Drive(double v, double w);
 
