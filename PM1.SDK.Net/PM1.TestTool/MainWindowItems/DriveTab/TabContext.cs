@@ -57,7 +57,9 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
         public double Rudder {
             get {
                 var xo = _x - Radius;
-                return Math.PI / 2 * Math.Tan(2 * Math.Sign(xo) * Math.Min(1, Math.Abs(xo) / (Size / 2)));
+                var yo = _y - Radius;
+                var rr = xo * xo + yo * yo;
+                return rr < 1E-2 ? double.NaN : -(Math.Atan2(Math.Abs(yo), xo) - Math.PI / 2);
             }
         }
 
@@ -68,13 +70,13 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
         private void Update() {
             var xo = _x - Radius;
             var yo = _y - Radius;
-            var tan = Math.Atan2(yo, xo);
+            var theta = Math.Atan2(yo, xo);
             var r = Math.Min(Size / 2, Math.Sqrt(xo * xo + yo * yo));
 
-            LimitedLeft = r * Math.Cos(tan) + Radius;
+            LimitedLeft = r * Math.Cos(theta) + Radius;
             Notify(nameof(LimitedLeft));
 
-            LimitedTop = r * Math.Sin(tan) + Radius;
+            LimitedTop = r * Math.Sin(theta) + Radius;
             Notify(nameof(LimitedTop));
         }
     }
