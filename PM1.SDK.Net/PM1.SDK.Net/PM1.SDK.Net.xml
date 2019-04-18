@@ -34,6 +34,16 @@
                 最大加速度
             </summary>
         </member>
+        <member name="F:Autolabor.PM1.Config.MaxV">
+            <summary>
+                最大线速度
+            </summary>
+        </member>
+        <member name="F:Autolabor.PM1.Config.MaxW">
+            <summary>
+                最大角速度
+            </summary>
+        </member>
         <member name="T:Autolabor.PM1.StateEnum">
             <summary>
                 底盘工作状态

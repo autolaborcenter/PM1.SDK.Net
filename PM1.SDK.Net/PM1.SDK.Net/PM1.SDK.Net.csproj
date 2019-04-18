@@ -13,7 +13,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>DEBUG</DefineConstants>
-    <DocumentationFile>D:\VSProjects\Autolabor.PM1.SDK.Net\PM1.SDK.Net\PM1.SDK.Net\PM1.SDK.Net.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

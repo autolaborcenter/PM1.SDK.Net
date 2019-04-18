@@ -31,6 +31,16 @@ namespace Autolabor.PM1 {
         ///     最大加速度
         /// </summary>
         public double Acceleration;
+
+        /// <summary>
+        ///     最大线速度
+        /// </summary>
+        public double MaxV;
+
+        /// <summary>
+        ///     最大角速度
+        /// </summary>
+        public double MaxW;
     }
 
     /// <summary>
@@ -86,7 +96,9 @@ namespace Autolabor.PM1 {
                        out result.Length,
                        out result.WheelRadius,
                        out result.OptimizeWidth,
-                       out result.Acceleration);
+                       out result.Acceleration,
+                       out result.MaxV,
+                       out result.MaxW);
                 return result;
             }
         }
@@ -107,7 +119,9 @@ namespace Autolabor.PM1 {
                 Length = double.NaN,
                 WheelRadius = double.NaN,
                 OptimizeWidth = double.NaN,
-                Acceleration = double.NaN
+                Acceleration = double.NaN,
+                MaxV = double.NaN,
+                MaxW = double.NaN
             };
             OnNative(SafeNativeMethods.Initialize(
                 port,
@@ -116,6 +130,8 @@ namespace Autolabor.PM1 {
                 configNotNull.WheelRadius,
                 configNotNull.OptimizeWidth,
                 configNotNull.Acceleration,
+                configNotNull.MaxV,
+                configNotNull.MaxW,
                 out progress));
             return Marshal.PtrToStringAnsi(GetConnectedPort());
         }

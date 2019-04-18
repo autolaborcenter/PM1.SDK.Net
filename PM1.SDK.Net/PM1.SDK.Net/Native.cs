@@ -5,7 +5,7 @@ using Handler = System.UInt32;
 namespace Autolabor.PM1 {
     internal static class SafeNativeMethods {
 #if DEBUG
-        const string LIBRARY = "pm1_sdk_native_injection_debug.dll";
+        const string LIBRARY = "pm1_sdk_native_debug.dll";
 #else
         const string LIBRARY = "pm1_sdk_native.dll";
 #endif
@@ -28,7 +28,9 @@ namespace Autolabor.PM1 {
             out double length,
             out double wheelRadius,
             out double optimizeWidth,
-            out double acceleration);
+            out double acceleration,
+            out double maxV,
+            out double maxW);
 
         [DllImport(LIBRARY, EntryPoint = "initialize", CharSet = CharSet.Ansi)]
         public static extern Handler Initialize(
@@ -38,6 +40,8 @@ namespace Autolabor.PM1 {
             double wheelRadius,
             double optimizeWidth,
             double acceleration,
+            double maxV,
+            double maxW,
             out double progress);
 
         [DllImport(LIBRARY, EntryPoint = "shutdown")]

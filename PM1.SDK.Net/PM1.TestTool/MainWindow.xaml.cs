@@ -87,7 +87,17 @@ namespace Autolabor.PM1.TestTool {
 #if DEBUG
                     if (port != UITestString)
 #endif
-                        port = Methods.Initialize(port == AutoSelectString ? "" : port, null, out progress);
+                        port = Methods.Initialize(port == AutoSelectString ? "" : port,
+                                                  new Config {
+                                                      Width = double.NaN,
+                                                      Length = double.NaN,
+                                                      WheelRadius = double.NaN,
+                                                      OptimizeWidth = double.NaN,
+                                                      Acceleration = double.NaN,
+                                                      MaxV = double.NaN,
+                                                      MaxW = Math.PI / 3
+                                                  }
+                                                  , out progress);
 
                     SerialPortCombo.Dispatch((it) => {
                         if (!it.Items.Contains(port))
