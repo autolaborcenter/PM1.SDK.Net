@@ -155,7 +155,7 @@
                 前进
             </summary>
             <param name="speed">速度</param>
-            <param name="seconds">时间（秒）</param>
+            <param name="time">时间（秒）</param>
             <param name="progress">进度</param>
         </member>
         <member name="M:Autolabor.PM1.Methods.TurnAround(System.Double,System.Double,System.Double@)">
@@ -171,7 +171,7 @@
                 原地转
             </summary>
             <param name="speed">角速度</param>
-            <param name="seconds">时间（秒）</param>
+            <param name="time">时间</param>
             <param name="progress">进度</param>
         </member>
         <member name="M:Autolabor.PM1.Methods.GoArc(System.Double,System.Double,System.Double,System.Double@)">
@@ -189,7 +189,7 @@
             </summary>
             <param name="speed">速度</param>
             <param name="r">半径</param>
-            <param name="seconds">时间（秒）</param>
+            <param name="time">时间</param>
             <param name="progress">进度</param>
         </member>
         <member name="M:Autolabor.PM1.Methods.AdjustRudder(System.Double,System.Double@)">

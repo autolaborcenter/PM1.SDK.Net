@@ -80,6 +80,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -136,17 +137,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindowItems\RudderTab\RudderTab.xaml">
+    <Page Include="MainWindowItems\ActionTab\RudderControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowItems\ToolFunctions.cs" />
-    <Compile Include="MainWindowItems\RudderTab\RudderTab.xaml.cs">
-      <DependentUpon>RudderTab.xaml</DependentUpon>
+    <Compile Include="MainWindowItems\ActionTab\RudderControlView.xaml.cs">
+      <DependentUpon>RudderControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindowItems\RudderTab\TabContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

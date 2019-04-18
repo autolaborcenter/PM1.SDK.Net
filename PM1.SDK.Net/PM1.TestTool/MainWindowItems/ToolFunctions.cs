@@ -4,9 +4,15 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Autolabor.PM1.TestTool {
     internal static partial class ToolFunctions {
+
+        public static readonly SolidColorBrush
+            NormalBrush = new SolidColorBrush(Colors.Black),
+            ErrorBrush = new SolidColorBrush(Colors.Red);
+
         public static void Dispatch<T>(this T control, Action<T> action)
           where T : Control => control.Dispatcher.Invoke(action, control);
 

@@ -18,10 +18,12 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         public void OnEnter() {
             ActionList.Items.Clear();
             ActionEditor.Reset();
+            RudderControl.Reset();
 
-            if (PauseToggle.IsChecked == true)
+            if (PauseToggle.IsChecked == true) {
                 Methods.Paused = true;
-            else
+                PauseToggle.Content = "已暂停";
+            } else
                 PauseToggle.IsChecked = true;
         }
 
@@ -42,8 +44,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 Grid.SetRow(ActionTitle, 2);
                 Grid.SetColumn(ActionTitle, 1);
 
-                Grid.SetRow(ActionEditor, 3);
-                Grid.SetColumn(ActionEditor, 1);
+                Grid.SetRow(ActionGrid, 3);
+                Grid.SetColumn(ActionGrid, 1);
 
                 if (e.NewSize.Width > 500) {
                     CanvasBorder.BorderThickness = new Thickness(1);
@@ -61,8 +63,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 Grid.SetRow(ActionTitle, 0);
                 Grid.SetColumn(ActionTitle, 2);
 
-                Grid.SetRow(ActionEditor, 1);
-                Grid.SetColumn(ActionEditor, 2);
+                Grid.SetRow(ActionGrid, 1);
+                Grid.SetColumn(ActionGrid, 2);
 
                 if (e.NewSize.Width > 600) {
                     CanvasBorder.BorderThickness = new Thickness(1);
@@ -90,6 +92,16 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                     ToolFunctions.Format("0.#", w.ToDegree()));
         }
 
+        private struct RudderControlConfig {
+            public double value;
+
+            public override string ToString()
+                => string.Format(
+                    CultureInfo.InvariantCulture,
+                    "调整后轮：{0}°",
+                    ToolFunctions.Format("0.#", value.ToDegree()));
+        }
+
         private Task task = null;
 
         private void ToggleButton_Click(object sender, RoutedEventArgs e) {
@@ -103,10 +115,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             }
         }
 
-        private void ActionEditor_OnCompleted(double v, double w, bool timeBased, double range) {
-
-            ActionList.Items.Add(new ActionConfig { v = v, w = w, range = range, timeBased = timeBased });
-
+        private void StartTask() {
             if (task == null) {
                 var flag = true;
                 var progress = .0;
@@ -121,13 +130,17 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 task = Task.Run(() => {
                     try {
                         while (ActionList.Items.Count > 0) {
-                            if (ActionList.Items[0] is ActionConfig action) {
-                                ActionList.Dispatch(it => it.SelectedIndex = 0);
+                            ActionList.Dispatch(it => it.SelectedIndex = 0);
+
+                            if (ActionList.Items[0] is ActionConfig action)
                                 if (action.timeBased)
                                     Methods.DriveTiming(action.v, action.w, action.range, out progress);
                                 else
                                     Methods.DriveSpatial(action.v, action.w, action.range, out progress);
-                            }
+
+                            else if (ActionList.Items[0] is RudderControlConfig rudderControl)
+                                Methods.AdjustRudder(rudderControl.value, out progress);
+
                             ActionList.Dispatch(it => it.Items.RemoveAt(0));
                         }
                     } catch (Exception exception) {
@@ -140,6 +153,11 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             }
         }
 
+        private void ActionEditor_OnCompleted(double v, double w, bool timeBased, double range) {
+            ActionList.Items.Add(new ActionConfig { v = v, w = w, range = range, timeBased = timeBased });
+            StartTask();
+        }
+
         private void Cancel_Click(object sender, RoutedEventArgs e) {
             ActionList.Items.Clear();
             try {
@@ -147,6 +165,11 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             } catch (Exception exception) {
                 _windowContext.ErrorInfo = exception.Message;
             }
+        }
+
+        private void RudderControl_OnCompleted(object sender, double value) {
+            ActionList.Items.Add(new RudderControlConfig { value = value });
+            StartTask();
         }
     }
 }

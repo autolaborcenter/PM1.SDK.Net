@@ -19,7 +19,7 @@
             <Setter Property="TextAlignment" Value="Right"/>
         </Style>
     </UserControl.Resources>
-    <StackPanel Margin="8">
+    <StackPanel>
         <TextBox x:Name="ErrorInfo"
                  IsEnabled="False" Foreground="Red">
             至少输入一项速度和一项约束

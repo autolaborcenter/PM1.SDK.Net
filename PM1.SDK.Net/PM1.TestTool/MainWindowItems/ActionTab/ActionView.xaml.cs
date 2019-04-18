@@ -42,34 +42,34 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 set {
                     switch (_state = value) {
                         case StateEnum.Master:
-                            _text.Foreground = Normal;
+                            _text.Foreground = ToolFunctions.NormalBrush;
                             _text.IsEnabled =
                             _check.IsEnabled = true;
                             _check.IsChecked = true;
                             break;
                         case StateEnum.Slave:
-                            _text.Foreground = Normal;
+                            _text.Foreground = ToolFunctions.NormalBrush;
                             _text.IsEnabled =
                             _check.IsEnabled = false;
                             _check.IsChecked = true;
                             break;
                         case StateEnum.Void:
                             Value = double.NaN;
-                            _text.Foreground = Normal;
+                            _text.Foreground = ToolFunctions.NormalBrush;
                             _text.IsEnabled = true;
                             _check.IsEnabled = true;
                             _check.IsChecked = false;
                             break;
                         case StateEnum.Invalid:
                             Value = double.NaN;
-                            _text.Foreground = Normal;
+                            _text.Foreground = ToolFunctions.NormalBrush;
                             _text.IsEnabled =
                             _check.IsEnabled = false;
                             _check.IsChecked = false;
                             break;
                         case StateEnum.Error:
                             _value = double.NaN;
-                            _text.Foreground = Error;
+                            _text.Foreground = ToolFunctions.ErrorBrush;
                             _text.IsEnabled =
                             _check.IsEnabled = true;
                             _check.IsChecked = true;
@@ -82,7 +82,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 => !double.IsNaN(_value) && _minium <= _value && _value <= _maxium;
 
             public string UpdateStateByValue() {
-                if (_state == StateEnum.Slave 
+                if (_state == StateEnum.Slave
                  || _state == StateEnum.Invalid)
                     return "";
 
@@ -96,7 +96,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                     return "词法错误";
                 }
 
-                if(_value < _minium || _maxium < _value) {
+                if (_value < _minium || _maxium < _value) {
                     State = StateEnum.Error;
                     return "超出有效范围";
                 }
@@ -125,10 +125,6 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             public bool IsMaster => State == StateEnum.Master;
 
             public bool IsVoid => State == StateEnum.Void;
-
-            private static readonly SolidColorBrush
-                Normal = new SolidColorBrush(Colors.Black),
-                Error = new SolidColorBrush(Colors.Red);
         }
 
         private readonly Input _v, _w, _r, _s, _a, _t;
@@ -262,8 +258,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             bool IsValid(Input one)
                 => one.IsMaster && one.Value != 0;
 
-            void Set(Input one, Input related, Input opposite0, Input opposite1,double target) {
-                if (one.IsVoid) one.Value = related.IsMaster 
+            void Set(Input one, Input related, Input opposite0, Input opposite1, double target) {
+                if (one.IsVoid) one.Value = related.IsMaster
                                             ? Math.Sign(related.Value) * target
                                             : !IsValid(opposite0) && !IsValid(opposite1)
                                               ? target
@@ -338,65 +334,79 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                  || (ranference.Contains(_r) && _r.Value == 0)) {
                     SetSlave(0);
                     return true;
-                } else if (ranference.Contains(_w)
-                        && ranference.Contains(_r)
-                        && _w.Value != 0) {
+                }
+                else if (ranference.Contains(_w)
+                      && ranference.Contains(_r)
+                      && _w.Value != 0) {
                     SetSlave(_w.Value.ToRad() * _r.Value);
                     return true;
                 }
-            } else if (input == _w) {
+            }
+            else if (input == _w) {
                 if (ranference.Contains(_a) && _a.Value == 0) {
                     SetSlave(0);
                     return true;
-                } else if (ranference.Contains(_v)
-                        && ranference.Contains(_r)
-                        && _v.Value != 0) {
+                }
+                else if (ranference.Contains(_v)
+                      && ranference.Contains(_r)
+                      && _v.Value != 0) {
                     SetSlave((_v.Value / _r.Value).ToDegree());
                     return true;
                 }
-            } else if (input == _r) {
+            }
+            else if (input == _r) {
                 if ((ranference.Contains(_v) && _v.Value == 0)
                  || (ranference.Contains(_s) && _s.Value == 0)) {
                     SetSlave(0);
                     return true;
-                } else if (ranference.Contains(_w) && _w.Value == 0) {
+                }
+                else if (ranference.Contains(_w) && _w.Value == 0) {
                     SetSlave(double.PositiveInfinity);
                     return true;
-                } else if (ranference.Contains(_v) && ranference.Contains(_w)) {
+                }
+                else if (ranference.Contains(_v) && ranference.Contains(_w)) {
                     SetSlave(_v.Value / _w.Value.ToRad());
                     return true;
-                } else if (ranference.Contains(_s) && ranference.Contains(_a)) {
+                }
+                else if (ranference.Contains(_s) && ranference.Contains(_a)) {
                     SetSlave(_s.Value / _a.Value.ToRad());
                     return true;
                 }
-            } else if (input == _s) {
+            }
+            else if (input == _s) {
                 if (ranference.Contains(_t)) {
                     input.State = Input.StateEnum.Invalid;
                     return true;
-                } else if ((ranference.Contains(_v) && _v.Value == 0)
-                        || (ranference.Contains(_r) && _r.Value == 0)) {
+                }
+                else if ((ranference.Contains(_v) && _v.Value == 0)
+                      || (ranference.Contains(_r) && _r.Value == 0)) {
                     SetSlave(0);
                     return true;
-                } else if (ranference.Contains(_a)
-                        && ranference.Contains(_r)
-                        && _a.Value != 0) {
+                }
+                else if (ranference.Contains(_a)
+                      && ranference.Contains(_r)
+                      && _a.Value != 0) {
                     SetSlave(_a.Value.ToRad() * _r.Value);
                     return true;
                 }
-            } else if (input == _a) {
+            }
+            else if (input == _a) {
                 if (ranference.Contains(_t)) {
                     input.State = Input.StateEnum.Invalid;
                     return true;
-                } else if (ranference.Contains(_w) && _w.Value == 0) {
+                }
+                else if (ranference.Contains(_w) && _w.Value == 0) {
                     SetSlave(0);
                     return true;
-                } else if (ranference.Contains(_s)
-                        && ranference.Contains(_r)
-                        && _s.Value != 0) {
+                }
+                else if (ranference.Contains(_s)
+                      && ranference.Contains(_r)
+                      && _s.Value != 0) {
                     SetSlave((_s.Value / _r.Value).ToDegree());
                     return true;
                 }
-            } else if (input == _t) {
+            }
+            else if (input == _t) {
                 if (_s.IsMaster || _a.IsMaster) {
                     input.State = Input.StateEnum.Invalid;
                     return true;
@@ -414,8 +424,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                                 _w.Value.ToRad(),
                                 timeBased,
                                 timeBased ? _t.Value
-                                          : Methods.SpatiumCalculate(Math.Abs(_s.Value), 
-                                                                               Math.Abs(_a.Value.ToRad())));
+                                          : Methods.SpatiumCalculate(Math.Abs(_s.Value),
+                                                                     Math.Abs(_a.Value.ToRad())));
             Reset();
         }
     }

@@ -13,7 +13,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
                        _y;
         public TabContext() {
             _speedRange = 0.1 * MaxSpeed;
-            _x = _y = Size / 2;
+            _x = _y = Radius;
             LimitedLeft = LimitedTop = Radius;
         }
 
