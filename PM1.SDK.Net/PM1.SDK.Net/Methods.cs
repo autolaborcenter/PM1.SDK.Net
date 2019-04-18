@@ -197,7 +197,7 @@ namespace Autolabor.PM1 {
         ///     发布速度指令
         /// </summary>
         public static (double v, double w) Velocity {
-            set => OnNative(Drive(value.v, value.w));
+            set => OnNative(DriveVelocity(value.v, value.w));
             get {
                 OnNative(GetOdometry(out _, out _, out _, out _, out _,
                                      out var vx, out var vy, out var w));
@@ -355,6 +355,6 @@ namespace Autolabor.PM1 {
         /// <summary>
         ///     取消任务
         /// </summary>
-        public static void CancelTask() => CancelAll();
+        public static void CancelTask() => CancelAction();
     }
 }

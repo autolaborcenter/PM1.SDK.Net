@@ -68,8 +68,11 @@ namespace Autolabor.PM1 {
         [DllImport(LIBRARY, EntryPoint = "drive_physical")]
         public static extern Handler DrivePhysical(double speed, double rudder);
 
-        [DllImport(LIBRARY, EntryPoint = "drive")]
-        public static extern Handler Drive(double v, double w);
+        [DllImport(LIBRARY, EntryPoint = "drive_wheels")]
+        public static extern Handler DriveWheels(double left, double right);
+
+        [DllImport(LIBRARY, EntryPoint = "drive_velocity")]
+        public static extern Handler DriveVelocity(double v, double w);
 
         [DllImport(LIBRARY, EntryPoint = "spatium_calculate")]
         public static extern double SpatiumCalculate(double spatium, double angle);
@@ -102,7 +105,7 @@ namespace Autolabor.PM1 {
         [DllImport(LIBRARY, EntryPoint = "is_paused")]
         public static extern bool IsPaused();
 
-        [DllImport(LIBRARY, EntryPoint = "cancel_all")]
-        public static extern void CancelAll();
+        [DllImport(LIBRARY, EntryPoint = "cancel_action")]
+        public static extern void CancelAction();
     }
 }
