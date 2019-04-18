@@ -50,14 +50,14 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
             get {
                 var xo = _x - Radius;
                 var yo = _y - Radius;
-                return SpeedRange * Math.Sign(yo) * Math.Min(1, Math.Sqrt(xo * xo + yo * yo) / (Size / 2));
+                return -SpeedRange * Math.Sign(yo) * Math.Min(1, Math.Sqrt(xo * xo + yo * yo) / (Size / 2));
             }
         }
 
         public double Rudder {
             get {
                 var xo = _x - Radius;
-                return Math.PI / 2 * Math.Sign(xo) * Math.Min(1, Math.Abs(xo) / (Size / 2));
+                return Math.PI / 2 * Math.Tan(2 * Math.Sign(xo) * Math.Min(1, Math.Abs(xo) / (Size / 2)));
             }
         }
 
