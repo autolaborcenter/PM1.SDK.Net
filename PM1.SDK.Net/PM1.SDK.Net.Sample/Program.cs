@@ -2,17 +2,23 @@
 using System.Threading;
 
 namespace Autolabor.PM1.Sample {
+    internal class ProgressHandler : IProgress<double> {
+        public void Report(double value) => Console.WriteLine(value.ToString("0.%"));
+    }
+
     internal class Program {
         private static void Main() {
             try {
                 Methods.Initialize("", null, out _);
                 Methods.State = StateEnum.Unlocked;
                 Thread.Sleep(100);
-                Methods.TurnAround(-0.2, 1, out _);
-            } catch (Exception exception) {
-                Console.WriteLine(exception);
+                AsyncMethods.DriveSpatialAsync(
+                    0.1, 0, Methods.SpatiumCalculate(0.5, 0),
+                    new ProgressHandler(),
+                    (e) => Console.WriteLine(e.Message)
+                ).Wait();
             } finally {
-                Methods.ShutdownSafey();
+                Methods.ShutdownSafety();
             }
         }
     }

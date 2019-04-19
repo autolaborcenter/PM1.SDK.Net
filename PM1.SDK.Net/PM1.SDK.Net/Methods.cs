@@ -145,7 +145,7 @@ namespace Autolabor.PM1 {
         ///     安全关闭
         /// </summary>
         /// <returns>是否成功关闭</returns>
-        public static bool ShutdownSafey() 
+        public static bool ShutdownSafety() 
             => string.IsNullOrWhiteSpace(Marshal.PtrToStringAnsi(GetErrorInfo(SafeNativeMethods.Shutdown())));
 
         /// <summary>
@@ -227,20 +227,20 @@ namespace Autolabor.PM1 {
         /// </summary>
         /// <param name="v"></param>
         /// <param name="w"></param>
-        /// <param name="meters"></param>
+        /// <param name="spatium"></param>
         /// <param name="progress"></param>
-        public static void DriveSpatial(double v, double w, double meters, out double progress)
-            => OnNative(SafeNativeMethods.DriveSpatial(v, w, meters, out progress));
+        public static void DriveSpatial(double v, double w, double spatium, out double progress)
+            => OnNative(SafeNativeMethods.DriveSpatial(v, w, spatium, out progress));
 
         /// <summary>
         ///     按时间驱动
         /// </summary>
         /// <param name="v"></param>
         /// <param name="w"></param>
-        /// <param name="seconds"></param>
+        /// <param name="time"></param>
         /// <param name="progress"></param>
-        public static void DriveTiming(double v, double w, double seconds, out double progress)
-            => OnNative(SafeNativeMethods.DriveTiming(v, w, seconds, out progress));
+        public static void DriveTiming(double v, double w, double time, out double progress)
+            => OnNative(SafeNativeMethods.DriveTiming(v, w, time, out progress));
 
         /// <summary>
         ///     前进
@@ -401,6 +401,6 @@ namespace Autolabor.PM1 {
         /// <summary>
         ///     取消任务
         /// </summary>
-        public static void CancelTask() => CancelAction();
+        public static void CancelAction() => SafeNativeMethods.CancelAction();
     }
 }

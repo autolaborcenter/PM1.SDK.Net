@@ -23,7 +23,7 @@ namespace Autolabor.PM1.TestTool {
             InitializeComponent();
             _context = (MainWindowContext)DataContext;
             _context.PropertyChanged += (_, e) => {
-                if (e.PropertyName == nameof(MainWindowContext.State) 
+                if (e.PropertyName == nameof(MainWindowContext.State)
                 && _context.State == MainWindowContext.ConnectionState.Disconnected)
                     MainTab.Dispatch(it => (it.SelectedContent as ITabControl)?.OnLeave());
             };
@@ -106,7 +106,7 @@ namespace Autolabor.PM1.TestTool {
                     });
 
                     MainTab.Dispatch(it => {
-                        if(it.SelectedContent is ITabControl control) 
+                        if (it.SelectedContent is ITabControl control)
                             control.OnEnter();
                     });
 
@@ -153,13 +153,8 @@ namespace Autolabor.PM1.TestTool {
         private void Lock_Click(object sender, RoutedEventArgs e)
             => ChassisState = StateEnum.Locked;
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            try {
-                Methods.Shutdown();
-            } catch (Exception) {
-                // ignore
-            }
-        }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+            => Methods.ShutdownSafety();
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             foreach (var item in e.AddedItems.OfType<TabItem>())

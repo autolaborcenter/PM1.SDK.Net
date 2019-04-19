@@ -161,7 +161,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         private void Cancel_Click(object sender, RoutedEventArgs e) {
             ActionList.Items.Clear();
             try {
-                Methods.CancelTask();
+                Methods.CancelAction();
             } catch (Exception exception) {
                 _windowContext.ErrorInfo = exception.Message;
             }

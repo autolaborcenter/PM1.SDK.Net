@@ -46,15 +46,10 @@ namespace Autolabor.PM1.TestTool {
                     }
                     await Task.Delay(99, connecting.Token).ConfigureAwait(false);
                 }
-            } catch (TaskCanceledException) {
-                try {
-                    Methods.Shutdown();
-                } catch (Exception exception) {
-                    context.ErrorInfo = exception.Message;
-                }
             } catch (Exception exception) {
                 context.ErrorInfo = exception.Message;
             } finally {
+                Methods.ShutdownSafety();
                 context.State = MainWindowContext.ConnectionState.Disconnected;
             }
         }
