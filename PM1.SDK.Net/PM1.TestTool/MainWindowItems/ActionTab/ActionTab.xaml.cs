@@ -102,6 +102,14 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                     ToolFunctions.Format("0.#", value.ToDegree()));
         }
 
+        public class ProgressHandler : IProgress<double> {
+            private readonly Action<double> _action;
+
+            public ProgressHandler(Action<double> action) => _action = action;
+
+            public void Report(double value) => _action(value);
+        }
+
         private Task task = null;
 
         private void ToggleButton_Click(object sender, RoutedEventArgs e) {
@@ -117,37 +125,38 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
         private void StartTask() {
             if (task == null) {
-                var flag = true;
-                var progress = .0;
-                _ = Task.Run(async () => {
-                    while (flag) {
-                        _windowContext.Progress = progress;
-                        await Task.Delay(20).ConfigureAwait(false);
-                    }
-                    await Task.Delay(100).ConfigureAwait(false);
-                    _windowContext.Progress = progress;
-                });
-                task = Task.Run(() => {
+                task = Task.Run(async () => {
                     try {
                         while (ActionList.Items.Count > 0) {
                             ActionList.Dispatch(it => it.SelectedIndex = 0);
 
                             if (ActionList.Items[0] is ActionConfig action)
                                 if (action.timeBased)
-                                    Methods.DriveTiming(action.v, action.w, action.range, out progress);
+                                    await AsyncMethods.DriveAsync(
+                                        action.v, action.w, 
+                                        TimeSpan.FromSeconds( action.range),
+                                        new ProgressHandler(it => _windowContext.Progress = it),
+                                        (e) => _windowContext.ErrorInfo = e.Message
+                                    ).ConfigureAwait(true);
                                 else
-                                    Methods.DriveSpatial(action.v, action.w, action.range, out progress);
+                                    await AsyncMethods.DriveAsync(
+                                        action.v, action.w,
+                                        action.range,
+                                        new ProgressHandler(it => _windowContext.Progress = it),
+                                        (e) => _windowContext.ErrorInfo = e.Message
+                                    ).ConfigureAwait(true);
 
                             else if (ActionList.Items[0] is RudderControlConfig rudderControl)
-                                Methods.AdjustRudder(rudderControl.value, out progress);
+                                await AsyncMethods.AdjustRudderAsync(
+                                   rudderControl.value,
+                                   new ProgressHandler(it => _windowContext.Progress = it),
+                                   (e) => _windowContext.ErrorInfo = e.Message
+                               ).ConfigureAwait(true);
 
                             ActionList.Dispatch(it => it.Items.RemoveAt(0));
                         }
-                    } catch (Exception exception) {
-                        _windowContext.ErrorInfo = exception.Message;
                     } finally {
                         task = null;
-                        flag = false;
                     }
                 });
             }
