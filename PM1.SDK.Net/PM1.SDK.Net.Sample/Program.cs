@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Threading;
 
 namespace Autolabor.PM1.Sample {
-    class Program {
-        static void Main() {
-            Console.WriteLine("id\tv\tw\tr\ts\ta\tt\t形态\t速度\t尺度");
-            for(var i = 0; i < 64; ++i) {
-                Console.Write("{0}\t", i);
-                for (var j = 0; j < 6; ++j)
-                    Console.Write("{0}\t", ((i >> j) & 1) == 1 ? '*' : ' ');
-                Console.WriteLine();
+    internal class Program {
+        private static void Main() {
+            try {
+                Methods.Initialize("", null, out _);
+                Methods.State = StateEnum.Unlocked;
+                Thread.Sleep(100);
+                Methods.TurnAround(-0.2, 1, out _);
+            } catch (Exception exception) {
+                Console.WriteLine(exception);
+            } finally {
+                Methods.ShutdownSafey();
             }
         }
     }

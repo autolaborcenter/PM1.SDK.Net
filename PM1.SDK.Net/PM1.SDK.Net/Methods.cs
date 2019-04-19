@@ -142,6 +142,13 @@ namespace Autolabor.PM1 {
         public static void Shutdown() => OnNative(SafeNativeMethods.Shutdown());
 
         /// <summary>
+        ///     安全关闭
+        /// </summary>
+        /// <returns>是否成功关闭</returns>
+        public static bool ShutdownSafey() 
+            => string.IsNullOrWhiteSpace(Marshal.PtrToStringAnsi(GetErrorInfo(SafeNativeMethods.Shutdown())));
+
+        /// <summary>
         ///     读取里程计
         /// </summary>
         public static (double s, double sa,
