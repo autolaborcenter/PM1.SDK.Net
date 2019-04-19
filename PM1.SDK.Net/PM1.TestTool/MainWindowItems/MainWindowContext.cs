@@ -3,23 +3,24 @@ using System.Windows.Media;
 
 namespace Autolabor.PM1.TestTool {
     public class MainWindowContext : BindableBase {
-        public enum WindowState {
+        public enum ConnectionState {
             Disconnected,
             Connecting,
             Connected,
         }
 
-        private WindowState _windowState = WindowState.Disconnected;
+        private ConnectionState _connectionState = ConnectionState.Disconnected;
         private double _progress = 0;
         private string _connectedTime = "0.0";
         private string _odometry = "0.0, 0.0, 0.0°";
         private string _errorInfo = "";
         private StateEnum? _chassisState = StateEnum.Offline;
 
-        public WindowState State {
-            get => _windowState;
+        public ConnectionState State {
+            get => _connectionState;
             set {
-                if (!SetProperty(ref _windowState, value)) return;
+                if (!SetProperty(ref _connectionState, value)) return;
+                if (value != ConnectionState.Connected) ChassisState = StateEnum.Offline;
                 Notify(nameof(CheckBoxEnabled));
                 Notify(nameof(CheckBoxChecked));
                 Notify(nameof(ComboBoxEnabled));
@@ -27,13 +28,13 @@ namespace Autolabor.PM1.TestTool {
             }
         }
 
-        public bool CheckBoxChecked => _windowState != WindowState.Disconnected;
+        public bool CheckBoxChecked => _connectionState != ConnectionState.Disconnected;
 
-        public bool CheckBoxEnabled => _windowState != WindowState.Connecting;
+        public bool CheckBoxEnabled => _connectionState != ConnectionState.Connecting;
 
-        public bool ComboBoxEnabled => _windowState == WindowState.Disconnected;
+        public bool ComboBoxEnabled => _connectionState == ConnectionState.Disconnected;
 
-        public bool ElementsEnabled => _windowState == WindowState.Connected;
+        public bool ElementsEnabled => _connectionState == ConnectionState.Connected;
 
         public double Progress {
             get => _progress;

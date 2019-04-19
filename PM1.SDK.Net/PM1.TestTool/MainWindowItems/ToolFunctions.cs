@@ -55,7 +55,7 @@ namespace Autolabor.PM1.TestTool {
             } catch (Exception exception) {
                 context.ErrorInfo = exception.Message;
             } finally {
-                context.State = MainWindowContext.WindowState.Disconnected;
+                context.State = MainWindowContext.ConnectionState.Disconnected;
             }
         }
     }

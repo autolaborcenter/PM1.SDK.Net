@@ -27,7 +27,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
                 while (flag) {
                     await Task.Delay(50).ConfigureAwait(false);
                     try {
-                        if (_windowContext?.State == MainWindowContext.WindowState.Connected)
+                        if (_windowContext?.State == MainWindowContext.ConnectionState.Connected)
                             Methods.SetPhysicalTarget(_tabContext.Speed, _tabContext.Rudder);
                     }
                     catch (Exception exception) {

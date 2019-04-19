@@ -24,7 +24,7 @@ namespace Autolabor.PM1.TestTool {
             _context = (MainWindowContext)DataContext;
             _context.PropertyChanged += (_, e) => {
                 if (e.PropertyName == nameof(MainWindowContext.State) 
-                && _context.State == MainWindowContext.WindowState.Disconnected)
+                && _context.State == MainWindowContext.ConnectionState.Disconnected)
                     MainTab.Dispatch(it => (it.SelectedContent as ITabControl)?.OnLeave());
             };
             SerialPortCombo.Items.Add(AutoSelectString);
@@ -54,7 +54,7 @@ namespace Autolabor.PM1.TestTool {
         }
 
         private async void CheckBox_Click(object sender, RoutedEventArgs e) {
-            if (_context.State == MainWindowContext.WindowState.Connected)
+            if (_context.State == MainWindowContext.ConnectionState.Connected)
                 _connecting.Cancel();
             else
                 await Connect((CheckBox)sender).ConfigureAwait(false);
@@ -62,7 +62,7 @@ namespace Autolabor.PM1.TestTool {
 
         private async Task Connect(CheckBox box) {
             box.IsEnabled = false;
-            _context.State = MainWindowContext.WindowState.Connecting;
+            _context.State = MainWindowContext.ConnectionState.Connecting;
             _context.ErrorInfo = "";
 
             var flag = true;
@@ -110,9 +110,9 @@ namespace Autolabor.PM1.TestTool {
                             control.OnEnter();
                     });
 
-                    _context.State = MainWindowContext.WindowState.Connected;
+                    _context.State = MainWindowContext.ConnectionState.Connected;
                 } catch (Exception exception) {
-                    _context.State = MainWindowContext.WindowState.Disconnected;
+                    _context.State = MainWindowContext.ConnectionState.Disconnected;
                     _context.ErrorInfo = exception.Message;
                     return;
                 } finally {

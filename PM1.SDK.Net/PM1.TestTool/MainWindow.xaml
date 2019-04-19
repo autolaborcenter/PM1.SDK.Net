@@ -56,16 +56,18 @@
                          IsEnabled="False"/>
         </StackPanel>
         <TabControl x:Name="MainTab"
-                    IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
+                    
                     SelectionChanged="TabControl_SelectionChanged"
                     Grid.Row="1"
                     HorizontalAlignment="Stretch" 
                     VerticalAlignment="Stretch">
             <TabItem Header="动作控制" IsSelected="true">
-                <actiontab:ActionTab Margin="8"/>
+                <actiontab:ActionTab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
+                                     Margin="8"/>
             </TabItem>
             <TabItem Header="连续控制">
-                <drivetab:DriveTab Margin="8"
+                <drivetab:DriveTab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
+                                   Margin="8"
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"/>
             </TabItem>
