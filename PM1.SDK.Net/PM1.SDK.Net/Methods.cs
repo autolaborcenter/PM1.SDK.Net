@@ -186,23 +186,24 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     设定物理模型目标
+        ///     控制机器人运行
         /// </summary>
-        /// <param name="speed">轮速</param>
-        /// <param name="rudder">舵</param>
-        public static void SetPhysicalTarget(double speed, double rudder) 
-            => OnNative(DrivePhysical(speed, rudder));
+        public static (double speed, double rudder) PhysicalTarget {
+            set => OnNative(DrivePhysical(value.speed, value.rudder));
+        }
 
         /// <summary>
-        ///     发布速度指令
+        ///     控制机器人运行
         /// </summary>
-        public static (double v, double w) Velocity {
+        public static (double left, double right) WheelsTarget {
+            set => OnNative(DriveWheels(value.left, value.right));
+        }
+
+        /// <summary>
+        ///     控制机器人运行
+        /// </summary>
+        public static (double v, double w) VelocityTarget {
             set => OnNative(DriveVelocity(value.v, value.w));
-            get {
-                OnNative(GetOdometry(out _, out _, out _, out _, out _,
-                                     out var vx, out var vy, out var w));
-                return (Math.Sqrt(vx * vx + vy * vy), w);
-            }
         }
 
         /// <summary>
@@ -221,7 +222,7 @@ namespace Autolabor.PM1 {
         /// <param name="w"></param>
         /// <param name="meters"></param>
         /// <param name="progress"></param>
-        public static void DriveSpatial(double v, double w, double meters, out double progress) 
+        public static void DriveSpatial(double v, double w, double meters, out double progress)
             => OnNative(SafeNativeMethods.DriveSpatial(v, w, meters, out progress));
 
         /// <summary>
@@ -292,6 +293,39 @@ namespace Autolabor.PM1 {
         public static void TurnAround(double speed, TimeSpan time, out double progress)
             => OnNative(SafeNativeMethods.DriveTiming(0, speed, time.TotalSeconds, out progress));
 
+        private const string
+            IllegalArgument = "illegal action argument",
+            InfiniteAction = "action never complete",
+            NegativeTarget = "action target argument must be positive";
+
+        private static bool CheckArguments(double speed, double radius, double range) {
+            if (radius == 0) throw new ArgumentException(IllegalArgument);
+            if (range == 0) return true;
+            if (speed == 0) throw new ArgumentException(InfiniteAction);
+            if (range < 0) throw new ArgumentException(NegativeTarget);
+            return false;
+        }
+
+        /// <summary>
+        ///     走圆弧
+        /// </summary>
+        /// <param name="r">半径（米）</param>
+        /// <param name="progress">进度</param>
+        public static void GoArcVS(double v, double r, double s, out double progress) {
+            if (CheckArguments(v, r, s)) { progress = 1; return; }
+            DriveSpatial(v, v / r, SpatiumCalculate(s, s / r), out progress);
+        }
+
+        /// <summary>
+        ///     走圆弧
+        /// </summary>
+        /// <param name="r">半径（米）</param>
+        /// <param name="progress">进度</param>
+        public static void GoArcVA(double v, double r, double a, out double progress) {
+            if (CheckArguments(v, r, a)) { progress = 1; return; }
+            DriveSpatial(v, v / r, SpatiumCalculate(a * r, a), out progress);
+        }
+
         /// <summary>
         ///     走圆弧
         /// </summary>
@@ -299,34 +333,39 @@ namespace Autolabor.PM1 {
         /// <param name="r">半径（米）</param>
         /// <param name="rad">弧度</param>
         /// <param name="progress">进度</param>
-        public static void GoArc(double speed, double r, double rad, out double progress) {
-            if (Math.Abs(r) < 0.05)
-                throw new ArgumentException("radius is too little, use turn_around instead");
-            if (speed == 0) {
-                if (rad == 0) {
-                    progress = 1;
-                    return;
-                }
-                throw new ArgumentException("action never complete");
-            }
-            if (rad <= 0)
-                throw new ArgumentException("invalid target");
-
-            OnNative(SafeNativeMethods.DriveSpatial(speed, speed / r, SpatiumCalculate(r * rad, rad), out progress));
+        public static void GoArcWS(double w, double r, double s, out double progress) {
+            if (CheckArguments(w, r, s)) { progress = 1; return; }
+            DriveSpatial(w * r, w, SpatiumCalculate(s, s / r), out progress);
         }
 
         /// <summary>
         ///     走圆弧
         /// </summary>
-        /// <param name="speed">速度</param>
-        /// <param name="r">半径</param>
-        /// <param name="time">时间</param>
+        /// <param name="r">半径（米）</param>
         /// <param name="progress">进度</param>
-        public static void GoArc(double speed, double r, TimeSpan time, out double progress) {
-            if (Math.Abs(r) < 0.05)
-                throw new ArgumentException("radius is too little, use turn_around instead");
+        public static void GoArcWA(double w, double r, double a, out double progress) {
+            if (CheckArguments(w, r, a)) { progress = 1; return; }
+            DriveSpatial(w * r, w, SpatiumCalculate(a * r, a), out progress);
+        }
 
-            OnNative(SafeNativeMethods.DriveTiming(speed, speed / r, time.TotalSeconds, out progress));
+        /// <summary>
+        ///     走圆弧
+        /// </summary>
+        /// <param name="r">半径（米）</param>
+        /// <param name="progress">进度</param>
+        public static void GoArcVT(double v, double r, double t, out double progress) {
+            if (CheckArguments(double.NaN, r, t)) { progress = 1; return; }
+            DriveTiming(v, v / r, t, out progress);
+        }
+
+        /// <summary>
+        ///     走圆弧
+        /// </summary>
+        /// <param name="r">半径（米）</param>
+        /// <param name="progress">进度</param>
+        public static void GoArcWT(double w, double r, double t, out double progress) {
+            if (CheckArguments(double.NaN, r, t)) { progress = 1; return; }
+            DriveTiming(w * r, w, t, out progress);
         }
 
         /// <summary>
