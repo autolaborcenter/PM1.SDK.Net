@@ -12,7 +12,7 @@ namespace Autolabor.PM1.Sample {
                 Methods.Initialize("", null, out _);
                 Methods.State = StateEnum.Unlocked;
                 Thread.Sleep(100);
-                AsyncMethods.DriveSpatialAsync(
+                AsyncMethods.DriveAsync(
                     0.1, 0, Methods.SpatiumCalculate(0.5, 0),
                     new ProgressHandler(),
                     (e) => Console.WriteLine(e.Message)

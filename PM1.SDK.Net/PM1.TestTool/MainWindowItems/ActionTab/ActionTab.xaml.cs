@@ -123,48 +123,46 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             }
         }
 
-        private void StartTask() {
-            if (task == null) {
-                task = Task.Run(async () => {
-                    try {
-                        while (ActionList.Items.Count > 0) {
-                            ActionList.Dispatch(it => it.SelectedIndex = 0);
+        private async Task InvokeActions() {
+            try {
+                while (!ActionList.Items.IsEmpty) {
+                    ActionList.Dispatch(it => it.SelectedIndex = 0);
 
-                            if (ActionList.Items[0] is ActionConfig action)
-                                if (action.timeBased)
-                                    await AsyncMethods.DriveAsync(
-                                        action.v, action.w, 
-                                        TimeSpan.FromSeconds( action.range),
-                                        new ProgressHandler(it => _windowContext.Progress = it),
-                                        (e) => _windowContext.ErrorInfo = e.Message
-                                    ).ConfigureAwait(true);
-                                else
-                                    await AsyncMethods.DriveAsync(
-                                        action.v, action.w,
-                                        action.range,
-                                        new ProgressHandler(it => _windowContext.Progress = it),
-                                        (e) => _windowContext.ErrorInfo = e.Message
-                                    ).ConfigureAwait(true);
+                    if (ActionList.Items[0] is ActionConfig action)
+                        if (action.timeBased)
+                            await AsyncMethods.DriveAsync(
+                                action.v, action.w,
+                                TimeSpan.FromSeconds(action.range),
+                                new ProgressHandler(it => _windowContext.Progress = it),
+                                (e) => _windowContext.ErrorInfo = e.Message
+                            ).ConfigureAwait(true);
+                        else
+                            await AsyncMethods.DriveAsync(
+                                action.v, action.w,
+                                action.range,
+                                new ProgressHandler(it => _windowContext.Progress = it),
+                                (e) => _windowContext.ErrorInfo = e.Message
+                            ).ConfigureAwait(true);
 
-                            else if (ActionList.Items[0] is RudderControlConfig rudderControl)
-                                await AsyncMethods.AdjustRudderAsync(
-                                   rudderControl.value,
-                                   new ProgressHandler(it => _windowContext.Progress = it),
-                                   (e) => _windowContext.ErrorInfo = e.Message
-                               ).ConfigureAwait(true);
+                    else if (ActionList.Items[0] is RudderControlConfig rudderControl)
+                        await AsyncMethods.AdjustRudderAsync(
+                           rudderControl.value,
+                           new ProgressHandler(it => _windowContext.Progress = it),
+                           (e) => _windowContext.ErrorInfo = e.Message
+                       ).ConfigureAwait(true);
 
-                            ActionList.Dispatch(it => it.Items.RemoveAt(0));
-                        }
-                    } finally {
-                        task = null;
-                    }
-                });
+                    ActionList.Dispatch(it => {
+                        try { it.Items.RemoveAt(0); } catch (ArgumentOutOfRangeException) { }
+                    });
+                }
+            } finally {
+                task = null;
             }
         }
 
         private void ActionEditor_OnCompleted(double v, double w, bool timeBased, double range) {
             ActionList.Items.Add(new ActionConfig { v = v, w = w, range = range, timeBased = timeBased });
-            StartTask();
+            if (task == null) task = Task.Run(InvokeActions);
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e) {
@@ -178,7 +176,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
         private void RudderControl_OnCompleted(object sender, double value) {
             ActionList.Items.Add(new RudderControlConfig { value = value });
-            StartTask();
+            if (task == null) task = Task.Run(InvokeActions);
         }
     }
 }
