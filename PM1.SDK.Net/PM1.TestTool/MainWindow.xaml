@@ -36,6 +36,10 @@
                       DropDownClosed="ComboBox_DropDownClosed"
                       IsEnabled="{Binding ComboBoxEnabled, Mode=OneWay}"
                       Width="120"/>
+            <Button Content="&#xE713;"
+                    FontFamily="Segoe MDL2 Assets"
+                    Click="Button_Click"
+                    Margin="8,0" VerticalAlignment="Center"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Margin="4,0"
                     HorizontalAlignment="Right"
@@ -72,8 +76,6 @@
                                    HorizontalAlignment="Center"/>
             </TabItem>
             <TabItem Header="参数标定">
-            </TabItem>
-            <TabItem Header="控制精度测试">
             </TabItem>
         </TabControl>
         <TextBlock Text="错误信息"

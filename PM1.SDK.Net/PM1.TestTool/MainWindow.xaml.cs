@@ -1,4 +1,5 @@
 ﻿using Autolabor.PM1.TestTool.MainWindowItems;
+using Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow;
 using System;
 using System.Globalization;
 using System.IO.Ports;
@@ -163,5 +164,8 @@ namespace Autolabor.PM1.TestTool {
             foreach (var item in e.RemovedItems.OfType<TabItem>())
                 (item.Content as ITabControl)?.OnLeave();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e) 
+            => new SettingsWindow() { Owner = this }.ShowDialog();
     }
 }

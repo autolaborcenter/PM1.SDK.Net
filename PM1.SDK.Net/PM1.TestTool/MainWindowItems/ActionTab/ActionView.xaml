@@ -14,7 +14,7 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style x:Key="ValueText" TargetType="TextBox">
-            <Setter Property="Margin" Value="0,1"/>
+            <Setter Property="Margin" Value="1"/>
             <Setter Property="Grid.Column" Value="1"/>
             <Setter Property="TextAlignment" Value="Right"/>
         </Style>
@@ -45,7 +45,7 @@
                      TextChanged="TextChanged"
                      LostFocus="Box_LostFocus"
                      Grid.Row="0" Style="{StaticResource ValueText}"/>
-            <TextBlock Text="m/s" Margin="4,0"
+            <TextBlock Text="米/秒" Margin="4,0"
                        Grid.Row="0" Grid.Column="2"/>
 
             <CheckBox x:Name="WCheck" Tag="_w" 
@@ -57,7 +57,7 @@
                      TextChanged="TextChanged"
                      LostFocus="Box_LostFocus"
                      Grid.Row="1" Style="{StaticResource ValueText}"/>
-            <TextBlock Text="°/s" Margin="4,0"
+            <TextBlock Text="°/秒" Margin="4,0"
                        Grid.Row="1" Grid.Column="2"/>
         </Grid>
         <TextBlock Text="路径设定" Margin="0,12,0,0"/>
@@ -80,7 +80,7 @@
                      TextChanged="TextChanged"
                      LostFocus="Box_LostFocus"
                      Grid.Row="0" Style="{StaticResource ValueText}"/>
-            <TextBlock Text="m" Margin="4,0"
+            <TextBlock Text="米" Margin="4,0"
                        Grid.Row="0" Grid.Column="2"/>
         </Grid>
 
@@ -107,7 +107,7 @@
                      TextChanged="TextChanged"
                      LostFocus="Box_LostFocus"
                      Grid.Row="0" Style="{StaticResource ValueText}"/>
-            <TextBlock Text="m" Margin="4,0"
+            <TextBlock Text="米" Margin="4,0"
                        Grid.Row="0" Grid.Column="2"/>
 
             <CheckBox x:Name="ACheck" Tag="_a"
@@ -131,7 +131,7 @@
                      TextChanged="TextChanged"
                      LostFocus="Box_LostFocus"
                      Grid.Row="2" Style="{StaticResource ValueText}"/>
-            <TextBlock Text="s" Margin="4,0"
+            <TextBlock Text="秒" Margin="4,0"
                        Grid.Row="2" Grid.Column="2"/>
         </Grid>
         <Button x:Name="CheckButton" Content="确定" 

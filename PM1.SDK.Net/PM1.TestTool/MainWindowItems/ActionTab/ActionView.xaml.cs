@@ -172,15 +172,16 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             }
 
             if (theOne.IsMaster) {
-                if (!CheckSign(theOne)) {
+                var conflict = CheckSign(theOne);
+                if (conflict != null) {
                     theOne.State = Input.StateEnum.Error;
                     ErrorInfo.Text = "速度设定与约束设定冲突";
-                    return;
+                    if (conflict.IsMaster) return;
                 }
             }
 
             var complete = _inputs.Where(it => it.IsMaster).ToList();
-            var waitings = _inputs.Except(complete).ToList();
+            var waitings = _inputs.Except(complete).Where(it => it.State != Input.StateEnum.Error).ToList();
 
             while (waitings.Any()
                 && waitings.RemoveAll(it => CalculateItem(it, complete)) > 0) ;
@@ -194,7 +195,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                         ErrorInfo.Text = "速度超出有效范围";
                         return;
                     }
-            }
+            } else if (theOne.State == Input.StateEnum.Error && null == CheckSign(theOne))
+                theOne.State = Input.StateEnum.Master;
 
             var voids = _inputs.Where(it => it.IsVoid).ToHashSet();
             if (voids.Count == _inputs.Count)
@@ -311,10 +313,12 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         /// </summary>
         /// <param name="theOne">新设置的参数</param>
         /// <returns>检查是否通过</returns>
-        private bool CheckSign(Input theOne)
-            => !_signPairs.TryGetValue(theOne, out var others)
+        private Input CheckSign(Input theOne)
+            => !_signPairs.TryGetValue(theOne, out var others) 
             || double.IsNaN(others.Value)
-            || Math.Sign(others.Value) == Math.Sign(theOne.Value);
+            || Math.Sign(others.Value) == Math.Sign(theOne.Value)
+               ? null
+               : others;
 
         /// <summary>
         ///     计算从动属性
