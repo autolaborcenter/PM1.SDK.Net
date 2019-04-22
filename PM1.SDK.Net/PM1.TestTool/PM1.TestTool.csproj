@@ -109,6 +109,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BindableBase.cs" />
+    <Compile Include="GlobalArguments.cs" />
     <Compile Include="MainWindowItems\ActionTab\ActionTab.xaml.cs">
       <DependentUpon>ActionTab.xaml</DependentUpon>
     </Compile>
@@ -147,9 +148,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainWindowItems\SettingsWindow\RangeValidationRule.cs" />
     <Compile Include="MainWindowItems\SettingsWindow\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainWindowItems\SettingsWindow\AngleFormatter.cs" />
+    <Compile Include="MainWindowItems\SettingsWindow\ValueFormatter.cs" />
+    <Compile Include="MainWindowItems\SettingsWindow\WindowContext.cs" />
     <Compile Include="MainWindowItems\ToolFunctions.cs" />
     <Compile Include="MainWindowItems\ActionTab\RudderControlView.xaml.cs">
       <DependentUpon>RudderControlView.xaml</DependentUpon>

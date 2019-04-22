@@ -6,9 +6,12 @@
         xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow"
         FontSize="16"
         Title="参数设置"    
-        Width="280" Height="480"
-        ResizeMode="NoResize">
-    <Grid Margin="8">
+        Width="280" Height="420" ResizeMode="NoResize">
+    <Grid Margin="8"
+          DataContextChanged="Grid_DataContextChanged">
+        <Grid.DataContext>
+            <local:WindowContext/>
+        </Grid.DataContext>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
@@ -20,6 +23,10 @@
                     <Setter Property="Grid.Column" Value="1"/>
                     <Setter Property="TextAlignment" Value="Right"/>
                 </Style>
+                <Style x:Key="ErrorText" TargetType="TextBox">
+                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="Foreground" Value="Red"/>
+                </Style>
             </StackPanel.Resources>
             <TextBlock Text="机械参数"/>
             <Separator/>
@@ -28,8 +35,6 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -37,31 +42,61 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="长度（轴距）" Grid.Row="0" Grid.Column="0"/>
-                <TextBox x:Name="LBox"
+                <TextBox Tag="Length"
                          Grid.Row="0" Style="{StaticResource ValueText}" 
-                         GotFocus="TextBox_GotFocus"/>
+                         GotFocus="TextBox_GotFocus">
+                    <TextBox.Text>
+                        <Binding Path="Length"
+                                 Mode="TwoWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <local:ValueFormatter/>
+                            </Binding.Converter>
+                            <Binding.ValidationRules>
+                                <local:RangeValidationRule Min="0.2" Max="0.6"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBlock Text="米" Grid.Row="0" Grid.Column="2"/>
 
                 <TextBlock Text="宽度（轮距）" Grid.Row="1" Grid.Column="0"/>
-                <TextBox x:Name="WBox"
+                <TextBox Tag="Width"
                          Grid.Row="1" Style="{StaticResource ValueText}"
-                         GotFocus="TextBox_GotFocus"/>
+                         GotFocus="TextBox_GotFocus">
+                    <TextBox.Text>
+                        <Binding Path="Width"
+                                 Mode="TwoWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <local:ValueFormatter/>
+                            </Binding.Converter>
+                            <Binding.ValidationRules>
+                                <local:RangeValidationRule Min="0.2" Max="0.6"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBlock Text="米" Grid.Row="1" Grid.Column="2"/>
 
-                <TextBlock Text="轮胎直径" Grid.Row="2" Grid.Column="0"/>
-                <TextBox x:Name="DBox"
+                <TextBlock Text="轮胎半径" Grid.Row="2" Grid.Column="0"/>
+                <TextBox Tag="WheelRadius"
                          Grid.Row="2" Style="{StaticResource ValueText}"
-                         GotFocus="TextBox_GotFocus"/>
+                         GotFocus="TextBox_GotFocus">
+                    <TextBox.Text>
+                        <Binding Path="WheelRadius"
+                                 Mode="TwoWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <local:ValueFormatter/>
+                            </Binding.Converter>
+                            <Binding.ValidationRules>
+                                <local:RangeValidationRule Min="0.05" Max="0.2"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBlock Text="米" Grid.Row="2" Grid.Column="2"/>
-
-                <Button Content="恢复默认值" 
-                        Grid.Row="4" Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        HorizontalAlignment="Left"/>
-                <Button Content="确定" 
-                        Grid.Row="4" Grid.Column="1"
-                        Grid.ColumnSpan="2"
-                        HorizontalAlignment="Right"/>
             </Grid>
 
             <TextBlock Text="控制参数" Margin="0,12,0,0"/>
@@ -72,8 +107,6 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -81,35 +114,87 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="优化宽度" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Grid.Row="0" Style="{StaticResource ValueText}"/>
-                <TextBlock Text="弧度" Grid.Row="0" Grid.Column="2"/>
+                <TextBox Tag="OptimizeWidth"
+                         Grid.Row="0" Style="{StaticResource ValueText}"
+                         GotFocus="TextBox_GotFocus">
+                    <TextBox.Text>
+                        <Binding Path="OptimizeWidth"
+                                 Mode="TwoWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <local:AngleFormatter/>
+                            </Binding.Converter>
+                            <Binding.ValidationRules>
+                                <local:RangeValidationRule Min="0" Max="90"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBlock Text="°" Grid.Row="0" Grid.Column="2"/>
 
-                <TextBlock Text="角加速度限制" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Grid.Row="1" Style="{StaticResource ValueText}"/>
-                <TextBlock Text="弧度/秒" Grid.Row="1" Grid.Column="2"/>
+                <TextBlock Text="轮角加速度限制" Grid.Row="1" Grid.Column="0"/>
+                <TextBox Tag="Acceleration"
+                         Grid.Row="1" Style="{StaticResource ValueText}"
+                         GotFocus="TextBox_GotFocus">
+                    <TextBox.Text>
+                        <Binding Path="Acceleration"
+                                 Mode="TwoWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <local:AngleFormatter/>
+                            </Binding.Converter>
+                            <Binding.ValidationRules>
+                                <local:RangeValidationRule Min="0" Max="720"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBlock Text="°/秒²" Grid.Row="1" Grid.Column="2"/>
 
                 <TextBlock Text="最大线速度" Grid.Row="2" Grid.Column="0"/>
-                <TextBox Grid.Row="2" Style="{StaticResource ValueText}"/>
+                <TextBox Tag="VMax"
+                         Grid.Row="2" Style="{StaticResource ValueText}"
+                         GotFocus="TextBox_GotFocus">
+                    <TextBox.Text>
+                        <Binding Path="VMax"
+                                 Mode="TwoWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <local:ValueFormatter/>
+                            </Binding.Converter>
+                            <Binding.ValidationRules>
+                                <local:RangeValidationRule Min="0"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
                 <TextBlock Text="米/秒" Grid.Row="2" Grid.Column="2"/>
 
                 <TextBlock Text="最大角速度" Grid.Row="3" Grid.Column="0"/>
-                <TextBox Grid.Row="3" Style="{StaticResource ValueText}"/>
-                <TextBlock Text="弧度/秒" Grid.Row="3" Grid.Column="2"/>
-
-                <Button Content="恢复默认值" 
-                    Grid.Row="5" Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Left"/>
-                <Button Content="确定" 
-                    Grid.Row="5" Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Right"/>
+                <TextBox Tag="WMax"
+                         Grid.Row="3" Style="{StaticResource ValueText}"
+                         GotFocus="TextBox_GotFocus">
+                    <TextBox.Text>
+                        <Binding Path="WMax"
+                                 Mode="TwoWay"
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.Converter>
+                                <local:AngleFormatter/>
+                            </Binding.Converter>
+                            <Binding.ValidationRules>
+                                <local:RangeValidationRule Min="0"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBlock Text="°/秒" Grid.Row="3" Grid.Column="2"/>
             </Grid>
-           
+            <Button Content="恢复默认值" 
+                    Margin="0,8"
+                    Click="Revert_Click"/>
         </StackPanel>
-        <TextBox x:Name="HelpText"
+        <TextBox Text="{Binding HelpText,Mode=OneWay}"
                  Grid.Row="1" VerticalAlignment="Stretch"
-                 IsEnabled="False" TextWrapping="Wrap"
-                 Margin="0,12,0,0"/>
+                 IsEnabled="False" TextWrapping="Wrap"/>
     </Grid>
 </Window>

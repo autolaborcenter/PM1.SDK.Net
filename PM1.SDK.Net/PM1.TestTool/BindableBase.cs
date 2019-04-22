@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Autolabor.PM1.TestTool {
@@ -28,6 +29,16 @@ namespace Autolabor.PM1.TestTool {
                                       [CallerMemberName] string propertyName = null) {
             if (Equals(field, value)) return false;
             field = value;
+            Notify(propertyName);
+            return true;
+        }
+
+        protected bool SetProperty<T>(T field,
+                                      T value,
+                                      Action<T> setter,
+                                      [CallerMemberName] string propertyName = null) {
+            if (Equals(field, value)) return false;
+            setter(value);
             Notify(propertyName);
             return true;
         }

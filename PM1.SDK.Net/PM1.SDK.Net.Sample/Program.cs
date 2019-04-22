@@ -9,7 +9,7 @@ namespace Autolabor.PM1.Sample {
     internal class Program {
         private static void Main() {
             try {
-                Methods.Initialize("", null, out _);
+                Methods.Initialize("", out _);
                 Methods.State = StateEnum.Unlocked;
                 Thread.Sleep(100);
                 AsyncMethods.DriveAsync(

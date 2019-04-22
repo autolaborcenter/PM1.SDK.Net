@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -30,6 +31,12 @@ namespace Autolabor.PM1.TestTool {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             try {
+                var dictionary = Application.Current.Properties;
+                foreach(string key in dictionary.Keys) {
+                    var parameter = Methods.Parameter.Parse(key);
+                    if (parameter != null) parameter.Current = (double)dictionary[key];
+                }
+
                 while (!connecting.IsCancellationRequested) {
                     context.ConnectedTime = Format("0.0", stopwatch.ElapsedMilliseconds / 1000.0);
                     try {

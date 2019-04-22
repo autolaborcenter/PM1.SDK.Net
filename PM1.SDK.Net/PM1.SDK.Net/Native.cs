@@ -5,9 +5,9 @@ using Handler = System.UInt32;
 namespace Autolabor.PM1 {
     internal static class SafeNativeMethods {
 #if DEBUG
-        const string LIBRARY = "pm1_sdk_native_debug.dll";
+        public const string LIBRARY = "pm1_sdk_native_debug.dll";
 #else
-        const string LIBRARY = "pm1_sdk_native.dll";
+        public const string LIBRARY = "pm1_sdk_native.dll";
 #endif
 
         [DllImport(LIBRARY, EntryPoint = "get_error_info")]
@@ -22,30 +22,23 @@ namespace Autolabor.PM1 {
         [DllImport(LIBRARY, EntryPoint = "get_current_port")]
         public static extern IntPtr GetConnectedPort();
 
-        [DllImport(LIBRARY, EntryPoint = "get_default_chassis_config")]
-        public static extern void GetDefaultChassisConfig(
-            out double width,
-            out double length,
-            out double wheelRadius,
-            out double optimizeWidth,
-            out double acceleration,
-            out double maxV,
-            out double maxW);
-
         [DllImport(LIBRARY, EntryPoint = "initialize", CharSet = CharSet.Ansi)]
-        public static extern Handler Initialize(
-            string port,
-            double width,
-            double length,
-            double wheelRadius,
-            double optimizeWidth,
-            double acceleration,
-            double maxV,
-            double maxW,
-            out double progress);
+        public static extern Handler Initialize(string port, out double progress);
 
         [DllImport(LIBRARY, EntryPoint = "shutdown")]
         public static extern Handler Shutdown();
+
+        [DllImport(LIBRARY, EntryPoint = "get_default_parameter")]
+        public static extern double GetDefaultParameter(Handler id);
+
+        [DllImport(LIBRARY, EntryPoint = "get_parameter")]
+        public static extern Handler GetParameter(Handler id, out double value);
+
+        [DllImport(LIBRARY, EntryPoint = "set_parameter")]
+        public static extern Handler SetParameter(Handler id, double value);
+
+        [DllImport(LIBRARY, EntryPoint = "reset_parameter")]
+        public static extern Handler ResetParameter(Handler id);
 
         [DllImport(LIBRARY, EntryPoint = "get_odometry")]
         public static extern Handler GetOdometry(

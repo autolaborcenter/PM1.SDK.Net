@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.IO.IsolatedStorage;
 using System.Windows;
 
 namespace Autolabor.PM1.TestTool {

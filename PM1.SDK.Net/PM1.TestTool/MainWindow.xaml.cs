@@ -2,6 +2,8 @@
 using Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow;
 using System;
 using System.Globalization;
+using System.IO;
+using System.IO.IsolatedStorage;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading;
@@ -16,12 +18,29 @@ namespace Autolabor.PM1.TestTool {
     public partial class MainWindow : Window {
         private const string AutoSelectString = "自动选择";
         private const string UITestString = "界面测试";
+        private const string FileName = "config.ini";
 
         private readonly MainWindowContext _context;
         private CancellationTokenSource _connecting;
 
         public MainWindow() {
+            var splitters = new char[] { ':' };
+            var storage = IsolatedStorageFile.GetUserStoreForDomain();
+            try {
+                using (var stream = new IsolatedStorageFileStream(FileName, FileMode.Open, storage))
+                using (var reader = new StreamReader(stream)) {
+                    while (!reader.EndOfStream) {
+                        var keyValue = reader.ReadLine().Split(splitters);
+                        Application.Current.Properties[keyValue[0]] 
+                            = double.TryParse(keyValue[1], out var number)
+                              ? number
+                              : (object)keyValue[1];
+                    }
+                }
+            } catch (FileNotFoundException) { }
+
             InitializeComponent();
+
             _context = (MainWindowContext)DataContext;
             _context.PropertyChanged += (_, e) => {
                 if (e.PropertyName == nameof(MainWindowContext.State)
@@ -89,16 +108,7 @@ namespace Autolabor.PM1.TestTool {
                     if (port != UITestString)
 #endif
                         port = Methods.Initialize(port == AutoSelectString ? "" : port,
-                                                  new Config {
-                                                      Width = double.NaN,
-                                                      Length = double.NaN,
-                                                      WheelRadius = double.NaN,
-                                                      OptimizeWidth = double.NaN,
-                                                      Acceleration = double.NaN,
-                                                      MaxV = double.NaN,
-                                                      MaxW = Math.PI / 3
-                                                  }
-                                                  , out progress);
+                                                  out progress);
 
                     SerialPortCombo.Dispatch((it) => {
                         if (!it.Items.Contains(port))
@@ -154,8 +164,15 @@ namespace Autolabor.PM1.TestTool {
         private void Lock_Click(object sender, RoutedEventArgs e)
             => ChassisState = StateEnum.Locked;
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-            => Methods.ShutdownSafety();
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            Methods.ShutdownSafety();
+            var storage = IsolatedStorageFile.GetUserStoreForDomain();
+            using (var stream = new IsolatedStorageFileStream(FileName, FileMode.Create, storage))
+            using (var writer = new StreamWriter(stream)) {
+                foreach (var key in Application.Current.Properties.Keys)
+                    writer.WriteLine("{0}: {1}", key, Application.Current.Properties[key]);
+            }
+        }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             foreach (var item in e.AddedItems.OfType<TabItem>())

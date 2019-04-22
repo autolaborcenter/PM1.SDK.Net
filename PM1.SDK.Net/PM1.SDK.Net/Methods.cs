@@ -6,41 +6,41 @@ namespace Autolabor.PM1 {
     /// <summary>
     ///     底盘参数结构体
     /// </summary>
-    public struct Config {
+    public enum ParameterId {
         /// <summary>
         ///     轮间距
         /// </summary>
-        public double Width;
+        Width,
 
         /// <summary>
         ///     轴间距
         /// </summary>
-        public double Length;
+        Length,
 
         /// <summary>
         ///     轮半径
         /// </summary>
-        public double WheelRadius;
+        WheelRadius,
 
         /// <summary>
         ///     优化宽度
         /// </summary>
-        public double OptimizeWidth;
+        OptimizeWidth,
 
         /// <summary>
         ///     最大加速度
         /// </summary>
-        public double Acceleration;
+        Acceleration,
 
         /// <summary>
         ///     最大线速度
         /// </summary>
-        public double MaxV;
+        MaxV,
 
         /// <summary>
         ///     最大角速度
         /// </summary>
-        public double MaxW;
+        MaxW
     }
 
     /// <summary>
@@ -85,54 +85,14 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     获取默认底盘参数
-        /// </summary>
-        public static Config
-            DefaultConfig {
-            get {
-                var result = new Config();
-                GetDefaultChassisConfig(
-                       out result.Width,
-                       out result.Length,
-                       out result.WheelRadius,
-                       out result.OptimizeWidth,
-                       out result.Acceleration,
-                       out result.MaxV,
-                       out result.MaxW);
-                return result;
-            }
-        }
-
-        /// <summary>
         ///     初始化
         /// </summary>
         /// <param name="port">端口名</param>
         /// <param name="config">配置</param>
         /// <param name="progress">进度</param>
         /// <returns>已连接的端口</returns>
-        public static string Initialize(
-            string port,
-            Config? config,
-            out double progress) {
-            var configNotNull = config ?? new Config {
-                Width = double.NaN,
-                Length = double.NaN,
-                WheelRadius = double.NaN,
-                OptimizeWidth = double.NaN,
-                Acceleration = double.NaN,
-                MaxV = double.NaN,
-                MaxW = double.NaN
-            };
-            OnNative(SafeNativeMethods.Initialize(
-                port,
-                configNotNull.Width,
-                configNotNull.Length,
-                configNotNull.WheelRadius,
-                configNotNull.OptimizeWidth,
-                configNotNull.Acceleration,
-                configNotNull.MaxV,
-                configNotNull.MaxW,
-                out progress));
+        public static string Initialize(string port, out double progress) {
+            OnNative(SafeNativeMethods.Initialize(port, out progress));
             return Marshal.PtrToStringAnsi(GetConnectedPort());
         }
 
@@ -148,6 +108,57 @@ namespace Autolabor.PM1 {
         public static bool ShutdownSafety() 
             => string.IsNullOrWhiteSpace(Marshal.PtrToStringAnsi(GetErrorInfo(SafeNativeMethods.Shutdown())));
 
+        public class Parameter {
+            private readonly uint _id;
+
+            public Parameter(ParameterId id) => _id = (uint)id;
+
+            public double Default => GetDefaultParameter(_id);
+
+            public double? Current {
+                get {
+                    var handler = GetParameter(_id, out var value);
+                    var error = Marshal.PtrToStringAnsi(GetErrorInfo(handler));
+                    if (!string.IsNullOrWhiteSpace(error)) {
+                        RemoveErrorInfo(handler);
+                        return null;
+                    }
+                    return value;
+                }
+                set => OnNative(value.HasValue
+                                ? SetParameter(_id, value.Value)
+                                : ResetParameter(_id));
+            }
+
+            public static Parameter Parse(string key) {
+                switch (key) {
+                    case nameof(ParameterId.Width):
+                        return new Parameter(ParameterId.Width);
+
+                    case nameof(ParameterId.Length):
+                        return new Parameter(ParameterId.Length);
+
+                    case nameof(ParameterId.WheelRadius):
+                        return new Parameter(ParameterId.WheelRadius);
+
+                    case nameof(ParameterId.OptimizeWidth):
+                        return new Parameter(ParameterId.OptimizeWidth);
+
+                    case nameof(ParameterId.Acceleration):
+                        return new Parameter(ParameterId.Acceleration);
+
+                    case nameof(ParameterId.MaxV):
+                        return new Parameter(ParameterId.MaxV);
+
+                    case nameof(ParameterId.MaxW):
+                        return new Parameter(ParameterId.MaxW);
+
+                    default:
+                        return null;
+                }
+            }
+        }
+
         /// <summary>
         ///     读取里程计
         /// </summary>
@@ -157,8 +168,8 @@ namespace Autolabor.PM1 {
             Odometry {
             get {
                 OnNative(GetOdometry(out var s, out var sa,
-                                      out var x, out var y, out var theta,
-                                      out var vx, out var vy, out var w));
+                                     out var x, out var y, out var theta,
+                                     out var vx, out var vy, out var w));
                 return (s, sa, x, y, theta, vx, vy, w);
             }
         }

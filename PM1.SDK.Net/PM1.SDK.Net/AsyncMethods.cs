@@ -49,11 +49,11 @@ namespace Autolabor.PM1 {
         /// <param name="handler">异常处理器</param>
         /// <returns>任务对象</returns>
         public static async Task InitializeAsync(
-            string port, Config? config,
-             IProgress<double> progress,
+            string port,
+            IProgress<double> progress,
             ExceptionHandler handler
         ) => await RunActionAsync(
-                 (out double _progress) => Initialize(port, config, out _progress),
+                 (out double _progress) => Initialize(port, out _progress),
                  progress, TimeSpan.FromMilliseconds(50), handler
              ).ConfigureAwait(true);
 
