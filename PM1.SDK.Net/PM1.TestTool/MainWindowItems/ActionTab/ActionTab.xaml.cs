@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,12 +18,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             ActionList.Items.Clear();
             ActionEditor.Reset();
             RudderControl.Reset();
-
-            if (PauseToggle.IsChecked == true) {
-                Methods.Paused = true;
-                PauseToggle.Content = "已暂停";
-            } else
-                PauseToggle.IsChecked = true;
+            PauseToggle.IsChecked = true;
         }
 
         public void OnLeave() { }
@@ -112,15 +106,14 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
 
         private Task task = null;
 
-        private void ToggleButton_Click(object sender, RoutedEventArgs e) {
-            var toggle = (ToggleButton)sender;
-            if (toggle.IsChecked == true) {
-                Methods.Paused = true;
-                toggle.Content = "已暂停";
-            } else {
-                Methods.Paused = false;
-                toggle.Content = "暂停";
-            }
+        private void PauseToggle_Checked(object sender, RoutedEventArgs e) {
+            Methods.Paused = true;
+            ((ToggleButton)sender).Content = "已暂停";
+        }
+
+        private void PauseToggle_Unchecked(object sender, RoutedEventArgs e) {
+            Methods.Paused = false;
+            ((ToggleButton)sender).Content = "暂停";
         }
 
         private async Task InvokeActions() {
