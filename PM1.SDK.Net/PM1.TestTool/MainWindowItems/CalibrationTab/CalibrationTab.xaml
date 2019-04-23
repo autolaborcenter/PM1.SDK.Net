@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="500">
+             d:DesignHeight="400" d:DesignWidth="500"
+             DataContextChanged="Tab_DataContextChanged">
     <Grid DataContextChanged="Grid_DataContextChanged">
         <Grid.DataContext>
             <local:TabContext/>
@@ -22,9 +23,15 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button Tag="0" Grid.Column="0"
-                PreviewMouseLeftButtonDown="Button_MouseLeftButtonDown"
-                PreviewMouseLeftButtonUp="Button_MouseLeftButtonUp">
+        <Button Tag="0" Grid.Column="0" Click="Button_Click">
+            <Button.IsEnabled>
+                <Binding Path="State" Mode="OneWay">
+                    <Binding.Converter>
+                        <local:EnabledConverter Which="Calibrating1" What="False"/>
+                    </Binding.Converter>
+                </Binding>
+            </Button.IsEnabled>
+            
             <Grid>
                 <TextBlock FontSize="24"
                            HorizontalAlignment="Center"
@@ -37,7 +44,7 @@
                         </Binding>
                     </TextBlock.Visibility>
                     
-                    松开以结束
+                    点击以结束
                 </TextBlock>
                 <StackPanel Margin="12" MaxHeight="420" MaxWidth="300">
                     <StackPanel.Visibility>
@@ -58,14 +65,20 @@
                         标定轮径需要一块足够长（建议至少 1 米）的区域供机器人行驶。请在标定开始之前记下机器人的实际位置，以便测量机器人实际行驶的距离。
                     </TextBlock>
                     <TextBlock Style="{StaticResource Introduction}">
-                        <Bold>按住</Bold>此按钮开始标定轮径。<Bold>机器人将立即向前行驶。</Bold>松开按钮，机器人停止，此时输入机器人实际运行的距离以计算正确的轮径。
+                        点击此按钮开始标定轮径。<Bold>机器人将立即向前行驶。</Bold>松开按钮，机器人停止，此时输入机器人实际运行的距离以计算正确的轮径。
                     </TextBlock>
                 </StackPanel>
             </Grid>
         </Button>
-        <Button Tag="1" Grid.Column="1"
-                PreviewMouseLeftButtonDown="Button_MouseLeftButtonDown"
-                PreviewMouseLeftButtonUp="Button_MouseLeftButtonUp">
+        <Button Tag="1" Grid.Column="1" Click="Button_Click">
+            <Button.IsEnabled>
+                <Binding Path="State" Mode="OneWay">
+                    <Binding.Converter>
+                        <local:EnabledConverter Which="Calibrating0" What="False"/>
+                    </Binding.Converter>
+                </Binding>
+            </Button.IsEnabled>
+            
             <Grid>
                 <TextBlock FontSize="24"
                            HorizontalAlignment="Center"
@@ -78,7 +91,7 @@
                         </Binding>
                     </TextBlock.Visibility>
                     
-                    松开以结束
+                    点击以结束
                 </TextBlock>
                 <StackPanel Margin="12" MaxHeight="420" MaxWidth="300">
                     <StackPanel.Visibility>
@@ -99,7 +112,7 @@
                         标定宽度需要一块小区域，供机器人原地转动即可。请在标定开始之前记下机器人的实际方向，以便测量机器人实际转过的角度。
                     </TextBlock>
                     <TextBlock Style="{StaticResource Introduction}">
-                        <Bold>按住</Bold>此按钮开始标定宽度。<Bold>机器人将立即原地逆时针转动。</Bold>松开按钮，机器人停止，此时输入机器人转过的角度以计算正确的宽度。
+                        点击此按钮开始标定宽度。<Bold>机器人将立即原地逆时针转动。</Bold>松开按钮，机器人停止，此时输入机器人转过的角度以计算正确的宽度。
                     </TextBlock>
                 </StackPanel>
             </Grid>

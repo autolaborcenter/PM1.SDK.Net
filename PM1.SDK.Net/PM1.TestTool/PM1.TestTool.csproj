@@ -116,9 +116,13 @@
     <Compile Include="MainWindowItems\ActionTab\ActionView.xaml.cs">
       <DependentUpon>ActionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainWindowItems\CalibrationTab\CalculateWindow.xaml.cs">
+      <DependentUpon>CalculateWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindowItems\CalibrationTab\CalibrationTab.xaml.cs">
       <DependentUpon>CalibrationTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainWindowItems\CalibrationTab\EnabledConverter.cs" />
     <Compile Include="MainWindowItems\CalibrationTab\TabContext.cs" />
     <Compile Include="MainWindowItems\CalibrationTab\VisibilityConverter.cs" />
     <Compile Include="MainWindowItems\DriveTab\DriveTab.xaml.cs">
@@ -138,6 +142,10 @@
     <Page Include="MainWindowItems\ActionTab\ActionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindowItems\CalibrationTab\CalculateWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindowItems\CalibrationTab\CalibrationTab.xaml">
       <SubType>Designer</SubType>
