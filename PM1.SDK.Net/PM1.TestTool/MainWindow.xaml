@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Autolabor.PM1.TestTool"
         xmlns:actiontab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.ActionTab"
         xmlns:drivetab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DriveTab"
-        xmlns:ruddertab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.ActionTab"
+        xmlns:collibrationtab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab"
         mc:Ignorable="d"
         Title="Autolabor PM1 检测工具集" 
         MinHeight="640" MinWidth="540"
@@ -76,6 +76,8 @@
                                    HorizontalAlignment="Center"/>
             </TabItem>
             <TabItem Header="参数标定">
+                <collibrationtab:CalibrationTab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
+                                                Margin="8"/>
             </TabItem>
         </TabControl>
         <TextBlock Text="错误信息"

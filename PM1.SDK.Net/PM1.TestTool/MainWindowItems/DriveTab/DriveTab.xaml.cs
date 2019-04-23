@@ -15,14 +15,13 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
 
         public DriveTab() => InitializeComponent();
 
-        Task task;
+        private volatile bool flag;
+        private Task _task;
 
-        MouseDevice mouseDevice;
-
-        volatile bool flag;
+        private MouseDevice mouseDevice;
 
         public void OnEnter() {
-            task = Task.Run(async () => {
+            _task = Task.Run(async () => {
                 flag = true;
                 while (flag) {
                     await Task.Delay(50).ConfigureAwait(false);
@@ -33,13 +32,13 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
                         _windowContext.ErrorInfo = exception.Message;
                     }
                 }
-                task = null;
+                _task = null;
             });
         }
 
         public void OnLeave() {
             flag = false;
-            task?.Wait();
+            _task?.Wait();
         }
 
         private void Tab_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

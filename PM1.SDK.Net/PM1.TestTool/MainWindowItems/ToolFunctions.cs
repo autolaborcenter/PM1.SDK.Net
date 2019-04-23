@@ -31,12 +31,16 @@ namespace Autolabor.PM1.TestTool {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             try {
-                var dictionary = Application.Current.Properties;
-                foreach(string key in dictionary.Keys) {
-                    var parameter = Methods.Parameter.Parse(key);
-                    if (parameter != null) parameter.Current = (double)dictionary[key];
+                try {
+                    var dictionary = Application.Current.Properties;
+                    foreach (string key in dictionary.Keys) {
+                        var parameter = Methods.Parameter.Parse(key);
+                        if (parameter != null) parameter.Current = (double)dictionary[key];
+                    }
+                } catch (Exception exception) {
+                    context.ErrorInfo = exception.Message;
                 }
-
+               
                 while (!connecting.IsCancellationRequested) {
                     context.ConnectedTime = Format("0.0", stopwatch.ElapsedMilliseconds / 1000.0);
                     try {

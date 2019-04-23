@@ -1,0 +1,108 @@
+﻿<UserControl x:Class="Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab.CalibrationTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="500">
+    <Grid DataContextChanged="Grid_DataContextChanged">
+        <Grid.DataContext>
+            <local:TabContext/>
+        </Grid.DataContext>
+        
+        <Grid.Resources>
+            <Style x:Key="Introduction" TargetType="TextBlock">
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="Margin" Value="0,12,0,0"/>
+            </Style>
+        </Grid.Resources>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button Tag="0" Grid.Column="0"
+                PreviewMouseLeftButtonDown="Button_MouseLeftButtonDown"
+                PreviewMouseLeftButtonUp="Button_MouseLeftButtonUp">
+            <Grid>
+                <TextBlock FontSize="24"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
+                    <TextBlock.Visibility>
+                        <Binding Path="State" Mode="OneWay">
+                            <Binding.Converter>
+                                <local:VisibilityConverter Visible="True" Which="Calibrating0"/>
+                            </Binding.Converter>
+                        </Binding>
+                    </TextBlock.Visibility>
+                    
+                    松开以结束
+                </TextBlock>
+                <StackPanel Margin="12" MaxHeight="420" MaxWidth="300">
+                    <StackPanel.Visibility>
+                        <Binding Path="State" Mode="OneWay">
+                            <Binding.Converter>
+                                <local:VisibilityConverter Visible="False" Which="Calibrating0"/>
+                            </Binding.Converter>
+                        </Binding>
+                    </StackPanel.Visibility>
+
+                    <TextBlock FontSize="24" HorizontalAlignment="Center">
+                        轮径
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Introduction}">
+                        轮径指的是动力轮的尺寸：半径、直径或周长（这里选取的是半径）。这个量影响底盘速度控制的准确性以及里程计测量机器人运动距离的准确性。
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Introduction}">
+                        标定轮径需要一块足够长（建议至少 1 米）的区域供机器人行驶。请在标定开始之前记下机器人的实际位置，以便测量机器人实际行驶的距离。
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Introduction}">
+                        <Bold>按住</Bold>此按钮开始标定轮径。<Bold>机器人将立即向前行驶。</Bold>松开按钮，机器人停止，此时输入机器人实际运行的距离以计算正确的轮径。
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </Button>
+        <Button Tag="1" Grid.Column="1"
+                PreviewMouseLeftButtonDown="Button_MouseLeftButtonDown"
+                PreviewMouseLeftButtonUp="Button_MouseLeftButtonUp">
+            <Grid>
+                <TextBlock FontSize="24"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
+                    <TextBlock.Visibility>
+                        <Binding Path="State" Mode="OneWay">
+                            <Binding.Converter>
+                                <local:VisibilityConverter Visible="True" Which="Calibrating1"/>
+                            </Binding.Converter>
+                        </Binding>
+                    </TextBlock.Visibility>
+                    
+                    松开以结束
+                </TextBlock>
+                <StackPanel Margin="12" MaxHeight="420" MaxWidth="300">
+                    <StackPanel.Visibility>
+                        <Binding Path="State" Mode="OneWay">
+                            <Binding.Converter>
+                                <local:VisibilityConverter Visible="False" Which="Calibrating1"/>
+                            </Binding.Converter>
+                        </Binding>
+                    </StackPanel.Visibility>
+
+                    <TextBlock FontSize="24" HorizontalAlignment="Center">
+                        宽度
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Introduction}">
+                        宽度指的是两个动力轮之间的距离——实际距离——也就是两动力轮中轴线、触地点之间的距离。这个量影响里程计测量机器人转动角度的准确性。
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Introduction}">
+                        标定宽度需要一块小区域，供机器人原地转动即可。请在标定开始之前记下机器人的实际方向，以便测量机器人实际转过的角度。
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource Introduction}">
+                        <Bold>按住</Bold>此按钮开始标定宽度。<Bold>机器人将立即原地逆时针转动。</Bold>松开按钮，机器人停止，此时输入机器人转过的角度以计算正确的宽度。
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </Button>
+    </Grid>
+</UserControl>
