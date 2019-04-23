@@ -46,9 +46,7 @@
                          Grid.Row="0" Style="{StaticResource ValueText}" 
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
-                        <Binding Path="Length"
-                                 Mode="TwoWay"
-                                 UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Length" Mode="TwoWay">
                             <Binding.Converter>
                                 <local:ValueFormatter/>
                             </Binding.Converter>
@@ -65,9 +63,7 @@
                          Grid.Row="1" Style="{StaticResource ValueText}"
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
-                        <Binding Path="Width"
-                                 Mode="TwoWay"
-                                 UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Width" Mode="TwoWay">
                             <Binding.Converter>
                                 <local:ValueFormatter/>
                             </Binding.Converter>
@@ -84,9 +80,7 @@
                          Grid.Row="2" Style="{StaticResource ValueText}"
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
-                        <Binding Path="WheelRadius"
-                                 Mode="TwoWay"
-                                 UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="WheelRadius" Mode="TwoWay">
                             <Binding.Converter>
                                 <local:ValueFormatter/>
                             </Binding.Converter>
@@ -118,9 +112,7 @@
                          Grid.Row="0" Style="{StaticResource ValueText}"
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
-                        <Binding Path="OptimizeWidth"
-                                 Mode="TwoWay"
-                                 UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="OptimizeWidth" Mode="TwoWay">
                             <Binding.Converter>
                                 <local:AngleFormatter/>
                             </Binding.Converter>
@@ -137,9 +129,7 @@
                          Grid.Row="1" Style="{StaticResource ValueText}"
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
-                        <Binding Path="Acceleration"
-                                 Mode="TwoWay"
-                                 UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="Acceleration" Mode="TwoWay">
                             <Binding.Converter>
                                 <local:AngleFormatter/>
                             </Binding.Converter>
@@ -156,9 +146,7 @@
                          Grid.Row="2" Style="{StaticResource ValueText}"
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
-                        <Binding Path="VMax"
-                                 Mode="TwoWay"
-                                 UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="VMax" Mode="TwoWay">
                             <Binding.Converter>
                                 <local:ValueFormatter/>
                             </Binding.Converter>
@@ -175,9 +163,7 @@
                          Grid.Row="3" Style="{StaticResource ValueText}"
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
-                        <Binding Path="WMax"
-                                 Mode="TwoWay"
-                                 UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="WMax" Mode="TwoWay">
                             <Binding.Converter>
                                 <local:AngleFormatter/>
                             </Binding.Converter>

@@ -8,7 +8,9 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab {
     internal class ParseValidationRule : ValidationRule {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
             => double.TryParse(value as string, out var _value)
-               ? ValidationResult.ValidResult
+               ? _value > 0
+                 ? ValidationResult.ValidResult
+                 : new ValidationResult(false, "无效值")
                : new ValidationResult(false, "无法解析");
     }
 }

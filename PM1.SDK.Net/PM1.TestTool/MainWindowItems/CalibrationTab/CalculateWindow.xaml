@@ -47,7 +47,8 @@
         <TextBlock Grid.Row="0" Style="{StaticResource TitleText}">实际测量值</TextBlock>
         <TextBox Grid.Row="0" Style="{StaticResource ValueText}">
             <TextBox.Text>
-                <Binding Path="Actual" Mode="TwoWay">
+                <Binding Path="Actual" Mode="OneWayToSource"
+                         UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                         <local:ParseValidationRule/>
                     </Binding.ValidationRules>
