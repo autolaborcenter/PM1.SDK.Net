@@ -123,7 +123,9 @@
       <DependentUpon>CalibrationTab.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindowItems\CalibrationTab\EnabledConverter.cs" />
+    <Compile Include="MainWindowItems\CalibrationTab\ParseValidationRule.cs" />
     <Compile Include="MainWindowItems\CalibrationTab\TabContext.cs" />
+    <Compile Include="MainWindowItems\CalibrationTab\ValueFormatter.cs" />
     <Compile Include="MainWindowItems\CalibrationTab\VisibilityConverter.cs" />
     <Compile Include="MainWindowItems\DriveTab\DriveTab.xaml.cs">
       <DependentUpon>DriveTab.xaml</DependentUpon>

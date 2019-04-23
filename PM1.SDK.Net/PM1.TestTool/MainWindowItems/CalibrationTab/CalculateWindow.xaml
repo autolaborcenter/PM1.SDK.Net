@@ -45,24 +45,56 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Style="{StaticResource TitleText}">实际测量值</TextBlock>
-        <TextBox Grid.Row="0" Style="{StaticResource ValueText}"/>
+        <TextBox Grid.Row="0" Style="{StaticResource ValueText}">
+            <TextBox.Text>
+                <Binding Path="Actual" Mode="TwoWay">
+                    <Binding.ValidationRules>
+                        <local:ParseValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         <TextBlock Grid.Row="0" Style="{StaticResource UnitText}" Text="{Binding Unit,Mode=OneWay}"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0">÷</TextBlock>
         <TextBlock Grid.Row="1" Style="{StaticResource TitleText}">里程计测量值</TextBlock>
-        <TextBox Grid.Row="1" Style="{StaticResource ValueText}" IsEnabled="False"/>
+        <TextBox Grid.Row="1" Style="{StaticResource ValueText}" IsEnabled="False">
+            <TextBox.Text>
+                <Binding Path="Odometry" Mode="OneWay">
+                    <Binding.Converter>
+                        <local:ValueFormatter/>
+                    </Binding.Converter>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         <TextBlock Grid.Row="1" Style="{StaticResource UnitText}" Text="{Binding Unit,Mode=OneWay}"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0">×</TextBlock>
         <TextBlock Grid.Row="2" Style="{StaticResource TitleText}">当前参数值</TextBlock>
-        <TextBox Grid.Row="2" Style="{StaticResource ValueText}" IsEnabled="False"/>
+        <TextBox Grid.Row="2" Style="{StaticResource ValueText}" IsEnabled="False">
+            <TextBox.Text>
+                <Binding Path="Current" Mode="OneWay">
+                    <Binding.Converter>
+                        <local:ValueFormatter/>
+                    </Binding.Converter>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         <TextBlock Grid.Row="2" Style="{StaticResource UnitText}">米</TextBlock>
 
         <Rectangle Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"
                    Fill="Black" Height="1"/>
 
         <TextBlock Grid.Row="4" Style="{StaticResource TitleText}">理论参数值</TextBlock>
-        <TextBox Grid.Row="4" Style="{StaticResource ValueText}" IsEnabled="False"/>
+        <TextBox Grid.Row="4" Style="{StaticResource ValueText}" IsEnabled="False">
+            <TextBox.Text>
+                <Binding Path="Calculated" Mode="OneWay">
+                    <Binding.Converter>
+                        <local:ValueFormatter/>
+                    </Binding.Converter>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
         <TextBlock Grid.Row="4" Style="{StaticResource UnitText}">米</TextBlock>
     </Grid>
 </Window>
