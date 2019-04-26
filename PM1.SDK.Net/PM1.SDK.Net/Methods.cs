@@ -35,7 +35,7 @@ namespace Autolabor.PM1 {
     public static class Methods {
 
         /// <summary>
-        ///     初始化
+        ///     初始化。
         /// </summary>
         /// <param name="port">端口名</param>
         /// <param name="config">配置</param>
@@ -47,7 +47,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     关闭连接
+        ///     关闭。
         /// </summary>
         public static void Shutdown() => OnNative(SafeNativeMethods.Shutdown());
 
@@ -59,12 +59,12 @@ namespace Autolabor.PM1 {
             => string.IsNullOrWhiteSpace(Marshal.PtrToStringAnsi(GetErrorInfo(SafeNativeMethods.Shutdown())));
 
         /// <summary>
-        ///     参数索引
+        /// 获取参数索引器。
         /// </summary>
         public static readonly Parameters Parameters = new Parameters();
 
         /// <summary>
-        ///     读取里程计
+        /// 获取里程计读数。
         /// </summary>
         public static (double s, double sa,
             double x, double y, double theta,
@@ -79,7 +79,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     重置里程计
+        /// 清除里程计累计值。
         /// </summary>
         public static void ResetOdometry() => OnNative(SafeNativeMethods.ResetOdometry());
 
@@ -129,7 +129,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     计算空间尺度
+        /// 计算空间尺度。
         /// </summary>
         /// <param name="spatium">轨迹弧长</param>
         /// <param name="angle">轨迹夹角</param>
@@ -138,7 +138,7 @@ namespace Autolabor.PM1 {
             => SafeNativeMethods.SpatiumCalculate(spatium, angle);
 
         /// <summary>
-        ///     按空间驱动
+        /// 控制机器人按空间约束运行指定动作。
         /// </summary>
         /// <param name="v"></param>
         /// <param name="w"></param>
@@ -148,7 +148,7 @@ namespace Autolabor.PM1 {
             => OnNative(SafeNativeMethods.DriveSpatial(v, w, spatium, out progress));
 
         /// <summary>
-        ///     按时间驱动
+        /// 控制机器人按时间约束运行指定动作。
         /// </summary>
         /// <param name="v"></param>
         /// <param name="w"></param>
@@ -158,7 +158,7 @@ namespace Autolabor.PM1 {
             => OnNative(SafeNativeMethods.DriveTiming(v, w, time, out progress));
 
         /// <summary>
-        ///     前进
+        /// 动作：直线行驶。
         /// </summary>
         /// <param name="speed">速度</param>
         /// <param name="meters">路程（米）</param>
@@ -178,7 +178,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     前进
+        /// 动作：直线行驶。
         /// </summary>
         /// <param name="speed">速度</param>
         /// <param name="time">时间（秒）</param>
@@ -187,7 +187,7 @@ namespace Autolabor.PM1 {
             => OnNative(SafeNativeMethods.DriveTiming(speed, 0, time.TotalSeconds, out progress));
 
         /// <summary>
-        ///     原地转
+        /// 动作：原地转身。
         /// </summary>
         /// <param name="speed">角速度</param>
         /// <param name="rad">弧度</param>
@@ -207,7 +207,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     原地转
+        /// 动作：原地转身。
         /// </summary>
         /// <param name="speed">角速度</param>
         /// <param name="time">时间</param>
@@ -229,7 +229,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     走圆弧
+        /// 动作：按圆弧行驶。
         /// </summary>
         /// <param name="r">半径（米）</param>
         /// <param name="progress">进度</param>
@@ -239,7 +239,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     走圆弧
+        /// 动作：按圆弧行驶。
         /// </summary>
         /// <param name="r">半径（米）</param>
         /// <param name="progress">进度</param>
@@ -249,7 +249,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     走圆弧
+        /// 动作：按圆弧行驶。
         /// </summary>
         /// <param name="speed">速度</param>
         /// <param name="r">半径（米）</param>
@@ -261,7 +261,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     走圆弧
+        /// 动作：按圆弧行驶。
         /// </summary>
         /// <param name="r">半径（米）</param>
         /// <param name="progress">进度</param>
@@ -271,7 +271,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     走圆弧
+        /// 动作：按圆弧行驶。
         /// </summary>
         /// <param name="r">半径（米）</param>
         /// <param name="progress">进度</param>
@@ -281,7 +281,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     走圆弧
+        /// 动作：按圆弧行驶。
         /// </summary>
         /// <param name="r">半径（米）</param>
         /// <param name="progress">进度</param>
@@ -291,7 +291,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     调整后轮零位
+        /// 动作：调整后轮零位。
         /// </summary>
         /// <param name="offset">偏置</param>
         /// <param name="progress">进度</param>
@@ -314,7 +314,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     取消任务
+        /// 取消动作。
         /// </summary>
         public static void CancelAction() => SafeNativeMethods.CancelAction();
     }
