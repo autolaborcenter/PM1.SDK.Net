@@ -142,11 +142,11 @@
                 <TextBlock Text="°/秒²" Grid.Row="1" Grid.Column="2"/>
 
                 <TextBlock Text="最大线速度" Grid.Row="2" Grid.Column="0"/>
-                <TextBox Tag="VMax"
+                <TextBox Tag="MaxV"
                          Grid.Row="2" Style="{StaticResource ValueText}"
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
-                        <Binding Path="VMax" Mode="TwoWay">
+                        <Binding Path="MaxV" Mode="TwoWay">
                             <Binding.Converter>
                                 <local:ValueFormatter/>
                             </Binding.Converter>
@@ -159,11 +159,11 @@
                 <TextBlock Text="米/秒" Grid.Row="2" Grid.Column="2"/>
 
                 <TextBlock Text="最大角速度" Grid.Row="3" Grid.Column="0"/>
-                <TextBox Tag="WMax"
+                <TextBox Tag="MaxW"
                          Grid.Row="3" Style="{StaticResource ValueText}"
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
-                        <Binding Path="WMax" Mode="TwoWay">
+                        <Binding Path="MaxW" Mode="TwoWay">
                             <Binding.Converter>
                                 <local:AngleFormatter/>
                             </Binding.Converter>

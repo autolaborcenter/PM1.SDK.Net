@@ -34,7 +34,7 @@ namespace Autolabor.PM1.TestTool {
                 try {
                     var dictionary = Application.Current.Properties;
                     foreach (string key in dictionary.Keys) {
-                        var parameter = Methods.Parameter.Parse(key);
+                        var parameter = Methods.Parameters[key];
                         if (parameter != null) parameter.Current = (double)dictionary[key];
                     }
                 } catch (Exception exception) {

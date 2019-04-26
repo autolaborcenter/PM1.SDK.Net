@@ -10,6 +10,18 @@ namespace Autolabor.PM1 {
         public const string LIBRARY = "pm1_sdk_native.dll";
 #endif
 
+        /// <summary>
+        ///     代理底层 API，错误信息转化为日常
+        /// </summary>
+        /// <param name="handler">任务 id</param>
+        public static void OnNative(uint handler) {
+            var error = Marshal.PtrToStringAnsi(GetErrorInfo(handler));
+            if (!string.IsNullOrWhiteSpace(error)) {
+                RemoveErrorInfo(handler);
+                throw new Exception(error);
+            }
+        }
+
         [DllImport(LIBRARY, EntryPoint = "get_error_info")]
         public static extern IntPtr GetErrorInfo(Handler handler);
 

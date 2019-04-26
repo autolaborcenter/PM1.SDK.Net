@@ -1,48 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using static Autolabor.PM1.SafeNativeMethods;
 
 namespace Autolabor.PM1 {
-    /// <summary>
-    ///     底盘参数结构体
-    /// </summary>
-    public enum ParameterId {
-        /// <summary>
-        ///     轮间距
-        /// </summary>
-        Width,
-
-        /// <summary>
-        ///     轴间距
-        /// </summary>
-        Length,
-
-        /// <summary>
-        ///     轮半径
-        /// </summary>
-        WheelRadius,
-
-        /// <summary>
-        ///     优化宽度
-        /// </summary>
-        OptimizeWidth,
-
-        /// <summary>
-        ///     最大加速度
-        /// </summary>
-        Acceleration,
-
-        /// <summary>
-        ///     最大线速度
-        /// </summary>
-        MaxV,
-
-        /// <summary>
-        ///     最大角速度
-        /// </summary>
-        MaxW
-    }
-
     /// <summary>
     ///     底盘工作状态
     /// </summary>
@@ -72,17 +33,6 @@ namespace Autolabor.PM1 {
     ///     底盘控制类
     /// </summary>
     public static class Methods {
-        /// <summary>
-        ///     代理底层 API，错误信息转化为日常
-        /// </summary>
-        /// <param name="handler">任务 id</param>
-        private static void OnNative(uint handler) {
-            var error = Marshal.PtrToStringAnsi(GetErrorInfo(handler));
-            if (!string.IsNullOrWhiteSpace(error)) {
-                RemoveErrorInfo(handler);
-                throw new Exception(error);
-            }
-        }
 
         /// <summary>
         ///     初始化
@@ -108,56 +58,10 @@ namespace Autolabor.PM1 {
         public static bool ShutdownSafety() 
             => string.IsNullOrWhiteSpace(Marshal.PtrToStringAnsi(GetErrorInfo(SafeNativeMethods.Shutdown())));
 
-        public class Parameter {
-            private readonly uint _id;
-
-            public Parameter(ParameterId id) => _id = (uint)id;
-
-            public double Default => GetDefaultParameter(_id);
-
-            public double? Current {
-                get {
-                    var handler = GetParameter(_id, out var value);
-                    var error = Marshal.PtrToStringAnsi(GetErrorInfo(handler));
-                    if (!string.IsNullOrWhiteSpace(error)) {
-                        RemoveErrorInfo(handler);
-                        return null;
-                    }
-                    return value;
-                }
-                set => OnNative(value.HasValue
-                                ? SetParameter(_id, value.Value)
-                                : ResetParameter(_id));
-            }
-
-            public static Parameter Parse(string key) {
-                switch (key) {
-                    case nameof(ParameterId.Width):
-                        return new Parameter(ParameterId.Width);
-
-                    case nameof(ParameterId.Length):
-                        return new Parameter(ParameterId.Length);
-
-                    case nameof(ParameterId.WheelRadius):
-                        return new Parameter(ParameterId.WheelRadius);
-
-                    case nameof(ParameterId.OptimizeWidth):
-                        return new Parameter(ParameterId.OptimizeWidth);
-
-                    case nameof(ParameterId.Acceleration):
-                        return new Parameter(ParameterId.Acceleration);
-
-                    case nameof(ParameterId.MaxV):
-                        return new Parameter(ParameterId.MaxV);
-
-                    case nameof(ParameterId.MaxW):
-                        return new Parameter(ParameterId.MaxW);
-
-                    default:
-                        return null;
-                }
-            }
-        }
+        /// <summary>
+        ///     参数索引
+        /// </summary>
+        public static readonly Parameters Parameters = new Parameters();
 
         /// <summary>
         ///     读取里程计

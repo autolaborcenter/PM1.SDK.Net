@@ -2,18 +2,13 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
+using static Autolabor.PM1.Parameters;
 
 namespace Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab {
     /// <summary>
     /// CalibrationTab.xaml 的交互逻辑
     /// </summary>
     public partial class CalibrationTab : UserControl, ITabControl {
-        private static readonly Methods.Parameter
-            OptimizeWidth = new Methods.Parameter(ParameterId.OptimizeWidth),
-            Radius = new Methods.Parameter(ParameterId.WheelRadius),
-            WidthParameter = new Methods.Parameter(ParameterId.Width);
-
         private volatile bool _flag;
         private Task _task;
 
@@ -29,9 +24,12 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab {
             => _windowContext = e.NewValue as MainWindowContext;
 
         public void OnEnter() {
-            try { OptimizeWidth.Current = Math.PI / 60; } catch (Exception exception) {
+            try {
+                Methods.Parameters[IdEnum.OptimizeWidth].Current = Math.PI / 60;
+            } catch (Exception exception) {
                 _windowContext.ErrorInfo = exception.Message;
             }
+
             _task = Task.Run(async () => {
                 _flag = true;
                 while (_flag) {
@@ -60,9 +58,9 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab {
             _flag = false;
             _task?.Wait();
             try {
-                OptimizeWidth.Current
-                    = new GlobalParameter<double>(nameof(ParameterId.OptimizeWidth)).Value
-                      ?? OptimizeWidth.Default;
+                Methods.Parameters[IdEnum.OptimizeWidth].Current
+                    = new GlobalParameter<double>(nameof(IdEnum.OptimizeWidth)).Value
+                      ?? Methods.Parameters[IdEnum.OptimizeWidth].Default;
             } catch (Exception exception) {
                 _windowContext.ErrorInfo = exception.Message;
             }
@@ -85,14 +83,14 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab {
                     case TabContext.StateEnum.Calibrating0:
                         _tabContext.State = TabContext.StateEnum.Normal;
                         new CalculateWindow(Methods.Odometry.x, "米",
-                                            Radius.Current.Value) {
+                                            Methods.Parameters[IdEnum.WheelRadius].Current.Value) {
                             Owner = Application.Current.MainWindow
                         }.ShowDialog();
                         break;
                     case TabContext.StateEnum.Calibrating1:
                         _tabContext.State = TabContext.StateEnum.Normal;
                         new CalculateWindow(Methods.Odometry.sa.ToDegree(), "°",
-                                            WidthParameter.Current.Value) {
+                                            Methods.Parameters[IdEnum.Width].Current.Value) {
                             Owner = Application.Current.MainWindow
                         }.ShowDialog();
                         break;

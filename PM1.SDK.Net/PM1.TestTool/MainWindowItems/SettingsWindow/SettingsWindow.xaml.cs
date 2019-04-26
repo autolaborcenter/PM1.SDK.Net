@@ -27,10 +27,10 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
                 case nameof(WindowContext.Acceleration):
                     _context.HelpText = "这是轮速的最大加速度，值越大，启停越平稳，但停止时无法立刻停下，会向前滑行一段距离。";
                     break;
-                case nameof(WindowContext.VMax):
+                case nameof(WindowContext.MaxV):
                     _context.HelpText = "最大线速度限制。";
                     break;
-                case nameof(WindowContext.WMax):
+                case nameof(WindowContext.MaxW):
                     _context.HelpText = "最大角速度限制。";
                     break;
             }

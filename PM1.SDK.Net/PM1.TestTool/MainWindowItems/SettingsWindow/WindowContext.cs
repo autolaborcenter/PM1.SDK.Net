@@ -1,24 +1,16 @@
 ﻿using System.Runtime.CompilerServices;
+using static Autolabor.PM1.Parameters;
 
 namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
     internal class WindowContext : BindableBase {
-        private readonly Methods.Parameter
-            _pLength = new Methods.Parameter(ParameterId.Length),
-            _pWidth = new Methods.Parameter(ParameterId.Width),
-            _pWheelRadius = new Methods.Parameter(ParameterId.WheelRadius),
-            _pOptimizeWidth = new Methods.Parameter(ParameterId.OptimizeWidth),
-            _pAcceleration = new Methods.Parameter(ParameterId.Acceleration),
-            _pMaxV = new Methods.Parameter(ParameterId.MaxV),
-            _pMaxW = new Methods.Parameter(ParameterId.MaxW);
-
         private readonly GlobalParameter<double>
             _gLength = new GlobalParameter<double>(nameof(Length)),
             _gWidth = new GlobalParameter<double>(nameof(Width)),
             _gWheelRadius = new GlobalParameter<double>(nameof(WheelRadius)),
             _gOptimizeWidth = new GlobalParameter<double>(nameof(OptimizeWidth)),
             _gAcceleration = new GlobalParameter<double>(nameof(Acceleration)),
-            _gMaxV = new GlobalParameter<double>(nameof(VMax)),
-            _gMaxW = new GlobalParameter<double>(nameof(WMax));
+            _gMaxV = new GlobalParameter<double>(nameof(MaxV)),
+            _gMaxW = new GlobalParameter<double>(nameof(MaxW));
 
         private string _helpText;
 
@@ -31,67 +23,67 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
                            propertyName);
 
         public void ResetParameters() {
-            Width = _pWidth.Default;
-            Length = _pLength.Default;
-            WheelRadius = _pWheelRadius.Default;
-            OptimizeWidth = _pOptimizeWidth.Default;
-            Acceleration = _pAcceleration.Default;
-            VMax = _pMaxV.Default;
-            WMax = _pMaxW.Default;
+            Width = Methods.Parameters[IdEnum.Width].Default;
+            Length = Methods.Parameters[IdEnum.Length].Default;
+            WheelRadius = Methods.Parameters[IdEnum.WheelRadius].Default;
+            OptimizeWidth = Methods.Parameters[IdEnum.OptimizeWidth].Default;
+            Acceleration = Methods.Parameters[IdEnum.Acceleration].Default;
+            MaxV = Methods.Parameters[IdEnum.MaxV].Default;
+            MaxW = Methods.Parameters[IdEnum.MaxW].Default;
         }
 
         public double Width {
-            get => _gWidth.Value ?? _pWidth.Default;
+            get => _gWidth.Value ?? Methods.Parameters[IdEnum.Width].Default;
             set {
-                try { _pWidth.Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.Width].Current = value; } catch { }
                 SetProperty(_gWidth, value);
             }
         }
 
         public double Length {
-            get => _gLength.Value ?? _pLength.Default;
+            get => _gLength.Value ?? Methods.Parameters[IdEnum.Length].Default;
             set {
-                try { _pLength.Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.Length].Current = value; } catch { }
                 SetProperty(_gLength, value);
             }
         }
 
         public double WheelRadius {
-            get => _gWheelRadius.Value ?? _pWheelRadius.Default;
+            get => _gWheelRadius.Value ?? Methods.Parameters[IdEnum.WheelRadius].Default;
             set {
-                try { _pWheelRadius.Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.WheelRadius].Current = value; } catch { }
                 SetProperty(_gWheelRadius, value);
             }
         }
 
         public double OptimizeWidth {
-            get => _gOptimizeWidth.Value ?? _pOptimizeWidth.Default;
+            get => _gOptimizeWidth.Value ?? Methods.Parameters[IdEnum.OptimizeWidth].Default;
             set {
-                try { _pWheelRadius.Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.OptimizeWidth].Current = value; } catch { }
                 SetProperty(_gWheelRadius, value);
             }
         }
 
         public double Acceleration {
-            get => _gAcceleration.Value ?? _pAcceleration.Default;
+            get => _gAcceleration.Value ?? Methods.Parameters[IdEnum.Acceleration].Default;
             set {
-                try { _pAcceleration.Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.Acceleration].Current = value; } catch { }
                 SetProperty(_gAcceleration, value);
             }
         }
 
-        public double VMax {
-            get => _gMaxV.Value ?? _pMaxV.Default;
+        public double MaxV {
+            get => _gMaxV.Value ?? Methods.Parameters[IdEnum.MaxV].Default;
             set {
-                try { _pMaxV.Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.MaxV].Current = value; } catch { }
                 SetProperty(_gMaxV, value);
             }
         }
 
-        public double WMax {
-            get => _gMaxW.Value ?? _pMaxW.Default;
+        public double MaxW {
+            get => _gMaxW.Value ?? Methods.Parameters[IdEnum.MaxW].Default;
             set {
-                try { _pMaxW.Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.MaxW].Current = value; } catch { }
                 SetProperty(_gMaxW, value);
             }
         }
