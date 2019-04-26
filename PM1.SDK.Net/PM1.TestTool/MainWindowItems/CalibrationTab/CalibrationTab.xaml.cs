@@ -25,7 +25,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab {
 
         public void OnEnter() {
             try {
-                Methods.Parameters[IdEnum.OptimizeWidth].Current = Math.PI / 60;
+                Methods.Parameters[IdEnum.OptimizeWidth].Value = Math.PI / 60;
             } catch (Exception exception) {
                 _windowContext.ErrorInfo = exception.Message;
             }
@@ -58,7 +58,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab {
             _flag = false;
             _task?.Wait();
             try {
-                Methods.Parameters[IdEnum.OptimizeWidth].Current
+                Methods.Parameters[IdEnum.OptimizeWidth].Value
                     = new GlobalParameter<double>(nameof(IdEnum.OptimizeWidth)).Value
                       ?? Methods.Parameters[IdEnum.OptimizeWidth].Default;
             } catch (Exception exception) {
@@ -83,14 +83,14 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab {
                     case TabContext.StateEnum.Calibrating0:
                         _tabContext.State = TabContext.StateEnum.Normal;
                         new CalculateWindow(Methods.Odometry.x, "米",
-                                            Methods.Parameters[IdEnum.WheelRadius].Current.Value) {
+                                            Methods.Parameters[IdEnum.WheelRadius].Value.Value) {
                             Owner = Application.Current.MainWindow
                         }.ShowDialog();
                         break;
                     case TabContext.StateEnum.Calibrating1:
                         _tabContext.State = TabContext.StateEnum.Normal;
                         new CalculateWindow(Methods.Odometry.sa.ToDegree(), "°",
-                                            Methods.Parameters[IdEnum.Width].Current.Value) {
+                                            Methods.Parameters[IdEnum.Width].Value.Value) {
                             Owner = Application.Current.MainWindow
                         }.ShowDialog();
                         break;

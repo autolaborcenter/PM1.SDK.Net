@@ -5,26 +5,26 @@ using static Autolabor.PM1.SafeNativeMethods;
 
 namespace Autolabor.PM1 {
     /// <summary>
-    ///     底盘工作状态
+    /// 可能的底盘工作状态。
     /// </summary>
     public enum StateEnum {
         /// <summary>
-        ///     所有节点离线
+        /// 所有节点离线。
         /// </summary>
         Offline = 0,
 
         /// <summary>
-        ///     底盘已解锁
+        /// 底盘已解锁。
         /// </summary>
         Unlocked = 1,
 
         /// <summary>
-        ///     异常状态，尝试锁定底盘以恢复
+        /// 异常状态，尝试锁定底盘以恢复
         /// </summary>
         Error = 0x7f,
 
         /// <summary>
-        ///     底盘已锁定
+        /// 底盘已锁定。
         /// </summary>
         Locked = 0xff
     }

@@ -35,7 +35,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
         public double Width {
             get => _gWidth.Value ?? Methods.Parameters[IdEnum.Width].Default;
             set {
-                try { Methods.Parameters[IdEnum.Width].Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.Width].Value = value; } catch { }
                 SetProperty(_gWidth, value);
             }
         }
@@ -43,7 +43,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
         public double Length {
             get => _gLength.Value ?? Methods.Parameters[IdEnum.Length].Default;
             set {
-                try { Methods.Parameters[IdEnum.Length].Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.Length].Value = value; } catch { }
                 SetProperty(_gLength, value);
             }
         }
@@ -51,7 +51,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
         public double WheelRadius {
             get => _gWheelRadius.Value ?? Methods.Parameters[IdEnum.WheelRadius].Default;
             set {
-                try { Methods.Parameters[IdEnum.WheelRadius].Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.WheelRadius].Value = value; } catch { }
                 SetProperty(_gWheelRadius, value);
             }
         }
@@ -59,7 +59,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
         public double OptimizeWidth {
             get => _gOptimizeWidth.Value ?? Methods.Parameters[IdEnum.OptimizeWidth].Default;
             set {
-                try { Methods.Parameters[IdEnum.OptimizeWidth].Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.OptimizeWidth].Value = value; } catch { }
                 SetProperty(_gWheelRadius, value);
             }
         }
@@ -67,7 +67,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
         public double Acceleration {
             get => _gAcceleration.Value ?? Methods.Parameters[IdEnum.Acceleration].Default;
             set {
-                try { Methods.Parameters[IdEnum.Acceleration].Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.Acceleration].Value = value; } catch { }
                 SetProperty(_gAcceleration, value);
             }
         }
@@ -75,7 +75,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
         public double MaxV {
             get => _gMaxV.Value ?? Methods.Parameters[IdEnum.MaxV].Default;
             set {
-                try { Methods.Parameters[IdEnum.MaxV].Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.MaxV].Value = value; } catch { }
                 SetProperty(_gMaxV, value);
             }
         }
@@ -83,7 +83,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
         public double MaxW {
             get => _gMaxW.Value ?? Methods.Parameters[IdEnum.MaxW].Default;
             set {
-                try { Methods.Parameters[IdEnum.MaxW].Current = value; } catch { }
+                try { Methods.Parameters[IdEnum.MaxW].Value = value; } catch { }
                 SetProperty(_gMaxW, value);
             }
         }
