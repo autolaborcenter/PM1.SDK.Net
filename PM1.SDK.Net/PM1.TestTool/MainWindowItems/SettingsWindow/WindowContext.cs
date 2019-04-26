@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Windows;
 using static Autolabor.PM1.Parameters;
 
 namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
@@ -23,13 +24,14 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
                            propertyName);
 
         public void ResetParameters() {
-            Width = Methods.Parameters[IdEnum.Width].Default;
-            Length = Methods.Parameters[IdEnum.Length].Default;
-            WheelRadius = Methods.Parameters[IdEnum.WheelRadius].Default;
-            OptimizeWidth = Methods.Parameters[IdEnum.OptimizeWidth].Default;
-            Acceleration = Methods.Parameters[IdEnum.Acceleration].Default;
-            MaxV = Methods.Parameters[IdEnum.MaxV].Default;
-            MaxW = Methods.Parameters[IdEnum.MaxW].Default;
+            Application.Current.Properties.Clear();
+            Notify(nameof(Width));
+            Notify(nameof(Length));
+            Notify(nameof(WheelRadius));
+            Notify(nameof(OptimizeWidth));
+            Notify(nameof(Acceleration));
+            Notify(nameof(MaxV));
+            Notify(nameof(MaxW));
         }
 
         public double Width {
@@ -60,7 +62,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
             get => _gOptimizeWidth.Value ?? Methods.Parameters[IdEnum.OptimizeWidth].Default;
             set {
                 try { Methods.Parameters[IdEnum.OptimizeWidth].Value = value; } catch { }
-                SetProperty(_gWheelRadius, value);
+                SetProperty(_gOptimizeWidth, value);
             }
         }
 

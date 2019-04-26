@@ -134,7 +134,7 @@
                                 <local:AngleFormatter/>
                             </Binding.Converter>
                             <Binding.ValidationRules>
-                                <local:RangeValidationRule Min="0" Max="720"/>
+                                <local:RangeValidationRule Min="0" Max="1440"/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
