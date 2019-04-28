@@ -428,7 +428,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                                 _w.Value.ToRad(),
                                 timeBased,
                                 timeBased ? _t.Value
-                                          : Methods.SpatiumCalculate(Math.Abs(_s.Value),
+                                          : Methods.CalculateSpatium(Math.Abs(_s.Value),
                                                                      Math.Abs(_a.Value.ToRad())));
             Reset();
         }

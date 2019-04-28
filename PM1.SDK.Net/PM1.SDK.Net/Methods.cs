@@ -35,26 +35,30 @@ namespace Autolabor.PM1 {
     public static class Methods {
 
         /// <summary>
-        ///     初始化。
+        /// 初始化。
         /// </summary>
-        /// <param name="port">端口名</param>
+        /// <param name="port">串口名字</param>
         /// <param name="config">配置</param>
         /// <param name="progress">进度</param>
-        /// <returns>已连接的端口</returns>
+        /// <returns>
+        /// 已连接的端口。
+        /// </returns>
         public static string Initialize(string port, out double progress) {
             OnNative(SafeNativeMethods.Initialize(port, out progress));
             return Marshal.PtrToStringAnsi(GetConnectedPort());
         }
 
         /// <summary>
-        ///     关闭。
+        /// 关闭。
         /// </summary>
         public static void Shutdown() => OnNative(SafeNativeMethods.Shutdown());
 
         /// <summary>
-        ///     安全关闭
+        /// 安全关闭。
         /// </summary>
-        /// <returns>是否成功关闭</returns>
+        /// <returns>
+        /// 关闭是否成功。
+        /// </returns>
         public static bool ShutdownSafety() 
             => string.IsNullOrWhiteSpace(Marshal.PtrToStringAnsi(GetErrorInfo(SafeNativeMethods.Shutdown())));
 
@@ -132,10 +136,12 @@ namespace Autolabor.PM1 {
         /// 计算空间尺度。
         /// </summary>
         /// <param name="spatium">轨迹弧长</param>
-        /// <param name="angle">轨迹夹角</param>
-        /// <returns>尺度</returns>
-        public static double SpatiumCalculate(double spatium, double angle)
-            => SafeNativeMethods.SpatiumCalculate(spatium, angle);
+        /// <param name="angle">轨迹圆心角</param>
+        /// <returns>
+        /// 描述运动约束的尺度值。
+        /// </returns>
+        public static double CalculateSpatium(double spatium, double angle)
+            => SafeNativeMethods.CalculateSpatium(spatium, angle);
 
         /// <summary>
         /// 控制机器人按空间约束运行指定动作。
@@ -203,7 +209,7 @@ namespace Autolabor.PM1 {
             if (rad <= 0)
                 throw new ArgumentException("invalid target");
 
-            OnNative(SafeNativeMethods.DriveSpatial(0, speed, SpatiumCalculate(0, rad), out progress));
+            OnNative(SafeNativeMethods.DriveSpatial(0, speed, CalculateSpatium(0, rad), out progress));
         }
 
         /// <summary>
@@ -235,7 +241,7 @@ namespace Autolabor.PM1 {
         /// <param name="progress">进度</param>
         public static void GoArcVS(double v, double r, double s, out double progress) {
             if (CheckArguments(v, r, s)) { progress = 1; return; }
-            DriveSpatial(v, v / r, SpatiumCalculate(s, s / r), out progress);
+            DriveSpatial(v, v / r, CalculateSpatium(s, s / r), out progress);
         }
 
         /// <summary>
@@ -245,7 +251,7 @@ namespace Autolabor.PM1 {
         /// <param name="progress">进度</param>
         public static void GoArcVA(double v, double r, double a, out double progress) {
             if (CheckArguments(v, r, a)) { progress = 1; return; }
-            DriveSpatial(v, v / r, SpatiumCalculate(a * r, a), out progress);
+            DriveSpatial(v, v / r, CalculateSpatium(a * r, a), out progress);
         }
 
         /// <summary>
@@ -257,7 +263,7 @@ namespace Autolabor.PM1 {
         /// <param name="progress">进度</param>
         public static void GoArcWS(double w, double r, double s, out double progress) {
             if (CheckArguments(w, r, s)) { progress = 1; return; }
-            DriveSpatial(w * r, w, SpatiumCalculate(s, s / r), out progress);
+            DriveSpatial(w * r, w, CalculateSpatium(s, s / r), out progress);
         }
 
         /// <summary>
@@ -267,7 +273,7 @@ namespace Autolabor.PM1 {
         /// <param name="progress">进度</param>
         public static void GoArcWA(double w, double r, double a, out double progress) {
             if (CheckArguments(w, r, a)) { progress = 1; return; }
-            DriveSpatial(w * r, w, SpatiumCalculate(a * r, a), out progress);
+            DriveSpatial(w * r, w, CalculateSpatium(a * r, a), out progress);
         }
 
         /// <summary>

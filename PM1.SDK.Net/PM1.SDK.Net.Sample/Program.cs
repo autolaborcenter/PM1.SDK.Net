@@ -13,7 +13,7 @@ namespace Autolabor.PM1.Sample {
                 Methods.State = StateEnum.Unlocked;
                 Thread.Sleep(100);
                 AsyncMethods.DriveAsync(
-                    0.1, 0, Methods.SpatiumCalculate(0.5, 0),
+                    0.1, 0, Methods.CalculateSpatium(0.5, 0),
                     new ProgressHandler(),
                     (e) => Console.WriteLine(e.Message)
                 ).Wait();

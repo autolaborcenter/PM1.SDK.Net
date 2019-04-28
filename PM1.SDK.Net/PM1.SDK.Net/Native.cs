@@ -80,7 +80,7 @@ namespace Autolabor.PM1 {
         public static extern Handler DriveVelocity(double v, double w);
 
         [DllImport(LIBRARY, EntryPoint = "calculate_spatium")]
-        public static extern double SpatiumCalculate(double spatium, double angle);
+        public static extern double CalculateSpatium(double spatium, double angle);
 
         [DllImport(LIBRARY, EntryPoint = "drive_spatial")]
         public static extern Handler DriveSpatial(
