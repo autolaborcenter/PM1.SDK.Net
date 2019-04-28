@@ -261,7 +261,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
                 => one.IsMaster && one.Value != 0;
 
             void Set(Input one, Input related, Input opposite0, Input opposite1, double target) {
-                if (one.IsVoid) one.Value = related.IsMaster
+                if (one.IsVoid) one.Value = !double.IsNaN(related.Value)
                                             ? Math.Sign(related.Value) * target
                                             : !IsValid(opposite0) && !IsValid(opposite1)
                                               ? target

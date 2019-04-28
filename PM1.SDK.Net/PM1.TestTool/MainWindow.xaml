@@ -93,7 +93,7 @@
                 <TextBlock Text="{Binding ConnectedTime, StringFormat=连接时间 {0} 秒, Mode=OneWay}"/>
             </StatusBarItem>
             <Separator/>
-            <StatusBarItem MinWidth="180" Margin ="8,0">
+            <StatusBarItem MinWidth="200" Margin ="8,0">
                 <TextBlock Text="{Binding Odometry, StringFormat=位姿 ({0}), Mode=OneWay}"/>
             </StatusBarItem>
             <StatusBarItem>

@@ -119,8 +119,6 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
         private async Task InvokeActions() {
             try {
                 while (!ActionList.Items.IsEmpty) {
-                    ActionList.Dispatch(it => it.SelectedIndex = 0);
-
                     if (ActionList.Items[0] is ActionConfig action)
                         if (action.timeBased)
                             await AsyncMethods.DriveAsync(
