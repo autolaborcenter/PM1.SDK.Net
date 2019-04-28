@@ -69,7 +69,12 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
         void ReleaseMouse() {
             mouseDevice?.Capture(null);
             _tabContext.X =
-            _tabContext.Y = TabContext.Radius;
+            _tabContext.Y = _tabContext.Radius;
+        }
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e) {
+            var size = e.NewSize;
+            _tabContext.Size = Math.Min(size.Height - 72, size.Width - 82);
         }
     }
 }

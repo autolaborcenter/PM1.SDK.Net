@@ -71,9 +71,7 @@
             </TabItem>
             <TabItem Header="连续控制">
                 <drivetab:DriveTab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
-                                   Margin="8"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"/>
+                                   Margin="8"/>
             </TabItem>
             <TabItem Header="参数标定">
                 <collibrationtab:CalibrationTab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"

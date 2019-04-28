@@ -2,13 +2,12 @@
 
 namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
     internal class TabContext : BindableBase {
-
-        public static double Size => 340;
-        public static double TouchSize => 40;
-        public static double Radius => (Size - TouchSize) / 2;
         public static double MaxSpeed => 6 * Math.PI;
+        public static double TouchSize => 40;
+        public double Radius => (Size - TouchSize) / 2;
 
-        private double _speedRange,
+        private double _size,
+                       _speedRange,
                        _x,
                        _y;
         public TabContext() {
@@ -16,6 +15,15 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
             _x = _y = Radius;
             LimitedLeft = LimitedTop = Radius;
         }
+
+        public double Size {
+            get => _size;
+            set {
+                if(!SetProperty(ref _size, value)) return;
+                _x = _y = Radius;
+                Update();
+            }
+        } 
 
         public double SpeedRange {
             get => _speedRange;

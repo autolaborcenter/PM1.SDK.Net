@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DriveTab"
-             DataContextChanged="Tab_DataContextChanged">
+             DataContextChanged="Tab_DataContextChanged"
+             SizeChanged="UserControl_SizeChanged">
     <Grid DataContextChanged="Grid_DataContextChanged"
           TouchUp="Grid_TouchUp"
           MouseUp="Grid_MouseUp"
@@ -18,27 +19,32 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="42"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Canvas x:Name="Origin"
                 MouseMove="Drag_MouseMove"
-                Height="{Binding Size}" Width="{Binding Size}"
+                Height="{Binding Size,Mode=OneWay}"
+                Width="{Binding Size,Mode=OneWay}"
+                Grid.Row="0" Grid.Column="1"
                 Grid.RowSpan="2">
-            <Ellipse Fill="Gray"
-                     Height="{Binding Size}" Width="{Binding Size}"/>
+            <Ellipse Fill="Gray"             
+                     Height="{Binding Size,Mode=OneWay}"
+                     Width="{Binding Size,Mode=OneWay}"/>
             <Ellipse Fill="Black"
                      Canvas.Left="{Binding LimitedLeft, Mode=OneWay}" 
                      Canvas.Top="{Binding LimitedTop, Mode=OneWay}"
                      Height="{Binding TouchSize}" Width="{Binding TouchSize}"/>
         </Canvas>
-       
+
         <Slider Orientation="Vertical"
                 Value="{Binding SpeedRange, Mode=TwoWay}"
                 Minimum="0" Maximum="{Binding MaxSpeed}" 
                 HorizontalAlignment="Center"
-                Grid.Row="0" Grid.Column="1"/>
+                Grid.Row="0" Grid.Column="2"/>
         <TextBlock Text="{Binding SpeedRatioText, Mode=OneWay}" 
                    HorizontalAlignment="Center"
-                   Grid.Row="2" Grid.Column="1"/>
+                   Grid.Row="2" Grid.Column="2"/>
     </Grid>
 </UserControl>
