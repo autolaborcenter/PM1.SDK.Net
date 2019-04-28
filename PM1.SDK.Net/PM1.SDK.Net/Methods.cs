@@ -84,7 +84,7 @@ namespace Autolabor.PM1 {
         public static void ResetOdometry() => OnNative(SafeNativeMethods.ResetOdometry());
 
         /// <summary>
-        ///     锁定或解锁底盘
+        /// 获取或设置底盘工作状态。
         /// </summary>
         public static StateEnum State {
             get => (StateEnum)CheckState();
@@ -108,21 +108,21 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     控制机器人运行
+        /// 设置物理模型下的目标运动状态。
         /// </summary>
         public static (double speed, double rudder) PhysicalTarget {
             set => OnNative(DrivePhysical(value.speed, value.rudder));
         }
 
         /// <summary>
-        ///     控制机器人运行
+        /// 设置差动模型下的目标运动状态。
         /// </summary>
         public static (double left, double right) WheelsTarget {
             set => OnNative(DriveWheels(value.left, value.right));
         }
 
         /// <summary>
-        ///     控制机器人运行
+        /// 设置运动模型下的目标运动状态。
         /// </summary>
         public static (double v, double w) VelocityTarget {
             set => OnNative(DriveVelocity(value.v, value.w));
@@ -303,7 +303,7 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        ///     暂停或恢复
+        /// 查询、设置或解除暂停。
         /// </summary>
         public static bool Paused {
             get => IsPaused();
