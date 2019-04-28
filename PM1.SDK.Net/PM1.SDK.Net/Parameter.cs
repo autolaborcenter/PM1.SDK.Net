@@ -47,10 +47,11 @@ namespace Autolabor.PM1 {
                 {IdEnum.Width,         new Parameter(IdEnum.Width)},
                 {IdEnum.Length,        new Parameter(IdEnum.Length)},
                 {IdEnum.WheelRadius,   new Parameter(IdEnum.WheelRadius)},
-                {IdEnum.OptimizeWidth, new Parameter(IdEnum.OptimizeWidth)},
-                {IdEnum.Acceleration,  new Parameter(IdEnum.Acceleration)},
+                {IdEnum.MaxWheelSpeed, new Parameter(IdEnum.MaxWheelSpeed)},
                 {IdEnum.MaxV,          new Parameter(IdEnum.MaxV)},
-                {IdEnum.MaxW,          new Parameter(IdEnum.MaxW)}};
+                {IdEnum.MaxW,          new Parameter(IdEnum.MaxW)},
+                {IdEnum.OptimizeWidth, new Parameter(IdEnum.OptimizeWidth)},
+                {IdEnum.Acceleration,  new Parameter(IdEnum.Acceleration)}};
 
         /// <summary>
         /// 指定参数的标识符。
@@ -72,14 +73,9 @@ namespace Autolabor.PM1 {
             WheelRadius,
 
             /// <summary>
-            ///     优化函数的半宽度。
+            ///     动力轮最大角速度。
             /// </summary>
-            OptimizeWidth,
-
-            /// <summary>
-            ///     动力轮最大角加速度。
-            /// </summary>
-            Acceleration,
+            MaxWheelSpeed,
 
             /// <summary>
             ///     底盘最大线速度。
@@ -89,7 +85,17 @@ namespace Autolabor.PM1 {
             /// <summary>
             ///     底盘最大角速度。
             /// </summary>
-            MaxW
+            MaxW,
+
+            /// <summary>
+            ///     优化函数的半宽度。
+            /// </summary>
+            OptimizeWidth,
+
+            /// <summary>
+            ///     动力轮最大角加速度。
+            /// </summary>
+            Acceleration,
         }
 
         internal Parameters() { }
@@ -116,10 +122,11 @@ namespace Autolabor.PM1 {
                     case nameof(IdEnum.Width): return Dictionary[IdEnum.Width];
                     case nameof(IdEnum.Length): return Dictionary[IdEnum.Length];
                     case nameof(IdEnum.WheelRadius): return Dictionary[IdEnum.WheelRadius];
-                    case nameof(IdEnum.OptimizeWidth): return Dictionary[IdEnum.OptimizeWidth];
-                    case nameof(IdEnum.Acceleration): return Dictionary[IdEnum.Acceleration];
+                    case nameof(IdEnum.MaxWheelSpeed): return Dictionary[IdEnum.MaxWheelSpeed];
                     case nameof(IdEnum.MaxV): return Dictionary[IdEnum.MaxV];
                     case nameof(IdEnum.MaxW): return Dictionary[IdEnum.MaxW];
+                    case nameof(IdEnum.OptimizeWidth): return Dictionary[IdEnum.OptimizeWidth];
+                    case nameof(IdEnum.Acceleration): return Dictionary[IdEnum.Acceleration];
                     default: return null;
                 }
             }

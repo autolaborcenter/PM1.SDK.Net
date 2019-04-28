@@ -8,10 +8,11 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
             _gLength = new GlobalParameter<double>(nameof(Length)),
             _gWidth = new GlobalParameter<double>(nameof(Width)),
             _gWheelRadius = new GlobalParameter<double>(nameof(WheelRadius)),
-            _gOptimizeWidth = new GlobalParameter<double>(nameof(OptimizeWidth)),
-            _gAcceleration = new GlobalParameter<double>(nameof(Acceleration)),
+            _gMaxWheelSpeed = new GlobalParameter<double>(nameof(MaxWheelSpeed)),
             _gMaxV = new GlobalParameter<double>(nameof(MaxV)),
-            _gMaxW = new GlobalParameter<double>(nameof(MaxW));
+            _gMaxW = new GlobalParameter<double>(nameof(MaxW)),
+            _gOptimizeWidth = new GlobalParameter<double>(nameof(OptimizeWidth)),
+            _gAcceleration = new GlobalParameter<double>(nameof(Acceleration));
 
         private string _helpText;
 
@@ -28,10 +29,11 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
             Notify(nameof(Width));
             Notify(nameof(Length));
             Notify(nameof(WheelRadius));
-            Notify(nameof(OptimizeWidth));
-            Notify(nameof(Acceleration));
+            Notify(nameof(MaxWheelSpeed));
             Notify(nameof(MaxV));
             Notify(nameof(MaxW));
+            Notify(nameof(OptimizeWidth));
+            Notify(nameof(Acceleration));
         }
 
         public double Width {
@@ -58,19 +60,11 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
             }
         }
 
-        public double OptimizeWidth {
-            get => _gOptimizeWidth.Value ?? Methods.Parameters[IdEnum.OptimizeWidth].Default;
+        public double MaxWheelSpeed {
+            get => _gMaxWheelSpeed.Value ?? Methods.Parameters[IdEnum.MaxWheelSpeed].Default;
             set {
-                try { Methods.Parameters[IdEnum.OptimizeWidth].Value = value; } catch { }
-                SetProperty(_gOptimizeWidth, value);
-            }
-        }
-
-        public double Acceleration {
-            get => _gAcceleration.Value ?? Methods.Parameters[IdEnum.Acceleration].Default;
-            set {
-                try { Methods.Parameters[IdEnum.Acceleration].Value = value; } catch { }
-                SetProperty(_gAcceleration, value);
+                try { Methods.Parameters[IdEnum.MaxWheelSpeed].Value = value; } catch { }
+                SetProperty(_gMaxWheelSpeed, value);
             }
         }
 
@@ -87,6 +81,22 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
             set {
                 try { Methods.Parameters[IdEnum.MaxW].Value = value; } catch { }
                 SetProperty(_gMaxW, value);
+            }
+        }
+
+        public double OptimizeWidth {
+            get => _gOptimizeWidth.Value ?? Methods.Parameters[IdEnum.OptimizeWidth].Default;
+            set {
+                try { Methods.Parameters[IdEnum.OptimizeWidth].Value = value; } catch { }
+                SetProperty(_gOptimizeWidth, value);
+            }
+        }
+
+        public double Acceleration {
+            get => _gAcceleration.Value ?? Methods.Parameters[IdEnum.Acceleration].Default;
+            set {
+                try { Methods.Parameters[IdEnum.Acceleration].Value = value; } catch { }
+                SetProperty(_gAcceleration, value);
             }
         }
 

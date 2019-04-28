@@ -101,49 +101,34 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="优化宽度" Grid.Row="0" Grid.Column="0"/>
-                <TextBox Tag="OptimizeWidth"
+
+                <TextBlock Text="轮最大角速度" Grid.Row="0" Grid.Column="0"/>
+                <TextBox Tag="MaxWheelSpeed"
                          Grid.Row="0" Style="{StaticResource ValueText}"
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
-                        <Binding Path="OptimizeWidth" Mode="TwoWay">
+                        <Binding Path="MaxWheelSpeed" Mode="TwoWay">
                             <Binding.Converter>
                                 <local:AngleFormatter/>
                             </Binding.Converter>
                             <Binding.ValidationRules>
-                                <local:RangeValidationRule Min="0" Max="90"/>
+                                <local:RangeValidationRule Min="0"/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-                <TextBlock Text="°" Grid.Row="0" Grid.Column="2"/>
+                <TextBlock Text="°/秒" Grid.Row="0" Grid.Column="2"/>
 
-                <TextBlock Text="轮角加速度限制" Grid.Row="1" Grid.Column="0"/>
-                <TextBox Tag="Acceleration"
-                         Grid.Row="1" Style="{StaticResource ValueText}"
-                         GotFocus="TextBox_GotFocus">
-                    <TextBox.Text>
-                        <Binding Path="Acceleration" Mode="TwoWay">
-                            <Binding.Converter>
-                                <local:AngleFormatter/>
-                            </Binding.Converter>
-                            <Binding.ValidationRules>
-                                <local:RangeValidationRule Min="0" Max="1440"/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-                <TextBlock Text="°/秒²" Grid.Row="1" Grid.Column="2"/>
-
-                <TextBlock Text="最大线速度" Grid.Row="2" Grid.Column="0"/>
+                <TextBlock Text="最大线速度" Grid.Row="1" Grid.Column="0"/>
                 <TextBox Tag="MaxV"
-                         Grid.Row="2" Style="{StaticResource ValueText}"
+                         Grid.Row="1" Style="{StaticResource ValueText}"
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
                         <Binding Path="MaxV" Mode="TwoWay">
@@ -156,11 +141,11 @@
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-                <TextBlock Text="米/秒" Grid.Row="2" Grid.Column="2"/>
+                <TextBlock Text="米/秒" Grid.Row="1" Grid.Column="2"/>
 
-                <TextBlock Text="最大角速度" Grid.Row="3" Grid.Column="0"/>
+                <TextBlock Text="最大角速度" Grid.Row="2" Grid.Column="0"/>
                 <TextBox Tag="MaxW"
-                         Grid.Row="3" Style="{StaticResource ValueText}"
+                         Grid.Row="2" Style="{StaticResource ValueText}"
                          GotFocus="TextBox_GotFocus">
                     <TextBox.Text>
                         <Binding Path="MaxW" Mode="TwoWay">
@@ -173,7 +158,41 @@
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-                <TextBlock Text="°/秒" Grid.Row="3" Grid.Column="2"/>
+                <TextBlock Text="°/秒" Grid.Row="2" Grid.Column="2"/>
+
+                <TextBlock Text="优化宽度" Grid.Row="3" Grid.Column="0"/>
+                <TextBox Tag="OptimizeWidth"
+                         Grid.Row="3" Style="{StaticResource ValueText}"
+                         GotFocus="TextBox_GotFocus">
+                    <TextBox.Text>
+                        <Binding Path="OptimizeWidth" Mode="TwoWay">
+                            <Binding.Converter>
+                                <local:AngleFormatter/>
+                            </Binding.Converter>
+                            <Binding.ValidationRules>
+                                <local:RangeValidationRule Min="0" Max="90"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBlock Text="°" Grid.Row="3" Grid.Column="2"/>
+
+                <TextBlock Text="轮角加速度限制" Grid.Row="4" Grid.Column="0"/>
+                <TextBox Tag="Acceleration"
+                         Grid.Row="4" Style="{StaticResource ValueText}"
+                         GotFocus="TextBox_GotFocus">
+                    <TextBox.Text>
+                        <Binding Path="Acceleration" Mode="TwoWay">
+                            <Binding.Converter>
+                                <local:AngleFormatter/>
+                            </Binding.Converter>
+                            <Binding.ValidationRules>
+                                <local:RangeValidationRule Min="0"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <TextBlock Text="°/秒²" Grid.Row="4" Grid.Column="2"/>
             </Grid>
             <Button Content="恢复默认值" 
                     Margin="0,8"
