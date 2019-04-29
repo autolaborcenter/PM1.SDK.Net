@@ -166,8 +166,8 @@ namespace Autolabor.PM1 {
         /// <summary>
         /// 动作：直线行驶。
         /// </summary>
-        /// <param name="speed">速度</param>
-        /// <param name="meters">路程（米）</param>
+        /// <param name="speed">线速度（米/秒）</param>
+        /// <param name="meters">路程约束（米）</param>
         /// <param name="progress">进度</param>
         public static void GoStraight(double speed, double meters, out double progress) {
             if (speed == 0) {

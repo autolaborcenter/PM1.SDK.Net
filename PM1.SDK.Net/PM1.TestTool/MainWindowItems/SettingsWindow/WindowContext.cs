@@ -26,6 +26,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
 
         public void ResetParameters() {
             Application.Current.Properties.Clear();
+            foreach (var parameter in Dictionary.Values) parameter.Value = null;
             Notify(nameof(Width));
             Notify(nameof(Length));
             Notify(nameof(WheelRadius));
