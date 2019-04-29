@@ -133,37 +133,6 @@ namespace Autolabor.PM1 {
         }
 
         /// <summary>
-        /// 计算空间尺度。
-        /// </summary>
-        /// <param name="spatium">轨迹弧长</param>
-        /// <param name="angle">轨迹圆心角</param>
-        /// <returns>
-        /// 描述运动约束的尺度值。
-        /// </returns>
-        public static double CalculateSpatium(double spatium, double angle)
-            => SafeNativeMethods.CalculateSpatium(spatium, angle);
-
-        /// <summary>
-        /// 控制机器人按空间约束运行指定动作。
-        /// </summary>
-        /// <param name="v"></param>
-        /// <param name="w"></param>
-        /// <param name="spatium"></param>
-        /// <param name="progress"></param>
-        public static void DriveSpatial(double v, double w, double spatium, out double progress)
-            => OnNative(SafeNativeMethods.DriveSpatial(v, w, spatium, out progress));
-
-        /// <summary>
-        /// 控制机器人按时间约束运行指定动作。
-        /// </summary>
-        /// <param name="v"></param>
-        /// <param name="w"></param>
-        /// <param name="time"></param>
-        /// <param name="progress"></param>
-        public static void DriveTiming(double v, double w, double time, out double progress)
-            => OnNative(SafeNativeMethods.DriveTiming(v, w, time, out progress));
-
-        /// <summary>
         /// 动作：直线行驶。
         /// </summary>
         /// <param name="speed">线速度（米/秒）</param>
@@ -295,6 +264,37 @@ namespace Autolabor.PM1 {
             if (CheckArguments(double.NaN, r, t)) { progress = 1; return; }
             DriveTiming(w * r, w, t, out progress);
         }
+
+        /// <summary>
+        /// 计算空间尺度。
+        /// </summary>
+        /// <param name="spatium">轨迹弧长</param>
+        /// <param name="angle">轨迹圆心角</param>
+        /// <returns>
+        /// 描述运动约束的尺度值。
+        /// </returns>
+        public static double CalculateSpatium(double spatium, double angle)
+            => SafeNativeMethods.CalculateSpatium(spatium, angle);
+
+        /// <summary>
+        /// 控制机器人执行受空间约束的指定动作。
+        /// </summary>
+        /// <param name="v">线速度（米/秒）</param>
+        /// <param name="w">角速度（弧度/秒）</param>
+        /// <param name="spatium">空间约束</param>
+        /// <param name="progress">进度</param>
+        public static void DriveSpatial(double v, double w, double spatium, out double progress)
+            => OnNative(SafeNativeMethods.DriveSpatial(v, w, spatium, out progress));
+
+        /// <summary>
+        /// 控制机器人执行受时间约束的指定动作。
+        /// </summary>
+        /// <param name="v">线速度（米/秒）</param>
+        /// <param name="w">角速度（弧度/秒）</param>
+        /// <param name="time">时间约束（秒）</param>
+        /// <param name="progress">进度</param>
+        public static void DriveTiming(double v, double w, double time, out double progress)
+            => OnNative(SafeNativeMethods.DriveTiming(v, w, time, out progress));
 
         /// <summary>
         /// 动作：调整后轮零位。
