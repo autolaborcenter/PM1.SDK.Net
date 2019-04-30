@@ -198,7 +198,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.ActionTab {
             } else if (theOne.State == Input.StateEnum.Error && null == CheckSign(theOne))
                 theOne.State = Input.StateEnum.Master;
 
-            var voids = _inputs.Where(it => it.IsVoid).ToHashSet();
+            var voids = _inputs.Where(it => it.IsVoid).ToList();
             if (voids.Count == _inputs.Count)
                 ErrorInfo.Text = "至少输入一项速度和一项约束";
             else if (voids.Intersect(new[] { _v, _w }).Count() == 2)
