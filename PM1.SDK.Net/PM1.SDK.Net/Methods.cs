@@ -283,8 +283,8 @@ namespace Autolabor.PM1 {
         /// <param name="w">角速度（弧度/秒）</param>
         /// <param name="spatium">空间约束</param>
         /// <param name="progress">进度</param>
-        public static void DriveSpatial(double v, double w, double spatium, out double progress)
-            => OnNative(SafeNativeMethods.DriveSpatial(v, w, spatium, out progress));
+        public static void Drive(double v, double w, double spatium, out double progress)
+            => OnNative(DriveSpatial(v, w, spatium, out progress));
 
         /// <summary>
         /// 控制机器人执行受时间约束的指定动作。
@@ -293,8 +293,8 @@ namespace Autolabor.PM1 {
         /// <param name="w">角速度（弧度/秒）</param>
         /// <param name="time">时间约束（秒）</param>
         /// <param name="progress">进度</param>
-        public static void DriveTiming(double v, double w, double time, out double progress)
-            => OnNative(SafeNativeMethods.DriveTiming(v, w, time, out progress));
+        public static void Drive(double v, double w, TimeSpan time, out double progress)
+            => OnNative(DriveTiming(v, w, time.TotalSeconds, out progress));
 
         /// <summary>
         /// 动作：调整后轮零位。
