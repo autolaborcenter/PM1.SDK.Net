@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
+namespace Autolabor.PM1.TestTool.MainWindowItems.DrivePhysicalTab {
     internal class TabContext : BindableBase {
         public static double MaxSpeed => 6 * Math.PI;
         public static double TouchSize => 40;

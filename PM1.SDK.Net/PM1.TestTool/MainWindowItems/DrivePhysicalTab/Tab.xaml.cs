@@ -3,17 +3,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Shapes;
 
-namespace Autolabor.PM1.TestTool.MainWindowItems.DriveTab {
+namespace Autolabor.PM1.TestTool.MainWindowItems.DrivePhysicalTab {
     /// <summary>
     /// DriveTab.xaml 的交互逻辑
     /// </summary>
-    public partial class DriveTab : UserControl, ITabControl {
+    public partial class Tab : UserControl, ITabControl {
         private MainWindowContext _windowContext;
         private TabContext _tabContext;
 
-        public DriveTab() => InitializeComponent();
+        public Tab() => InitializeComponent();
 
         private volatile bool flag;
         private Task _task;

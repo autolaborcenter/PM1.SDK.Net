@@ -133,10 +133,14 @@
     <Compile Include="MainWindowItems\CalibrationTab\TabContext.cs" />
     <Compile Include="MainWindowItems\CalibrationTab\ValueFormatter.cs" />
     <Compile Include="MainWindowItems\CalibrationTab\VisibilityConverter.cs" />
-    <Compile Include="MainWindowItems\DriveTab\DriveTab.xaml.cs">
-      <DependentUpon>DriveTab.xaml</DependentUpon>
+    <Compile Include="MainWindowItems\DrivePhysicalTab\Tab.xaml.cs">
+      <DependentUpon>Tab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindowItems\DriveTab\TabContext.cs" />
+    <Compile Include="MainWindowItems\DrivePhysicalTab\TabContext.cs" />
+    <Compile Include="MainWindowItems\DriveVelocityTab\Tab.xaml.cs">
+      <DependentUpon>Tab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindowItems\DriveVelocityTab\TabContext.cs" />
     <Compile Include="MainWindowItems\ITabControl.cs" />
     <Compile Include="MainWindowItems\MainWindowContext.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -159,11 +163,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindowItems\DriveTab\DriveTab.xaml">
+    <Page Include="MainWindowItems\DrivePhysicalTab\Tab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindowItems\ActionTab\RudderControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindowItems\DriveVelocityTab\Tab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

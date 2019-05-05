@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Autolabor.PM1.TestTool"
         xmlns:actiontab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.ActionTab"
-        xmlns:drivetab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DriveTab"
+        xmlns:drivephysicaltab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DrivePhysicalTab"
+        xmlns:drivevelocitytab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DriveVelocityTab"
         xmlns:collibrationtab="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.CalibrationTab"
         mc:Ignorable="d"
         Title="Autolabor PM1 检测工具集" 
@@ -69,9 +70,13 @@
                 <actiontab:ActionTab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
                                      Margin="8"/>
             </TabItem>
-            <TabItem Header="连续控制">
-                <drivetab:DriveTab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
-                                   Margin="8"/>
+            <TabItem Header="连续控制（标准模型）">
+                <drivephysicaltab:Tab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
+                                      Margin="8"/>
+            </TabItem>
+            <TabItem Header="连续控制（经典模型）">
+                <drivevelocitytab:Tab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
+                                      Margin="8"/>
             </TabItem>
             <TabItem Header="参数标定">
                 <collibrationtab:CalibrationTab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"

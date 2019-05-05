@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Autolabor.PM1.TestTool.MainWindowItems.DriveTab.DriveTab"
+﻿<UserControl x:Class="Autolabor.PM1.TestTool.MainWindowItems.DrivePhysicalTab.Tab"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DriveTab"
+             xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DrivePhysicalTab"
              DataContextChanged="Tab_DataContextChanged"
              SizeChanged="UserControl_SizeChanged">
     <Grid DataContextChanged="Grid_DataContextChanged"
