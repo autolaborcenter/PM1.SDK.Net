@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:items="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems"
              xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DrivePhysicalTab"
              DataContextChanged="Tab_DataContextChanged"
              SizeChanged="UserControl_SizeChanged">
@@ -40,11 +41,18 @@
 
         <Slider Orientation="Vertical"
                 Value="{Binding SpeedRange, Mode=TwoWay}"
-                Minimum="0" Maximum="{Binding MaxSpeed}" 
+                Minimum="0" Maximum="1" LargeChange="0.1"
                 HorizontalAlignment="Center"
                 Grid.Row="0" Grid.Column="2"/>
-        <TextBlock Text="{Binding SpeedRatioText, Mode=OneWay}" 
-                   HorizontalAlignment="Center"
-                   Grid.Row="2" Grid.Column="2"/>
+        <TextBlock HorizontalAlignment="Center"
+                   Grid.Row="1" Grid.Column="2">
+            <TextBlock.Text>
+                <Binding Path="SpeedRange" Mode="OneWay">
+                    <Binding.Converter>
+                        <items:ValueFormatter Format="0.%"/>
+                    </Binding.Converter>
+                </Binding>
+            </TextBlock.Text>
+        </TextBlock>
     </Grid>
 </UserControl>

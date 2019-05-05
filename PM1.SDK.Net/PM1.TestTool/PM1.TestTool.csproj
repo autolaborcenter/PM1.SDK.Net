@@ -131,7 +131,7 @@
     <Compile Include="MainWindowItems\CalibrationTab\EnabledConverter.cs" />
     <Compile Include="MainWindowItems\CalibrationTab\ParseValidationRule.cs" />
     <Compile Include="MainWindowItems\CalibrationTab\TabContext.cs" />
-    <Compile Include="MainWindowItems\CalibrationTab\ValueFormatter.cs" />
+    <Compile Include="MainWindowItems\ValueFormatter.cs" />
     <Compile Include="MainWindowItems\CalibrationTab\VisibilityConverter.cs" />
     <Compile Include="MainWindowItems\DrivePhysicalTab\Tab.xaml.cs">
       <DependentUpon>Tab.xaml</DependentUpon>
@@ -186,7 +186,6 @@
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindowItems\SettingsWindow\AngleFormatter.cs" />
-    <Compile Include="MainWindowItems\SettingsWindow\ValueFormatter.cs" />
     <Compile Include="MainWindowItems\SettingsWindow\WindowContext.cs" />
     <Compile Include="MainWindowItems\ToolFunctions.cs" />
     <Compile Include="MainWindowItems\ActionTab\RudderControlView.xaml.cs">

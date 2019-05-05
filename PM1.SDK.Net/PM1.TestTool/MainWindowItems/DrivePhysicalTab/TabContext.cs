@@ -2,16 +2,20 @@
 
 namespace Autolabor.PM1.TestTool.MainWindowItems.DrivePhysicalTab {
     internal class TabContext : BindableBase {
-        public static double MaxSpeed => 6 * Math.PI;
+        private static readonly GlobalParameter<double> _gMaxWheelSpeed
+            = new GlobalParameter<double>(nameof(Parameters.IdEnum.MaxWheelSpeed));
+
+        private static readonly Parameter _maxWheelSpeed
+            = Methods.Parameters[Parameters.IdEnum.MaxWheelSpeed];
+
         public static double TouchSize => 40;
         public double Radius => (Size - TouchSize) / 2;
 
         private double _size,
-                       _speedRange,
+                       _speedRange = 0.25,
                        _x,
                        _y;
         public TabContext() {
-            _speedRange = 0.1 * MaxSpeed;
             _x = _y = Radius;
             LimitedLeft = LimitedTop = Radius;
         }
@@ -27,14 +31,8 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DrivePhysicalTab {
 
         public double SpeedRange {
             get => _speedRange;
-            set {
-                if (!SetProperty(ref _speedRange, value)) return;
-                Notify(nameof(SpeedRatioText));
-            }
+            set => SetProperty(ref _speedRange, value);
         }
-
-        public string SpeedRatioText
-            => ToolFunctions.Format("0.%", _speedRange / MaxSpeed);
 
         public double X {
             get => _x;
@@ -58,7 +56,10 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DrivePhysicalTab {
             get {
                 var xo = _x - Radius;
                 var yo = _y - Radius;
-                return -SpeedRange * Math.Sign(yo) * Math.Min(1, Math.Sqrt(xo * xo + yo * yo) / (Size / 2));
+                return (_gMaxWheelSpeed.Value ?? _maxWheelSpeed.Default) 
+                       * -SpeedRange 
+                       * Math.Sign(yo) 
+                       * Math.Min(1, Math.Sqrt(xo * xo + yo * yo) / (Size / 2));
             }
         }
 

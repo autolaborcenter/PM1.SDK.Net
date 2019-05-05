@@ -3,12 +3,66 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:items="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems"
              xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DriveVelocityTab"
              DataContextChanged="Tab_DataContextChanged"
              SizeChanged="UserControl_SizeChanged">
-    <Grid DataContextChanged="Grid_DataContextChanged">
+    <Grid DataContextChanged="Grid_DataContextChanged"
+          Margin="0,20">
         <Grid.DataContext>
             <local:TabContext/>
         </Grid.DataContext>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="64"/>
+            <ColumnDefinition Width="64"/>
+        </Grid.ColumnDefinitions>
+
+        <Canvas Background="Silver" Grid.RowSpan="3"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="1"
+                   HorizontalAlignment="Center">
+            线速度
+        </TextBlock>
+        <Slider Orientation="Vertical"
+                Value="{Binding VRange, Mode=TwoWay}"
+                Minimum="0" Maximum="1" LargeChange="0.1"
+                HorizontalAlignment="Center"
+                Grid.Row="1" Grid.Column="1"/>
+        <TextBlock HorizontalAlignment="Center"
+                   Grid.Row="2" Grid.Column="1">
+            <TextBlock.Text>
+                <Binding Path="VRange" Mode="OneWay">
+                    <Binding.Converter>
+                        <items:ValueFormatter Format="0.%"/>
+                    </Binding.Converter>
+                </Binding>
+            </TextBlock.Text>
+        </TextBlock>
+
+        <TextBlock Grid.Row="0" Grid.Column="2"
+                   HorizontalAlignment="Center">
+            角速度
+        </TextBlock>
+        <Slider Orientation="Vertical"
+                Value="{Binding WRange, Mode=TwoWay}"
+                Minimum="0" Maximum="1" LargeChange="0.1"
+                HorizontalAlignment="Center"
+                Grid.Row="1" Grid.Column="2"/>
+        <TextBlock HorizontalAlignment="Center"
+                   Grid.Row="2" Grid.Column="2">
+            <TextBlock.Text>
+                <Binding Path="WRange" Mode="OneWay">
+                    <Binding.Converter>
+                        <items:ValueFormatter Format="0.%"/>
+                    </Binding.Converter>
+                </Binding>
+            </TextBlock.Text>
+        </TextBlock>
     </Grid>
 </UserControl>

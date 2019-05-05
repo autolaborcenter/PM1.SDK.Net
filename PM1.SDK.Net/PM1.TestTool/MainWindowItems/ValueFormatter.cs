@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
+namespace Autolabor.PM1.TestTool.MainWindowItems {
     [ValueConversion(typeof(double), typeof(string))]
     internal class ValueFormatter : IValueConverter {
         public string Format { get; set; } = "0.###";
@@ -18,12 +14,12 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow {
             var text = ((string)value).ToLower(culture);
             return double.TryParse(text, out var result)
                    ? result
-                   : text == "inf" 
-                  || text == "+inf" 
-                  || text == "∞" 
+                   : text == "inf"
+                  || text == "+inf"
+                  || text == "∞"
                   || text == "+∞"
-                       ? double.PositiveInfinity
-                       : (object)double.NaN;
+                     ? double.PositiveInfinity
+                     : (object)double.NaN;
         }
     }
 }

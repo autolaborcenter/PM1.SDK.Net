@@ -1,8 +1,7 @@
 ﻿<Window x:Class="Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:items="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems"
         xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.SettingsWindow"
         FontSize="16"
         Title="参数设置"    
@@ -48,7 +47,7 @@
                     <TextBox.Text>
                         <Binding Path="Length" Mode="TwoWay">
                             <Binding.Converter>
-                                <local:ValueFormatter/>
+                                <items:ValueFormatter/>
                             </Binding.Converter>
                             <Binding.ValidationRules>
                                 <local:RangeValidationRule Min="0.2" Max="0.6"/>
@@ -65,7 +64,7 @@
                     <TextBox.Text>
                         <Binding Path="Width" Mode="TwoWay">
                             <Binding.Converter>
-                                <local:ValueFormatter/>
+                                <items:ValueFormatter/>
                             </Binding.Converter>
                             <Binding.ValidationRules>
                                 <local:RangeValidationRule Min="0.2" Max="0.6"/>
@@ -82,7 +81,7 @@
                     <TextBox.Text>
                         <Binding Path="WheelRadius" Mode="TwoWay">
                             <Binding.Converter>
-                                <local:ValueFormatter/>
+                                <items:ValueFormatter/>
                             </Binding.Converter>
                             <Binding.ValidationRules>
                                 <local:RangeValidationRule Min="0.05" Max="0.2"/>
@@ -133,7 +132,7 @@
                     <TextBox.Text>
                         <Binding Path="MaxV" Mode="TwoWay">
                             <Binding.Converter>
-                                <local:ValueFormatter/>
+                                <items:ValueFormatter/>
                             </Binding.Converter>
                             <Binding.ValidationRules>
                                 <local:RangeValidationRule Min="0"/>

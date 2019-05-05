@@ -47,7 +47,6 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveVelocityTab {
         }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e) {
-
         }
     }
 }
