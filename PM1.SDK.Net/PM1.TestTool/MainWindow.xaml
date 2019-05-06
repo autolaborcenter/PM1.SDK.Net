@@ -70,11 +70,11 @@
                 <actiontab:ActionTab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
                                      Margin="8"/>
             </TabItem>
-            <TabItem Header="连续控制（标准模型）">
+            <TabItem Header="标准模型连续控制">
                 <drivephysicaltab:Tab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
                                       Margin="8"/>
             </TabItem>
-            <TabItem Header="连续控制（经典模型）">
+            <TabItem Header="经典模型连续控制">
                 <drivevelocitytab:Tab IsEnabled="{Binding ElementsEnabled, Mode=OneWay}"
                                       Margin="8"/>
             </TabItem>
