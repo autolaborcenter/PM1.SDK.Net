@@ -46,7 +46,35 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DriveVelocityTab {
             _task?.Wait();
         }
 
-        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e) {
+        private void Canvas_MouseMove(object sender, MouseEventArgs e) {
+            var origin = (IInputElement)sender;
+
+            if (e.LeftButton == MouseButtonState.Pressed) {
+                if (e.MouseDevice.Captured == null) {
+                    mouseDevice = e.MouseDevice;
+                    e.MouseDevice.Capture(origin);
+                }
+                var position = e.GetPosition(origin);
+                _tabContext.Left = position.X - TabContext.TouchSize / 2;
+                _tabContext.Top = position.Y - TabContext.TouchSize / 2;
+            } else ReleaseMouse();
+        }
+
+        private void Canvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+            => ReleaseMouse();
+
+        private void Canvas_TouchUp(object sender, TouchEventArgs e)
+            => ReleaseMouse();
+
+        void ReleaseMouse() {
+            mouseDevice?.Capture(null);
+            _tabContext.Left = _tabContext.OX;
+            _tabContext.Top = _tabContext.OY;
+        }
+
+        private void Canvas_SizeChanged(object sender, SizeChangedEventArgs e) {
+            _tabContext.Height = e.NewSize.Height;
+            _tabContext.Width = e.NewSize.Width;
         }
     }
 }

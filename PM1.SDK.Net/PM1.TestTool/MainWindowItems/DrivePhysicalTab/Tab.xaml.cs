@@ -55,8 +55,7 @@ namespace Autolabor.PM1.TestTool.MainWindowItems.DrivePhysicalTab {
                 var position = e.GetPosition(Origin);
                 _tabContext.X = position.X - TabContext.TouchSize / 2;
                 _tabContext.Y = position.Y - TabContext.TouchSize / 2;
-            }
-            else ReleaseMouse();
+            } else ReleaseMouse();
         }
 
         private void Grid_TouchUp(object sender, TouchEventArgs e)

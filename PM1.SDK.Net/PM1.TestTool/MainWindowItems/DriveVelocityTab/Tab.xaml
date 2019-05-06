@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:items="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems"
              xmlns:local="clr-namespace:Autolabor.PM1.TestTool.MainWindowItems.DriveVelocityTab"
-             DataContextChanged="Tab_DataContextChanged"
-             SizeChanged="UserControl_SizeChanged">
+             DataContextChanged="Tab_DataContextChanged">
     <Grid DataContextChanged="Grid_DataContextChanged"
+          MouseLeftButtonUp="Canvas_MouseLeftButtonUp"
+          TouchUp="Canvas_TouchUp"
           Margin="0,20">
         <Grid.DataContext>
             <local:TabContext/>
@@ -23,7 +24,15 @@
             <ColumnDefinition Width="64"/>
         </Grid.ColumnDefinitions>
 
-        <Canvas Background="Silver" Grid.RowSpan="3"/>
+        <Canvas Background="Silver" Grid.RowSpan="3"
+                MouseMove="Canvas_MouseMove"
+                SizeChanged="Canvas_SizeChanged">
+            <Ellipse Width="{Binding TouchSize,Mode=OneTime}"
+                     Height="{Binding TouchSize,Mode=OneTime}"
+                     Canvas.Top="{Binding Top,Mode=OneWay}"
+                     Canvas.Left="{Binding Left,Mode=OneWay}"
+                     Fill="Black"/>
+        </Canvas>
 
         <TextBlock Grid.Row="0" Grid.Column="1"
                    HorizontalAlignment="Center">
