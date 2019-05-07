@@ -101,11 +101,8 @@ namespace Autolabor.PM1 {
             double offset,
             out double progress);
 
-        [DllImport(LIBRARY, EntryPoint = "pause")]
-        public static extern void Pause();
-
-        [DllImport(LIBRARY, EntryPoint = "resume")]
-        public static extern void Resume();
+        [DllImport(LIBRARY, EntryPoint = "set_paused")]
+        public static extern void SetPaused(bool paused);
 
         [DllImport(LIBRARY, EntryPoint = "is_paused")]
         public static extern bool IsPaused();

@@ -313,10 +313,7 @@ namespace Autolabor.PM1 {
         /// </summary>
         public static bool Paused {
             get => IsPaused();
-            set {
-                if (value) Pause();
-                else Resume();
-            }
+            set => SetPaused(value);
         }
 
         /// <summary>
