@@ -8,14 +8,17 @@
     <Authors>YangDR</Authors>
     <Company>Autolabor</Company>
     <Product>PM1</Product>
-    <Description>.Net SDK based on Native C++ SDK.
-Windows Only.</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>.Net SDK based on Native C++ SDK. Windows Only.</Description>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <NeutralLanguage></NeutralLanguage>
     <Version>1.0.1</Version>
+    <Copyright>Copyright 2019</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Configurations>Debug;Release;Any</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -25,14 +28,21 @@ Windows Only.</Description>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>DEBUG</DefineConstants>
+    <DocumentationFile>Nuget\lib\PM1.SDK.Net.xml</DocumentationFile>
+    <OutputPath>Nuget\lib\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutputPath>Nuget\lib\</OutputPath>
     <DocumentationFile></DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Nuget\runtimes\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 

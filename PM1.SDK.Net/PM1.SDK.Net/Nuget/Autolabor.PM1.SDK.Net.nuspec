@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <!-- Required elements-->
+        <id>Autolabor.PM1.SDK.Net</id>
+        <version>1.0.2-test</version>
+        <description>.Net SDK based on Native C++ SDK. Windows Only.</description>
+        <authors>YangDR</authors>
+
+        <!-- Optional elements -->
+        <title>Autolabor PM1 SDK</title>
+        <owners>autolaborcenter</owners>
+        <projectUrl>https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net</projectUrl>
+        <repository type="git" url="https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net.git" />
+        <license type="expression">Apache-2.0</license>
+        <copyright>Copyright 2019</copyright>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+
+        <dependencies>
+            <group targetFramework=".NETStandard1.1">
+                <dependency id="NETStandard.Library" version="1.6.1" />
+                <dependency id="System.ValueTuple" version="4.3.0" />
+            </group>
+        </dependencies>
+    </metadata>
+</package>
