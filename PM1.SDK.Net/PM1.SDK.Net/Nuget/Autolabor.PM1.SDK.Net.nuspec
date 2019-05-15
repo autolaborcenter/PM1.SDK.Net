@@ -9,8 +9,8 @@
 
         <!-- Optional elements -->
         <title>Autolabor PM1 SDK</title>
-        <owners>YangDR, autolaborcenter</owners>
-        <tag>robot, driver, dotnet-standard</tag>
+        <owners>autolaborcenter</owners>
+        <tags>robot, driver, dotnet-standard</tags>
         <projectUrl>https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net</projectUrl>
         <repository type="git" url="https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net.git" />
         <license type="expression">Apache-2.0</license>
