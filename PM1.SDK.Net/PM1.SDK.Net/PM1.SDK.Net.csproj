@@ -4,6 +4,18 @@
     <TargetFramework>netstandard1.1</TargetFramework>
     <RootNamespace>Autolabor.PM1</RootNamespace>
     <Platforms>AnyCPU;x64</Platforms>
+    <PackageId>Autolabor.PM1.SDK.Net</PackageId>
+    <Authors>YangDR</Authors>
+    <Company>Autolabor</Company>
+    <Product>PM1</Product>
+    <Description>.Net SDK based on Native C++ SDK.
+Windows Only.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage></NeutralLanguage>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -17,8 +29,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.2" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
