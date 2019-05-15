@@ -340,4 +340,5 @@ ASALocalRun/
 healthchecksdb
 
 # Others
+.idea/
 PM1.SDK.Net/PM1.SDK.Net/Nuget/lib/

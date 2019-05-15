@@ -3,13 +3,14 @@
     <metadata>
         <!-- Required elements-->
         <id>Autolabor.PM1.SDK.Net</id>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
         <description>.Net SDK based on Native C++ SDK. Windows Only.</description>
         <authors>YangDR</authors>
 
         <!-- Optional elements -->
         <title>Autolabor PM1 SDK</title>
-        <owners>autolaborcenter</owners>
+        <owners>YangDR, autolaborcenter</owners>
+        <tag>robot, driver, dotnet-standard</tag>
         <projectUrl>https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net</projectUrl>
         <repository type="git" url="https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net.git" />
         <license type="expression">Apache-2.0</license>
@@ -19,7 +20,7 @@
         <dependencies>
             <group targetFramework=".NETStandard1.1">
                 <dependency id="NETStandard.Library" version="1.6.1" />
-                <dependency id="System.ValueTuple" version="4.3.0" />
+                <dependency id="System.ValueTuple" version="4.3.1" />
             </group>
         </dependencies>
     </metadata>
