@@ -4,7 +4,7 @@
     <TargetFramework>netstandard1.1</TargetFramework>
     <AssemblyName>PM1.SDK.Net</AssemblyName>
     <RootNamespace>Autolabor.PM1</RootNamespace>
-    <Platforms>AnyCPU;x86;x64</Platforms>
+    <Platforms>AnyCPU</Platforms>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
@@ -12,27 +12,9 @@
     <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <DefineConstants>DEBUG</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <DefineConstants>DEBUG</DefineConstants>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE</DefineConstants>
-    <OutputPath>Nuget\ref\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <DefineConstants>TRACE</DefineConstants>
-    <OutputPath>Nuget\runtimes\win-x86\lib\</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DefineConstants>TRACE</DefineConstants>
-    <OutputPath>Nuget\runtimes\win-x64\lib\</OutputPath>
+    <OutputPath>Nuget\lib\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
