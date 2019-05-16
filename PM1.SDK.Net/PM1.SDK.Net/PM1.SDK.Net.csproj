@@ -2,32 +2,37 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
+    <AssemblyName>PM1.SDK.Net</AssemblyName>
     <RootNamespace>Autolabor.PM1</RootNamespace>
-    <Platforms>AnyCPU;x64</Platforms>
-    <PackageId>Autolabor.PM1.SDK.Net</PackageId>
-    <Authors>YangDR</Authors>
-    <Company>Autolabor</Company>
-    <Product>PM1</Product>
-    <Description>.Net SDK based on Native C++ SDK. Windows Only.</Description>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/autolaborcenter/Autolabor.PM1.SDK.Net.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <NeutralLanguage></NeutralLanguage>
-    <Version>1.0.1</Version>
-    <Copyright>Copyright 2019</Copyright>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Configurations>Debug;Release;Any</Configurations>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>DEBUG</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>Nuget\ref\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>Nuget\runtimes\win-x86\lib\</OutputPath>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DefineConstants>TRACE</DefineConstants>
-    <OutputPath>Nuget\lib\</OutputPath>
+    <OutputPath>Nuget\runtimes\win-x64\lib\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

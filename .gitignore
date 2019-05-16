@@ -342,3 +342,5 @@ healthchecksdb
 # Others
 .idea/
 PM1.SDK.Net/PM1.SDK.Net/Nuget/lib/
+PM1.SDK.Net/PM1.SDK.Net/Nuget/ref/
+PM1.SDK.Net/PM1.SDK.Net/Nuget/runtimes/**/lib
