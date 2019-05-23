@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\*.so">
-      <Link>%(Filename)%(Extension)</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Visible>False</Visible>
-    </Content>
-  </ItemGroup>
-
   <ItemGroup Condition="'$(Platform)' == 'x86'">
     <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x86\native\*.dll">
       <Link>%(Filename)%(Extension)</Link>
@@ -19,6 +11,11 @@
   
   <ItemGroup Condition="'$(Platform)' == 'x64'">
     <Content Include="$(MSBuildThisFileDirectory)..\runtimes\win-x64\native\*.dll">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>False</Visible>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\runtimes\linux-x64\native\*.so">
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>

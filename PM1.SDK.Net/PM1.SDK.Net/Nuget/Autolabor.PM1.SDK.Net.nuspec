@@ -3,8 +3,8 @@
     <metadata>
         <!-- Required elements-->
         <id>Autolabor.PM1.SDK.Net</id>
-        <version>1.0.5</version>
-        <description>.Net SDK based on Native C++ SDK. Windows Only.</description>
+        <version>1.0.6-alph2</version>
+        <description>.Net SDK based on Native C++ SDK. Both Windows and Linux are available.</description>
         <authors>YangDR</authors>
 
         <!-- Optional elements -->
@@ -16,6 +16,8 @@
         <license type="expression">Apache-2.0</license>
         <copyright>Copyright 2019</copyright>
         <requireLicenseAcceptance>true</requireLicenseAcceptance>
+
+        <releaseNotes>Support linux-x64.</releaseNotes>
 
         <dependencies>
             <group targetFramework=".NETStandard1.1">
