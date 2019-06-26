@@ -82,13 +82,9 @@ namespace Autolabor.PM1 {
               => Win32 ? SafeNativeMethodsWin32.ResetOdometry()
                        : SafeNativeMethodsUnix.ResetOdometry();
 
-        public static Handler Lock()
-              => Win32 ? SafeNativeMethodsWin32.Lock()
-                       : SafeNativeMethodsUnix.Lock();
-
-        public static Handler Unlock()
-              => Win32 ? SafeNativeMethodsWin32.Unlock()
-                       : SafeNativeMethodsUnix.Unlock();
+        public static Handler SetEnabled(bool value)
+              => Win32 ? SafeNativeMethodsWin32.SetEnabled(value)
+                       : SafeNativeMethodsUnix.SetEnabled(value);
 
         public static byte CheckState()
               => Win32 ? SafeNativeMethodsWin32.CheckState()
@@ -190,11 +186,8 @@ namespace Autolabor.PM1 {
             [DllImport(LIBRARY, EntryPoint = "reset_odometry")]
             public static extern Handler ResetOdometry();
 
-            [DllImport(LIBRARY, EntryPoint = "lock")]
-            public static extern Handler Lock();
-
-            [DllImport(LIBRARY, EntryPoint = "unlock")]
-            public static extern Handler Unlock();
+            [DllImport(LIBRARY, EntryPoint = "set_enabled")]
+            public static extern Handler SetEnabled(bool value);
 
             [DllImport(LIBRARY, EntryPoint = "check_state")]
             public static extern byte CheckState();
@@ -284,11 +277,8 @@ namespace Autolabor.PM1 {
             [DllImport(LIBRARY, EntryPoint = "reset_odometry")]
             public static extern Handler ResetOdometry();
 
-            [DllImport(LIBRARY, EntryPoint = "lock")]
-            public static extern Handler Lock();
-
-            [DllImport(LIBRARY, EntryPoint = "unlock")]
-            public static extern Handler Unlock();
+            [DllImport(LIBRARY, EntryPoint = "set_enabled")]
+            public static extern Handler SetEnabled(bool value);
 
             [DllImport(LIBRARY, EntryPoint = "check_state")]
             public static extern byte CheckState();

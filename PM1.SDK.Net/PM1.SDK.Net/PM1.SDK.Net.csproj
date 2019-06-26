@@ -21,4 +21,8 @@
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Nuget\lib\netstandard2.0\" />
+  </ItemGroup>
+
 </Project>

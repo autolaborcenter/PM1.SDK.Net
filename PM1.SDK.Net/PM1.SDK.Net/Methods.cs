@@ -99,10 +99,10 @@ namespace Autolabor.PM1 {
                         OnNative(SafeNativeMethods.Shutdown());
                         break;
                     case StateEnum.Unlocked:
-                        OnNative(Unlock());
+                        OnNative(SetEnabled(true));
                         break;
                     case StateEnum.Locked:
-                        OnNative(Lock());
+                        OnNative(SetEnabled(false));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException

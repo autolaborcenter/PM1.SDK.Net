@@ -3,7 +3,7 @@
     <metadata>
         <!-- Required elements-->
         <id>Autolabor.PM1.SDK.Net</id>
-        <version>1.0.6</version>
+        <version>1.0.7</version>
         <description>.Net SDK based on Native C++ SDK. Both Windows and Linux are available.</description>
         <authors>YangDR</authors>
 
