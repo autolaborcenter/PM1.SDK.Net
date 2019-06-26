@@ -89,11 +89,12 @@ namespace Autolabor.PM1 {
         /// <param name="progress">进度报告回调</param>
         /// <param name="handler">异常处理回调</param>
         public static async Task DriveAsync(
-            double v, double w, double spatium,
+            double v, double w,
+            double spatium, double angle,
             Action<double> progress,
             Action<Exception> handler
         ) => await RunActionAsync(
-                 (out double _progress) => Drive(v, w, spatium, out _progress),
+                 (out double _progress) => Drive(v, w, spatium, angle, out _progress),
                  progress, TimeSpan.FromMilliseconds(50), handler
              ).ConfigureAwait(false);
 

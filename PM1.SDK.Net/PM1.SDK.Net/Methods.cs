@@ -59,7 +59,7 @@ namespace Autolabor.PM1 {
         /// <returns>
         /// 关闭是否成功。
         /// </returns>
-        public static bool ShutdownSafety() 
+        public static bool ShutdownSafety()
             => string.IsNullOrWhiteSpace(Marshal.PtrToStringAnsi(GetErrorInfo(SafeNativeMethods.Shutdown())));
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace Autolabor.PM1 {
             if (meters <= 0)
                 throw new ArgumentException("invalid target");
 
-            OnNative(SafeNativeMethods.DriveSpatial(speed, 0, meters, out progress));
+            OnNative(SafeNativeMethods.DriveSpatial(speed, 0, meters, 0, out progress));
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Autolabor.PM1 {
             if (rad <= 0)
                 throw new ArgumentException("invalid target");
 
-            OnNative(SafeNativeMethods.DriveSpatial(0, speed, CalculateSpatium(0, rad), out progress));
+            OnNative(SafeNativeMethods.DriveSpatial(0, speed, 0, rad, out progress));
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace Autolabor.PM1 {
         /// <param name="progress">进度</param>
         public static void GoArcVS(double v, double r, double s, out double progress) {
             if (CheckArguments(v, r, s)) { progress = 1; return; }
-            DriveSpatial(v, v / r, CalculateSpatium(s, s / r), out progress);
+            DriveSpatial(v, v / r, s, s / r, out progress);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace Autolabor.PM1 {
         /// <param name="progress">进度</param>
         public static void GoArcVA(double v, double r, double a, out double progress) {
             if (CheckArguments(v, r, a)) { progress = 1; return; }
-            DriveSpatial(v, v / r, CalculateSpatium(a * r, a), out progress);
+            DriveSpatial(v, v / r, a * r, a, out progress);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Autolabor.PM1 {
         /// <param name="progress">进度</param>
         public static void GoArcWS(double w, double r, double s, out double progress) {
             if (CheckArguments(w, r, s)) { progress = 1; return; }
-            DriveSpatial(w * r, w, CalculateSpatium(s, s / r), out progress);
+            DriveSpatial(w * r, w, s, s / r, out progress);
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace Autolabor.PM1 {
         /// <param name="progress">进度</param>
         public static void GoArcWA(double w, double r, double a, out double progress) {
             if (CheckArguments(w, r, a)) { progress = 1; return; }
-            DriveSpatial(w * r, w, CalculateSpatium(a * r, a), out progress);
+            DriveSpatial(w * r, w, a * r, a, out progress);
         }
 
         /// <summary>
@@ -273,8 +273,8 @@ namespace Autolabor.PM1 {
         /// <returns>
         /// 描述运动约束的尺度值。
         /// </returns>
-        public static double CalculateSpatium(double spatium, double angle)
-            => SafeNativeMethods.CalculateSpatium(spatium, angle);
+        public static double CalculateSpatium(double spatium, double angle, double width)
+            => SafeNativeMethods.CalculateSpatium(spatium, angle, width);
 
         /// <summary>
         /// 控制机器人执行受空间约束的指定动作。
@@ -283,8 +283,8 @@ namespace Autolabor.PM1 {
         /// <param name="w">角速度（弧度/秒）</param>
         /// <param name="spatium">空间约束</param>
         /// <param name="progress">进度</param>
-        public static void Drive(double v, double w, double spatium, out double progress)
-            => OnNative(DriveSpatial(v, w, spatium, out progress));
+        public static void Drive(double v, double w, double spatium, double angle, out double progress)
+            => OnNative(DriveSpatial(v, w, spatium, angle, out progress));
 
         /// <summary>
         /// 控制机器人执行受时间约束的指定动作。

@@ -106,17 +106,18 @@ namespace Autolabor.PM1 {
               => Win32 ? SafeNativeMethodsWin32.DriveVelocity(v, w)
                        : SafeNativeMethodsUnix.DriveVelocity(v, w);
 
-        public static double CalculateSpatium(double spatium, double angle)
-              => Win32 ? SafeNativeMethodsWin32.CalculateSpatium(spatium, angle)
-                       : SafeNativeMethodsUnix.CalculateSpatium(spatium, angle);
+        public static double CalculateSpatium(double spatium, double angle, double width)
+              => Win32 ? SafeNativeMethodsWin32.CalculateSpatium(spatium, angle, width)
+                       : SafeNativeMethodsUnix.CalculateSpatium(spatium, angle, width);
 
         public static Handler DriveSpatial(
             double v,
             double w,
             double spatium,
+            double angle,
             out double progress)
-              => Win32 ? SafeNativeMethodsWin32.DriveSpatial(v, w, spatium, out progress)
-                       : SafeNativeMethodsUnix.DriveSpatial(v, w, spatium, out progress);
+              => Win32 ? SafeNativeMethodsWin32.DriveSpatial(v, w, spatium, angle, out progress)
+                       : SafeNativeMethodsUnix.DriveSpatial(v, w, spatium, angle, out progress);
 
         public static Handler DriveTiming(
             double v,
@@ -208,13 +209,14 @@ namespace Autolabor.PM1 {
             public static extern Handler DriveVelocity(double v, double w);
 
             [DllImport(LIBRARY, EntryPoint = "calculate_spatium")]
-            public static extern double CalculateSpatium(double spatium, double angle);
+            public static extern double CalculateSpatium(double spatium, double angle, double width);
 
             [DllImport(LIBRARY, EntryPoint = "drive_spatial")]
             public static extern Handler DriveSpatial(
                 double v,
                 double w,
                 double spatium,
+                double angle,
                 out double progress);
 
             [DllImport(LIBRARY, EntryPoint = "drive_timing")]
@@ -301,13 +303,14 @@ namespace Autolabor.PM1 {
             public static extern Handler DriveVelocity(double v, double w);
 
             [DllImport(LIBRARY, EntryPoint = "calculate_spatium")]
-            public static extern double CalculateSpatium(double spatium, double angle);
+            public static extern double CalculateSpatium(double spatium, double angle, double width);
 
             [DllImport(LIBRARY, EntryPoint = "drive_spatial")]
             public static extern Handler DriveSpatial(
                 double v,
                 double w,
                 double spatium,
+                double angle,
                 out double progress);
 
             [DllImport(LIBRARY, EntryPoint = "drive_timing")]
